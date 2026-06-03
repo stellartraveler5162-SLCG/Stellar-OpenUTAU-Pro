@@ -1239,7 +1239,7 @@ namespace OpenUtau.App.Views {
 
                     if (Preferences.Default.DetachPianoRoll) {
                         viewModel.ShowPianoRoll = false;
-                        pianoRollWindow = new(pianoRoll);
+                        pianoRollWindow = new(pianoRoll, this);
                     } else {
                         PianoRollContainer.Content = pianoRoll;
                     }
@@ -1279,7 +1279,7 @@ namespace OpenUtau.App.Views {
                 PianoRollContainer.Content = null;
                 viewModel.ShowPianoRoll = false;
                 if (pianoRollWindow == null) {
-                    pianoRollWindow = new(pianoRoll);
+                    pianoRollWindow = new(pianoRoll, this);
                     pianoRollWindow.Show();
                     PositionPianoRollWindow(pianoRollWindow);
                 }

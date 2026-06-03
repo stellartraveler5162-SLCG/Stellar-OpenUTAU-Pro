@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -10,12 +10,17 @@ namespace OpenUtau.App.Views {
         private readonly PianoRoll pianoRoll;
         private bool forceClose;
 
-        public PianoRollDetachedWindow(PianoRoll pianoRoll) {
+        public PianoRollDetachedWindow(PianoRoll pianoRoll, Window? owner = null) {
             InitializeComponent();
             this.pianoRoll = pianoRoll;
             DataContext = pianoRoll.DataContext;
 
             PianoRollContainer.Content = pianoRoll;
+
+            if (owner != null) {
+                Owner = owner;
+                ShowInTaskbar = false;
+            }
 
             if (Preferences.Default.PianorollWindowSize.TryGetPosition(out int x, out int y)) {
                 Position = new PixelPoint(x, y);

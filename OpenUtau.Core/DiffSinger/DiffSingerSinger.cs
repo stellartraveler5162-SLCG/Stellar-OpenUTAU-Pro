@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -188,7 +188,17 @@ namespace OpenUtau.Core.DiffSinger {
                     vocoder = new DsVocoder(Path.Join(Location, "dsvocoder"));
                     return vocoder;
                 }
-                vocoder = new DsVocoder(Path.Combine(PathManager.Inst.DependencyPath, dsConfig.vocoder));
+                var depPath = Path.Combine(PathManager.Inst.DependencyPath, dsConfig.vocoder);
+                if (Directory.Exists(depPath) && File.Exists(Path.Combine(depPath, "vocoder.yaml"))) {
+                    vocoder = new DsVocoder(depPath);
+                } else {
+                    var bundledPath = Path.Combine(PathManager.Inst.RootPath, "Dependencies", dsConfig.vocoder);
+                    if (Directory.Exists(bundledPath) && File.Exists(Path.Combine(bundledPath, "vocoder.yaml"))) {
+                        vocoder = new DsVocoder(bundledPath);
+                    } else {
+                        vocoder = new DsVocoder(depPath);
+                    }
+                }
             }
             return vocoder;
         }
