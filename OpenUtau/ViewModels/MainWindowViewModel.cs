@@ -75,6 +75,8 @@ namespace OpenUtau.App.ViewModels {
         public string AppVersion => $"Stellar OpenUTAU Pro v{System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version}";
         [Reactive] public double Progress { get; set; }
         [Reactive] public string ProgressText { get; set; }
+        public bool ShowProgressBar => Progress > 0;
+        public double ProgressBarWidth => Math.Max(0, Math.Min(400, Progress / 100.0 * 400));
         [Reactive] public bool ShowPianoRoll { get; set; }
         [Reactive] public double PianoRollMaxHeight { get; set; }
         [Reactive] public double PianoRollMinHeight { get; set; }
@@ -457,6 +459,8 @@ namespace OpenUtau.App.ViewModels {
                 Dispatcher.UIThread.InvokeAsync(() => {
                     Progress = progressBarNotification.Progress;
                     ProgressText = progressBarNotification.Info;
+                    this.RaisePropertyChanged(nameof(ShowProgressBar));
+                    this.RaisePropertyChanged(nameof(ProgressBarWidth));
                 }, DispatcherPriority.Background);
             } else if (cmd is LoadProjectNotification loadProject) {
                 Preferences.AddRecentFileIfEnabled(loadProject.project.FilePath);

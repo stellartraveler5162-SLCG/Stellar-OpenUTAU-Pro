@@ -42,7 +42,7 @@
     </Style>
   </Window.Styles>
   <Grid>
-    <Grid Name="MainGrid" Margin="{Binding $parent[1].WindowDecorationMargin}" RowDefinitions="28,42,*">
+    <Grid Name="MainGrid" Margin="{Binding $parent[1].WindowDecorationMargin}" RowDefinitions="28,42,4,*">
       <!-- Menu Bar -->
       <Menu Grid.Row="0" Height="28" Background="{DynamicResource TitleBarBrush}" BorderThickness="0"
             Opened="OnMainMenuOpened" Closed="OnMainMenuClosed" PointerExited="OnMainMenuPointerLeave" ZIndex="10">
@@ -154,7 +154,25 @@
         </Grid>
       </Border>
 
-      <Carousel SelectedIndex="{Binding Page}" Name="PageCarousel" Grid.Row="2">
+      <!-- Progress Bar -->
+      <Border Grid.Row="2" Background="{DynamicResource TransportBgBrush}">
+        <Grid ColumnDefinitions="Auto,*">
+          <TextBlock Grid.Column="0" Text="{Binding ProgressText}" FontSize="10"
+                     VerticalAlignment="Center" Margin="12,0,8,0"
+                     Foreground="{DynamicResource AccentBrush1}"
+                     IsVisible="{Binding ShowProgressBar}"
+                     MaxWidth="300"/>
+          <Border Grid.Column="0" Grid.ColumnSpan="2" Height="3"
+                  Background="#2A2A36" CornerRadius="2" Margin="12,0"
+                  IsVisible="{Binding ShowProgressBar}">
+            <Border Width="{Binding ProgressBarWidth}" Height="3"
+                    Background="{DynamicResource AccentBrush1}" CornerRadius="2"
+                    HorizontalAlignment="Left"/>
+          </Border>
+        </Grid>
+      </Border>
+
+      <Carousel SelectedIndex="{Binding Page}" Name="PageCarousel" Grid.Row="3">
         <!-- Page 0: Welcome -->
         <Grid Margin="60,50,60,40" RowDefinitions="Auto,Auto,Auto,*" ColumnDefinitions="*,*">
           <StackPanel Grid.Row="0" Grid.ColumnSpan="2">

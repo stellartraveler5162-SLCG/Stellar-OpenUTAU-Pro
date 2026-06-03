@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -263,6 +263,7 @@ namespace OpenUtau.Core {
         public void StopPlayback() {
             AudioOutput.Stop();
             PlayingMaster = false;
+            DocManager.Inst.ExecuteCmd(new ProgressBarNotification(0, string.Empty));
         }
 
         public void PausePlayback() {
@@ -283,6 +284,7 @@ namespace OpenUtau.Core {
         }
 
         private void Render(UProject project, int tick, int endTick, int trackNo) {
+            DocManager.Inst.ExecuteCmd(new ProgressBarNotification(1, "Rendering..."));
             Task.Run(() => {
                 try {
                     RenderEngine engine = new RenderEngine(project, startTick: tick, endTick: endTick, trackNo: trackNo);

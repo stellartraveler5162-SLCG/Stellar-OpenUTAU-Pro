@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using OpenUtau.Core.Util;
@@ -15,7 +16,8 @@ namespace OpenUtau.Audio {
         public int DeviceNumber { get; private set; }
 
 
-        private ISampleProvider? sampleProvider;
+        private volatile ISampleProvider? sampleProvider;
+        private volatile bool sampleProviderReady;
         private double currentTimeMs;
         private bool eof;
 
@@ -95,10 +97,13 @@ namespace OpenUtau.Audio {
             PlaybackState = PlaybackState.Stopped;
             eof = false;
             currentTimeMs = 0;
+            sampleProviderReady = false;
             if (sampleRate != sampleProvider.WaveFormat.SampleRate) {
                 sampleProvider = new WdlResamplingSampleProvider(sampleProvider, sampleRate);
             }
             this.sampleProvider = sampleProvider.ToStereo();
+            Thread.MemoryBarrier();
+            sampleProviderReady = true;
         }
 
         public void Play() {
@@ -133,13 +138,13 @@ namespace OpenUtau.Audio {
                 temp = new float[samples];
             }
             int n = 0;
-            if (sampleProvider != null) {
+            if (sampleProviderReady && sampleProvider != null) {
                 n = sampleProvider.Read(temp, 0, samples);
             }
             if (n < samples) {
                 Array.Fill(temp, 0, n, samples - n);
             }
-            if (n == 0) {
+            if (n == 0 && sampleProviderReady) {
                 eof = true;
             }
             Marshal.Copy(temp, 0, (IntPtr)buffer, samples);
