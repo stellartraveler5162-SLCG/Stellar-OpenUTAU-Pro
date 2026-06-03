@@ -1,0 +1,58 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="460" d:DesignHeight="540"
+        x:Class="OpenUtau.App.Views.AboutDialog"
+        Title="About Stellar OpenUTAU Pro" Width="460" Height="540"
+        CanResize="False" WindowStartupLocation="CenterScreen"
+        Background="#0E0E12">
+  <ScrollViewer VerticalScrollBarVisibility="Auto">
+    <StackPanel Margin="40,30" Spacing="0" HorizontalAlignment="Center">
+      <TextBlock Text="Stellar OpenUTAU Pro" FontSize="22" FontWeight="Bold"
+                 Foreground="#7C6FF7" HorizontalAlignment="Center"/>
+      <TextBlock Text="v1.0.0" FontSize="12" Foreground="#666"
+                 HorizontalAlignment="Center" Margin="0,4,0,24"/>
+
+      <TextBlock Text="A product developed by StellarTraveler at Stellarloom Limited"
+                 FontSize="12" Foreground="#999" HorizontalAlignment="Center" TextAlignment="Center"/>
+      <TextBlock Text="All rights reserved"
+                 FontSize="12" Foreground="#999" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,2,0,16"/>
+
+      <TextBlock Text="Based on Open UTAU and UTAU"
+                 FontSize="12" Foreground="#777" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,2"/>
+      <TextBlock Text="Designed in Xingyuyan Island, Assembled in China"
+                 FontSize="12" Foreground="#777" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,2"/>
+      <TextBlock Text="Proudly using AI-assisted creation"
+                 FontSize="12" Foreground="#777" HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,20"/>
+
+      <Border Height="1" Background="#2A2A36" Margin="20,0"/>
+
+      <TextBlock Text="Vast as the universe is,"
+                 FontSize="13" Foreground="#7C6FF7" HorizontalAlignment="Center"
+                 TextAlignment="Center" Margin="0,20,0,2" FontStyle="Italic"/>
+      <TextBlock Text="the human endeavor to explore the unknown knows no bounds."
+                 FontSize="13" Foreground="#7C6FF7" HorizontalAlignment="Center"
+                 TextAlignment="Center" Margin="0,0,0,20" FontStyle="Italic"/>
+
+      <Border Height="1" Background="#2A2A36" Margin="20,0"/>
+
+      <TextBlock Text="2026 Beijing, PRC"
+                 FontSize="12" Foreground="#555" HorizontalAlignment="Center"
+                 Margin="0,20,0,24"/>
+
+      <Button HorizontalAlignment="Center" CornerRadius="6" Padding="14,8"
+              Background="#FB7299" Foreground="White" FontSize="13" FontWeight="SemiBold"
+              Click="OnBilibili" Cursor="Hand">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <TextBlock Text="📺" FontSize="14" VerticalAlignment="Center"/>
+          <TextBlock Text="Bilibili · 星辰旅者" VerticalAlignment="Center"/>
+        </StackPanel>
+      </Button>
+
+      <TextBlock Text="© 2026 Stellarloom Limited"
+                 FontSize="10" Foreground="#444" HorizontalAlignment="Center"
+                 Margin="0,20,0,0"/>
+    </StackPanel>
+  </ScrollViewer>
+</Window>

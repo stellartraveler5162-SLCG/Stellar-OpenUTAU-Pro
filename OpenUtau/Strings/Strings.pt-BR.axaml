@@ -30,11 +30,11 @@
   <system:String x:Key="debug.copylog">Copiar Log</system:String>
   <system:String x:Key="debug.reverselogorder">Inverter Ordem de Log</system:String>
 
-  <system:String x:Key="dialogs.about.caption">Sobre OpenUTAU</system:String>
+  <system:String x:Key="dialogs.about.caption">Sobre Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.about.message">
-    O OpenUtau é um ambiente de edição de código aberto para a comunidade UTAU, com uma experiência de usuário moderna e suporte fonológico inteligente. Visite-nos no Github.
+    O Stellar OpenUTAU Pro é um ambiente de edição de código aberto para a comunidade UTAU, com uma experiência de usuário moderna e suporte fonológico inteligente. Visite-nos no Github.
   </system:String>
-  <system:String x:Key="dialogs.exitsave.caption">Fechar OpenUtau</system:String>
+  <system:String x:Key="dialogs.exitsave.caption">Fechar Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.exitsave.message">O projeto atual contém alterações não salvas. Deseja salvar?</system:String>
   <system:String x:Key="dialogs.export.caption">Exportar</system:String>
   <system:String x:Key="dialogs.export.savefirst">Salve o arquivo de projeto antes de exportar</system:String>
@@ -51,7 +51,7 @@
   <system:String x:Key="dialogs.messagebox.yes">Sim</system:String>
   <system:String x:Key="dialogs.noresampler.caption">Sem resampler</system:String>
   <system:String x:Key="dialogs.noresampler.message">Sem resampler! Coloque o .exe ou .dll do seu resampler favorito na pasta Resampler e selecione-o em Preferências!</system:String>
-  <system:String x:Key="dialogs.recovery">Anteriormente, o OpenUtau foi encerrado de forma anormal. Você quer recuperar os dados da última sessão?</system:String>
+  <system:String x:Key="dialogs.recovery">Anteriormente, o Stellar OpenUTAU Pro foi encerrado de forma anormal. Você quer recuperar os dados da última sessão?</system:String>
   <!--<system:String x:Key="dialogs.recovery.caption">Recovery project</system:String>-->
   <system:String x:Key="dialogs.remaptimeaxis.message">Esta ferramenta mudará o andamento do projeto sem alterar as posições e durações reais (em segundos) das notas.
   Novo BPM:</system:String>
@@ -89,7 +89,7 @@
   <system:String x:Key="errors.failed.loadprefs">Falha ao carregar prefs. Inicialize-o.</system:String>
   <system:String x:Key="errors.failed.openfile">Falha ao abrir</system:String>
   <system:String x:Key="errors.failed.openlocation">Falha ao abrir o local</system:String>
-  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade OpenUtau!</system:String>-->
+  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade Stellar OpenUTAU Pro!</system:String>-->
   <!--<system:String x:Key="errors.failed.render">Failed to render.</system:String>-->
   <system:String x:Key="errors.failed.runeditingmacro">Falha ao executar a macro de edição</system:String>
   <system:String x:Key="errors.failed.save">Falha ao salvar</system:String>
@@ -207,11 +207,11 @@
   <system:String x:Key="menu.file.saveas">Salvar como...</system:String>
   <system:String x:Key="menu.file.savetemplate">Salvar Modelo...</system:String>
   <system:String x:Key="menu.help">Ajuda</system:String>
-  <system:String x:Key="menu.help.about">Sobre OpenUTAU</system:String>
+  <system:String x:Key="menu.help.about">Sobre Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="menu.help.checkupdate">Checar Atualização</system:String>
   <system:String x:Key="menu.help.logslocation">Abrir Localização de Logs</system:String>
   <system:String x:Key="menu.help.reportissue">Reportar Problemas</system:String>
-  <system:String x:Key="menu.help.wiki">Documentação do OpenUtau</system:String>
+  <system:String x:Key="menu.help.wiki">Documentação do Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="menu.project">Projeto</system:String>
   <system:String x:Key="menu.project.expressions">Expressões...</system:String>
   <system:String x:Key="menu.project.remaptimeaxis">Ajustar o Tempo (Preservar Timing)</system:String>
@@ -422,7 +422,7 @@ Segure Ctrl para selecionar</system:String>
   <system:String x:Key="prefs.caption">Preferências</system:String>
   <!--<system:String x:Key="prefs.diffsinger">DiffSinger</system:String>-->
   <system:String x:Key="prefs.editing">Edição</system:String>
-  <system:String x:Key="prefs.note.restart">Nota: reinicie o OpenUtau após alterar este item.</system:String>
+  <system:String x:Key="prefs.note.restart">Nota: reinicie o Stellar OpenUTAU Pro após alterar este item.</system:String>
   <system:String x:Key="prefs.off">Desligar</system:String>
   <system:String x:Key="prefs.on">Ligar</system:String>
   <system:String x:Key="prefs.otoeditor">Editor de Oto</system:String>
@@ -469,11 +469,11 @@ Segure Ctrl para selecionar</system:String>
     3. Pacientemente espere pelo moresampler gerar os arquivos llsm que faltam.
   </system:String>
   <system:String x:Key="prefs.rendering.resampler.note">
-    Observação: para usar resamplers externos, adicione o arquivo .dll ou .exe do resampler na pasta Resamplers no caminho de instalação do OpenUtau e escolha-o em Preferências.
+    Observação: para usar resamplers externos, adicione o arquivo .dll ou .exe do resampler na pasta Resamplers no caminho de instalação do Stellar OpenUTAU Pro e escolha-o em Preferências.
   </system:String>
   <system:String x:Key="prefs.rendering.skipmuted">Pular faixas mutadas</system:String>
   <system:String x:Key="prefs.rendering.threads.cpuwarn">
-    Aviso: um número excessivo de threads de renderização pode fazer com que o OpenUtau seja executado lentamente.
+    Aviso: um número excessivo de threads de renderização pode fazer com que o Stellar OpenUTAU Pro seja executado lentamente.
   </system:String>
   <system:String x:Key="prefs.rendering.threads.numthreads">Máximo de threads de renderização</system:String>
   <!--<system:String x:Key="prefs.rendering.wavtool">Wavtool</system:String>-->
@@ -617,7 +617,7 @@ Geral
   <system:String x:Key="updater.update">Atualizar</system:String>
 
   <system:String x:Key="warning">Atenção</system:String>
-  <system:String x:Key="warning.asciipath">O caminho da pasta do OpenUtau "{0}" contém caracteres não ASCII. Resamplers .exe podem não funcionar.</system:String>
+  <system:String x:Key="warning.asciipath">O caminho da pasta do Stellar OpenUTAU Pro "{0}" contém caracteres não ASCII. Resamplers .exe podem não funcionar.</system:String>
   <system:String x:Key="warning.renderer">Sem configurações para este renderizador. Favor selecionar CLASSIC.</system:String>
 
   <!--<system:String x:Key="welcome.new">New</system:String>-->

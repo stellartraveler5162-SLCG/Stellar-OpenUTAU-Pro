@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,21 +17,20 @@ using ReactiveUI.Fody.Helpers;
 using Serilog;
 
 namespace OpenUtau.App.ViewModels {
+    public class StellarRelease {
+        public string latest_version = string.Empty;
+        public bool has_update;
+        public string url = string.Empty;
+        public string notes = string.Empty;
+        public string published_at = string.Empty;
+        public string download_url => url;
+        public string version => latest_version;
+    }
+
     public class UpdaterViewModel : ViewModelBase {
-        class GithubReleaseAsset {
-            public string name = string.Empty;
-            public string browser_download_url = string.Empty;
-        }
-        class GithubRelease {
-#pragma warning disable 0649
-            public string html_url = string.Empty;
-            public long id = long.MaxValue;
-            public bool draft;
-            public bool prerelease;
-            public string name = string.Empty;
-            public GithubReleaseAsset[] assets = new GithubReleaseAsset[0];
-#pragma warning restore 0649
-        }
+        private const string STELLAR_API = "http://156.239.236.41:5000";
+        private const string STELLAR_API_UPDATE = STELLAR_API + "/api/update";
+
         public string AppVersion => $"v{System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version}";
         public bool IsDarkMode => ThemeManager.IsDarkMode;
         [Reactive] public string UpdaterStatus { get; set; }
@@ -57,14 +56,8 @@ namespace OpenUtau.App.ViewModels {
                     Log.Error("No updatable release found.");
                     return null;
                 }
-                Log.Information($"Checking update at: {release.html_url}");
-                var appcast = SelectAppcast(release);
-                if (appcast == null) {
-                    Log.Error("No updatable appcast found.");
-                    return null;
-                }
-                Log.Information($"Checking appcast: {appcast.browser_download_url}");
-                return new ZipUpdater(appcast.browser_download_url, new Ed25519Checker(SecurityMode.Unsafe)) {
+                Log.Information($"Checking update at: {release.download_url}");
+                return new ZipUpdater(release.download_url, new Ed25519Checker(SecurityMode.Unsafe)) {
                     UIFactory = null,
                     CheckServerFileName = false,
                     RelaunchAfterUpdate = true,
@@ -79,29 +72,17 @@ namespace OpenUtau.App.ViewModels {
             }
         }
 
-        static async Task<GithubRelease?> SelectRelease() {
+        static async Task<StellarRelease?> SelectRelease() {
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Accept", "application/json");
-            client.DefaultRequestHeaders.Add("User-Agent", "Other");
+            client.DefaultRequestHeaders.Add("User-Agent", "Stellar OpenUTAU Pro");
             client.Timeout = TimeSpan.FromSeconds(30);
-            using var resposne = await client.GetAsync("https://api.github.com/repos/stakira/OpenUtau/releases");
-            resposne.EnsureSuccessStatusCode();
-            string respBody = await resposne.Content.ReadAsStringAsync();
-            List<GithubRelease>? releases = JsonConvert.DeserializeObject<List<GithubRelease>>(respBody);
-            if (releases == null) {
-                return null;
-            }
-            return releases
-                .Where(r => !r.draft && r.prerelease == Preferences.Default.Beta)
-                .OrderByDescending(r => r.id)
-                .FirstOrDefault();
-        }
-
-        static GithubReleaseAsset? SelectAppcast(GithubRelease release) {
-            string suffix = PathManager.Inst.IsInstalled ? "-installer" : "";
-            return release.assets
-                .Where(a => a.name == $"appcast.{OS.GetUpdaterRid()}{suffix}.xml")
-                .FirstOrDefault();
+            string platform = OS.IsMacOS() ? "macos" : OS.IsWindows() ? "windows" : "linux";
+            string version = $"v{System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version}";
+            using var response = await client.GetAsync($"{STELLAR_API_UPDATE}/check?version={version}&platform={platform}");
+            response.EnsureSuccessStatusCode();
+            string respBody = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<StellarRelease>(respBody);
         }
 
         async void Init() {
@@ -134,7 +115,7 @@ namespace OpenUtau.App.ViewModels {
 
         public void OnGithub() {
             try {
-                OS.OpenWeb("https://github.com/stakira/OpenUtau/wiki");
+                OS.OpenWeb("https://github.com/stellartraveler5162-SLCG/Stellar-OpenUTAU-Pro");
             } catch (Exception e) {
                 DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(e));
             }

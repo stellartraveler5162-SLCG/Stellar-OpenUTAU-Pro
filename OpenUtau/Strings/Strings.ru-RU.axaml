@@ -30,11 +30,11 @@
   <system:String x:Key="debug.copylog">Копировать лог</system:String>
   <system:String x:Key="debug.reverselogorder">Обратный порядок лога</system:String>
 
-  <system:String x:Key="dialogs.about.caption">Об OpenUtau</system:String>
+  <system:String x:Key="dialogs.about.caption">Об Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.about.message">
-    OpenUtau стремится стать средой редактирования с открытым исходным кодом для сообщества UTAU, с современным пользовательским интерфейсом и интеллектуальной фонологической поддержкой. Посетите нас на GitHub.
+    Stellar OpenUTAU Pro стремится стать средой редактирования с открытым исходным кодом для сообщества UTAU, с современным пользовательским интерфейсом и интеллектуальной фонологической поддержкой. Посетите нас на GitHub.
   </system:String>
-  <system:String x:Key="dialogs.exitsave.caption">Выход из OpenUtau</system:String>
+  <system:String x:Key="dialogs.exitsave.caption">Выход из Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.exitsave.message">Текущий проект содержит несохраненные изменения. Хотите сохранить изменения?</system:String>
   <system:String x:Key="dialogs.export.caption">Экспорт</system:String>
   <system:String x:Key="dialogs.export.savefirst">Сначала нужно сохранить проект</system:String>
@@ -51,7 +51,7 @@
   <system:String x:Key="dialogs.messagebox.yes">Да</system:String>
   <system:String x:Key="dialogs.noresampler.caption">Нет ресамплера</system:String>
   <system:String x:Key="dialogs.noresampler.message">Нет ресамплера! Поместите ваш избранный ресамплер (.exe или .dll) и разместите в папку Resamplers, после выберите его в Параметрах!</system:String>
-  <system:String x:Key="dialogs.recovery">Ранее OpenUtau завершил работу с ошибкой. Хотите восстановиться?</system:String>
+  <system:String x:Key="dialogs.recovery">Ранее Stellar OpenUTAU Pro завершил работу с ошибкой. Хотите восстановиться?</system:String>
   <system:String x:Key="dialogs.recovery.caption">Восстановить проект</system:String>
   <system:String x:Key="dialogs.remaptimeaxis.message">Этот инструмент позволяет изменять темп исполнения без изменения фактических позиций и длительностей (в секундах) нот.
   Новый BPM:</system:String>
@@ -89,7 +89,7 @@
   <system:String x:Key="errors.failed.loadprefs">Не удалось загрузить параметры, пожалуйста, проведите инициализацию.</system:String>
   <system:String x:Key="errors.failed.openfile">Не удалось открыть</system:String>
   <system:String x:Key="errors.failed.openlocation">Не удалось открыть расположение</system:String>
-  <system:String x:Key="errors.failed.opennewerproject">Файл проекта устарел! Обновите OpenUtau!</system:String>
+  <system:String x:Key="errors.failed.opennewerproject">Файл проекта устарел! Обновите Stellar OpenUTAU Pro!</system:String>
   <system:String x:Key="errors.failed.render">Рендер не удался.</system:String>
   <system:String x:Key="errors.failed.runeditingmacro">Не удалось запустить макрос редактирования</system:String>
   <system:String x:Key="errors.failed.save">Не удалось сохранить</system:String>
@@ -207,11 +207,11 @@
   <system:String x:Key="menu.file.saveas">Сохранить как...</system:String>
   <system:String x:Key="menu.file.savetemplate">Сохранить шаблон...</system:String>
   <system:String x:Key="menu.help">Справка</system:String>
-  <system:String x:Key="menu.help.about">О OpenUtau</system:String>
+  <system:String x:Key="menu.help.about">О Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="menu.help.checkupdate">Проверить наличие обновлений</system:String>
   <system:String x:Key="menu.help.logslocation">Открыть расположение логов</system:String>
   <system:String x:Key="menu.help.reportissue">Сообщить об ошибке</system:String>
-  <system:String x:Key="menu.help.wiki">Вики OpenUtau</system:String>
+  <system:String x:Key="menu.help.wiki">Вики Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="menu.project">Проект</system:String>
   <system:String x:Key="menu.project.expressions">Выражения...</system:String>
   <system:String x:Key="menu.project.remaptimeaxis">Регулировка темпа (сохранение тайминга)</system:String>
@@ -422,7 +422,7 @@ Syntax: prefix,suffix</system:String>-->
   <system:String x:Key="prefs.caption">Параметры</system:String>
   <system:String x:Key="prefs.diffsinger">ДиффСингер</system:String>
   <system:String x:Key="prefs.editing">Редактирование</system:String>
-  <system:String x:Key="prefs.note.restart">Примечание: пожалуйста, перезапустите OpenUtau после изменения этого пункта.</system:String>
+  <system:String x:Key="prefs.note.restart">Примечание: пожалуйста, перезапустите Stellar OpenUTAU Pro после изменения этого пункта.</system:String>
   <system:String x:Key="prefs.off">Выкл.</system:String>
   <system:String x:Key="prefs.on">Вкл.</system:String>
   <system:String x:Key="prefs.otoeditor">Редактор oto</system:String>
@@ -469,11 +469,11 @@ Syntax: prefix,suffix</system:String>-->
     3. Терпеливо ждите, пока moresampler сгенерирует недостающие llsm файлы.
   </system:String>
   <system:String x:Key="prefs.rendering.resampler.note">
-    Примечание: для использования внешних ресамплеров, пожалуйста, добавьте DLL или EXE ресамплера в папку Resamplers в пути установки OpenUtau и выберите его в параметрах
+    Примечание: для использования внешних ресамплеров, пожалуйста, добавьте DLL или EXE ресамплера в папку Resamplers в пути установки Stellar OpenUTAU Pro и выберите его в параметрах
   </system:String>
   <system:String x:Key="prefs.rendering.skipmuted">Пропускать заглушенные треки</system:String>
   <system:String x:Key="prefs.rendering.threads.cpuwarn">
-    Предупреждение: слишком большое количество потоков рендеринга может привести к медленной работе OpenUtau.
+    Предупреждение: слишком большое количество потоков рендеринга может привести к медленной работе Stellar OpenUTAU Pro.
   </system:String>
   <system:String x:Key="prefs.rendering.threads.numthreads">Максимальное количество потоков рендеринга</system:String>
   <system:String x:Key="prefs.rendering.wavtool">Вавтул</system:String>
@@ -617,7 +617,7 @@ Syntax: prefix,suffix</system:String>-->
   <system:String x:Key="updater.update">Обновить</system:String>
 
   <system:String x:Key="warning">Предупреждение</system:String>
-  <system:String x:Key="warning.asciipath">Ваш путь к OpenUtau ("{0}") содержит символы, не являющимися символами ASCII. EXE-ресамплеры могут не работать.</system:String>
+  <system:String x:Key="warning.asciipath">Ваш путь к Stellar OpenUTAU Pro ("{0}") содержит символы, не являющимися символами ASCII. EXE-ресамплеры могут не работать.</system:String>
   <system:String x:Key="warning.renderer">Для этого рендерера нет настроек.</system:String>
 
   <system:String x:Key="welcome.new">Новый</system:String>

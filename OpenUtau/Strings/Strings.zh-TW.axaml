@@ -30,11 +30,11 @@
   <system:String x:Key="debug.copylog">複製</system:String>
   <system:String x:Key="debug.reverselogorder">反轉記錄檔順序</system:String>
 
-  <system:String x:Key="dialogs.about.caption">關於 OpenUTAU</system:String>
+  <system:String x:Key="dialogs.about.caption">關於 Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.about.message">
-    OpenUtau 致力於為 UTAU 社群建立開源編輯環境，提供現代化使用體驗與智慧型拆音功能。歡迎瀏覽我們的 GitHub。
+    Stellar OpenUTAU Pro 致力於為 UTAU 社群建立開源編輯環境，提供現代化使用體驗與智慧型拆音功能。歡迎瀏覽我們的 GitHub。
   </system:String>
-  <system:String x:Key="dialogs.exitsave.caption">結束 OpenUtau</system:String>
+  <system:String x:Key="dialogs.exitsave.caption">結束 Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.exitsave.message">專案包含未儲存的變更。是否要儲存?</system:String>
   <system:String x:Key="dialogs.export.caption">匯出</system:String>
   <system:String x:Key="dialogs.export.savefirst">請先儲存專案</system:String>
@@ -51,7 +51,7 @@
   <system:String x:Key="dialogs.messagebox.yes">確定</system:String>
   <system:String x:Key="dialogs.noresampler.caption">未套用引擎</system:String>
   <system:String x:Key="dialogs.noresampler.message">未套用引擎! 請將引擎 EXE 或 DLL 檔案置入 Resamplers 資料夾中，並在偏好設定選擇欲使用的引擎!</system:String>
-  <!--<system:String x:Key="dialogs.recovery">Previously, OpenUtau terminated abnormally. Do you want to recover?</system:String>-->
+  <!--<system:String x:Key="dialogs.recovery">Previously, Stellar OpenUTAU Pro terminated abnormally. Do you want to recover?</system:String>-->
   <!--<system:String x:Key="dialogs.recovery.caption">Recovery project</system:String>-->
   <!--<system:String x:Key="dialogs.remaptimeaxis.message">This tool will change the tempo of the project without changing the actual positions and durations (in seconds) of notes.
   New BPM:</system:String>-->
@@ -89,7 +89,7 @@
   <!--<system:String x:Key="errors.failed.loadprefs">Failed to load prefs. Initialize it.</system:String>-->
   <system:String x:Key="errors.failed.openfile">開啟失敗</system:String>
   <!--<system:String x:Key="errors.failed.openlocation">Failed to open location</system:String>-->
-  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade OpenUtau!</system:String>-->
+  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade Stellar OpenUTAU Pro!</system:String>-->
   <!--<system:String x:Key="errors.failed.render">Failed to render.</system:String>-->
   <!--<system:String x:Key="errors.failed.runeditingmacro">Failed to run editing macro</system:String>-->
   <system:String x:Key="errors.failed.save">儲存失敗</system:String>
@@ -207,11 +207,11 @@
   <system:String x:Key="menu.file.saveas">另存新檔</system:String>
   <system:String x:Key="menu.file.savetemplate">另存為範本</system:String>
   <system:String x:Key="menu.help">說明</system:String>
-  <system:String x:Key="menu.help.about">關於 OpenUtau</system:String>
+  <system:String x:Key="menu.help.about">關於 Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="menu.help.checkupdate">檢查更新</system:String>
   <!--<system:String x:Key="menu.help.logslocation">Open Logs Location</system:String>-->
   <system:String x:Key="menu.help.reportissue">回報問題</system:String>
-  <system:String x:Key="menu.help.wiki">OpenUtau 說明書</system:String>
+  <system:String x:Key="menu.help.wiki">Stellar OpenUTAU Pro 說明書</system:String>
   <system:String x:Key="menu.project">專案</system:String>
   <!--<system:String x:Key="menu.project.expressions">Expressions...</system:String>-->
   <!--<system:String x:Key="menu.project.remaptimeaxis">Adjust Tempo (Preserve Timing)</system:String>-->
@@ -422,7 +422,7 @@ Syntax: prefix,suffix</system:String>-->
   <system:String x:Key="prefs.caption">偏好設定</system:String>
   <!--<system:String x:Key="prefs.diffsinger">DiffSinger</system:String>-->
   <system:String x:Key="prefs.editing">編輯</system:String>
-  <system:String x:Key="prefs.note.restart">注意: 請重新啟動 OpenUtau 以套用變更</system:String>
+  <system:String x:Key="prefs.note.restart">注意: 請重新啟動 Stellar OpenUTAU Pro 以套用變更</system:String>
   <system:String x:Key="prefs.off">關閉</system:String>
   <system:String x:Key="prefs.on">開啟</system:String>
   <system:String x:Key="prefs.otoeditor">Oto 編輯器</system:String>
@@ -473,7 +473,7 @@ Syntax: prefix,suffix</system:String>-->
   </system:String>
   <system:String x:Key="prefs.rendering.skipmuted">跳過靜音的音軌</system:String>
   <system:String x:Key="prefs.rendering.threads.cpuwarn">
-    警告: 算繪執行緒過多可能會導致OpenUtau運作緩慢
+    警告: 算繪執行緒過多可能會導致Stellar OpenUTAU Pro運作緩慢
   </system:String>
   <system:String x:Key="prefs.rendering.threads.numthreads">最大算繪執行緒數</system:String>
   <!--<system:String x:Key="prefs.rendering.wavtool">Wavtool</system:String>-->
@@ -617,7 +617,7 @@ Curve Type
   <system:String x:Key="updater.update">更新</system:String>
 
   <system:String x:Key="warning">警告</system:String>
-  <system:String x:Key="warning.asciipath">您的 OpenUtau 主路徑 「{0}」 包含非 ASCII 字元。部分 EXE 引擎可能無法正常運作。</system:String>
+  <system:String x:Key="warning.asciipath">您的 Stellar OpenUTAU Pro 主路徑 「{0}」 包含非 ASCII 字元。部分 EXE 引擎可能無法正常運作。</system:String>
   <!--<system:String x:Key="warning.renderer">No settings for this renderer.</system:String>-->
 
   <!--<system:String x:Key="welcome.new">New</system:String>-->

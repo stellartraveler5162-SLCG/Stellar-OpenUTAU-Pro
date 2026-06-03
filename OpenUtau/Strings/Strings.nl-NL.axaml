@@ -30,11 +30,11 @@
   <system:String x:Key="debug.copylog">Kopieer log</system:String>
   <system:String x:Key="debug.reverselogorder">Log volgorde omkeren</system:String>
 
-  <system:String x:Key="dialogs.about.caption">Over OpenUTAU</system:String>
+  <system:String x:Key="dialogs.about.caption">Over Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.about.message">
-    OpenUtau wil een open-source bewerkingsomgeving zijn voor de UTAU-gemeenschap, met een moderne gebruikerservaring en intelligente fonologische ondersteuning. Bezoek ons op Github.
+    Stellar OpenUTAU Pro wil een open-source bewerkingsomgeving zijn voor de UTAU-gemeenschap, met een moderne gebruikerservaring en intelligente fonologische ondersteuning. Bezoek ons op Github.
   </system:String>
-  <system:String x:Key="dialogs.exitsave.caption">OpenUtau afsluiten</system:String>
+  <system:String x:Key="dialogs.exitsave.caption">Stellar OpenUTAU Pro afsluiten</system:String>
   <system:String x:Key="dialogs.exitsave.message">Het huidige project bevat niet-opgeslagen wijzigingen. Wilt u het opslaan?</system:String>
   <system:String x:Key="dialogs.export.caption">Exporteren</system:String>
   <system:String x:Key="dialogs.export.savefirst">Sla het projectbestand eerst op</system:String>
@@ -51,7 +51,7 @@
   <system:String x:Key="dialogs.messagebox.yes">Ja</system:String>
   <system:String x:Key="dialogs.noresampler.caption">Geen resampler</system:String>
   <system:String x:Key="dialogs.noresampler.message">Geen resampler! Zet je favoriete resampler exe of dll in de Resamplers map en kies het in Voorkeuren!</system:String>
-  <system:String x:Key="dialogs.recovery">OpenUtau is abnormaal beëindigd. Wilt u uw project herstellen?</system:String>
+  <system:String x:Key="dialogs.recovery">Stellar OpenUTAU Pro is abnormaal beëindigd. Wilt u uw project herstellen?</system:String>
   <system:String x:Key="dialogs.recovery.caption">Project herstellen</system:String>
   <system:String x:Key="dialogs.remaptimeaxis.message">Met deze tool verandert u het tempo van het project zonder dat de daadwerkelijke positie en duur (in seconden) van de noten verandert.
   Nieuwe BPM:</system:String>
@@ -89,7 +89,7 @@
   <system:String x:Key="errors.failed.loadprefs">Laden van de voorkeuren mislukt. Initialiseer het.</system:String>
   <system:String x:Key="errors.failed.openfile">Openen mislukt</system:String>
   <system:String x:Key="errors.failed.openlocation">Openen van locatie mislukt</system:String>
-  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade OpenUtau!</system:String>-->
+  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade Stellar OpenUTAU Pro!</system:String>-->
   <!--<system:String x:Key="errors.failed.render">Failed to render.</system:String>-->
   <system:String x:Key="errors.failed.runeditingmacro">Uitvoering van bewerkingsmacro mislukt</system:String>
   <system:String x:Key="errors.failed.save">Opslaan mislukt</system:String>
@@ -207,11 +207,11 @@
   <system:String x:Key="menu.file.saveas">Opslaan _als...</system:String>
   <system:String x:Key="menu.file.savetemplate">Sjabloon opslaan...</system:String>
   <system:String x:Key="menu.help">_Help</system:String>
-  <system:String x:Key="menu.help.about">Over OpenUTAU</system:String>
+  <system:String x:Key="menu.help.about">Over Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="menu.help.checkupdate">Controleer update</system:String>
   <!--<system:String x:Key="menu.help.logslocation">Open Logs Location</system:String>-->
   <system:String x:Key="menu.help.reportissue">Meld probleem</system:String>
-  <!--<system:String x:Key="menu.help.wiki">OpenUtau Documentation</system:String>-->
+  <!--<system:String x:Key="menu.help.wiki">Stellar OpenUTAU Pro Documentation</system:String>-->
   <!--<system:String x:Key="menu.project">Project</system:String>-->
   <system:String x:Key="menu.project.expressions">Expressies...</system:String>
   <!--<system:String x:Key="menu.project.remaptimeaxis">Adjust Tempo (Preserve Timing)</system:String>-->
@@ -422,7 +422,7 @@ Ctrl ingedrukt houden om te selecteren</system:String>
   <system:String x:Key="prefs.caption">Voorkeuren</system:String>
   <!--<system:String x:Key="prefs.diffsinger">DiffSinger</system:String>-->
   <!--<system:String x:Key="prefs.editing">Editing</system:String>-->
-  <system:String x:Key="prefs.note.restart">*herstart OpenUtau a.u.b. na het wijzigen van dit item.*</system:String>
+  <system:String x:Key="prefs.note.restart">*herstart Stellar OpenUTAU Pro a.u.b. na het wijzigen van dit item.*</system:String>
   <system:String x:Key="prefs.off">Uit</system:String>
   <system:String x:Key="prefs.on">Aan</system:String>
   <system:String x:Key="prefs.otoeditor">Oto bewerker</system:String>
@@ -469,11 +469,11 @@ Ctrl ingedrukt houden om te selecteren</system:String>
 3. Wacht geduldig tot moresampler vermiste llsm-bestanden genereert.
   </system:String>
   <system:String x:Key="prefs.rendering.resampler.note">
-    Note: Om externe resamplers te gebruiken, voeg de resampler DLL of EXE bestand toe in de Resamplers map in het OpenUtau installatie pad en kies het in Voorkeuren.
+    Note: Om externe resamplers te gebruiken, voeg de resampler DLL of EXE bestand toe in de Resamplers map in het Stellar OpenUTAU Pro installatie pad en kies het in Voorkeuren.
   </system:String>
   <!--<system:String x:Key="prefs.rendering.skipmuted">Skip muted tracks</system:String>-->
   <!--<system:String x:Key="prefs.rendering.threads.cpuwarn">
-    Warning: too many render threads may cause OpenUtau to run slowly.
+    Warning: too many render threads may cause Stellar OpenUTAU Pro to run slowly.
   </system:String>-->
   <!--<system:String x:Key="prefs.rendering.threads.numthreads">Maximum Render Threads</system:String>-->
   <!--<system:String x:Key="prefs.rendering.wavtool">Wavtool</system:String>-->
@@ -617,7 +617,7 @@ Algemeen
   <!--<system:String x:Key="updater.update">Update</system:String>-->
 
   <system:String x:Key="warning">Waarschuwing</system:String>
-  <system:String x:Key="warning.asciipath">Uw OpenUtau home path "{0}" bevat geen ASCII tekens. Exe resamplers werken mogelijk niet.</system:String>
+  <system:String x:Key="warning.asciipath">Uw Stellar OpenUTAU Pro home path "{0}" bevat geen ASCII tekens. Exe resamplers werken mogelijk niet.</system:String>
   <!--<system:String x:Key="warning.renderer">No settings for this renderer.</system:String>-->
 
   <!--<system:String x:Key="welcome.new">New</system:String>-->

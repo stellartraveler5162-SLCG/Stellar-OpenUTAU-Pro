@@ -97,6 +97,7 @@
           <MenuItem Header="{DynamicResource menu.tools.debugwindow}" Click="OnMenuDebugWindow"/>
           <MenuItem Header="{DynamicResource phoneticassistant.caption}" Click="OnMenuPhoneticAssistant"/>
           <MenuItem Header="{DynamicResource menu.tools.singers}" Click="OnMenuSingers"/>
+          <MenuItem Header="Singer Browser" Click="OnMenuSingerBrowser"/>
           <MenuItem Header="{DynamicResource menu.tools.singer.install}" Click="OnMenuInstallSinger"/>
           <MenuItem Header="{DynamicResource menu.tools.wavtoolresampler.install}" Click="OnMenuInstallWavtoolResampler"/>
           <MenuItem Header="{DynamicResource menu.tools.packages}" Click="OnMenuPackageManager"/>
@@ -107,6 +108,8 @@
           <MenuItem Header="{DynamicResource menu.help.checkupdate}" Click="OnMenuCheckUpdate"/>
           <MenuItem Header="{DynamicResource menu.help.reportissue}" Click="OnMenuReportIssue"/>
           <MenuItem Header="{DynamicResource menu.help.logslocation}" Click="OnMenuLogsLocation"/>
+          <MenuItem Header="-" IsEnabled="False"/>
+          <MenuItem Header="About" Click="OnMenuAbout"/>
         </MenuItem>
       </Menu>
 
@@ -223,7 +226,7 @@
               <RowDefinition Height="24"/>
               <RowDefinition Height="*" MinHeight="0.01"/>
               <RowDefinition Height="Auto"/>
-              <RowDefinition Height="3*" MinHeight="{Binding PianoRollMinHeight}" MaxHeight="{Binding PianoRollMaxHeight}"/>
+              <RowDefinition Height="*" MinHeight="{Binding PianoRollMinHeight}" MaxHeight="{Binding PianoRollMaxHeight}"/>
             </Grid.RowDefinitions>
             <ScrollBar Name="HScrollBar" Classes="music" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       Margin="0,4,0,4" Orientation="Horizontal" AllowAutoHide="False"

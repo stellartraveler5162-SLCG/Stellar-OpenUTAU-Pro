@@ -1,0 +1,82 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:OpenUtau.App.ViewModels"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="650"
+        x:Class="OpenUtau.App.Views.SingerBrowser"
+        Icon="/Assets/open-utau.ico"
+        Title="Singer Browser" MinWidth="720" MinHeight="500" Width="900" Height="650"
+        Background="{DynamicResource BackgroundColor}">
+  <Window.Styles>
+    <Style Selector="Button.download-btn">
+      <Setter Property="Background" Value="{DynamicResource AccentBrush1}"/>
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="CornerRadius" Value="6"/>
+      <Setter Property="Padding" Value="12,6"/>
+      <Setter Property="FontSize" Value="12"/>
+      <Setter Property="Width" Value="90"/>
+      <Setter Property="Height" Value="30"/>
+    </Style>
+    <Style Selector="Button.download-btn:disabled">
+      <Setter Property="Background" Value="#333"/>
+      <Setter Property="Foreground" Value="#777"/>
+    </Style>
+  </Window.Styles>
+  <Grid RowDefinitions="Auto,*" Margin="16">
+    <StackPanel Grid.Row="0" Spacing="10" Margin="0,0,0,12">
+      <Grid ColumnDefinitions="*,200,100">
+        <TextBox Grid.Column="0" Text="{Binding SearchText}" Watermark="搜索声库..." Padding="10,8" CornerRadius="6"
+                 Background="{DynamicResource SurfaceBrush}" BorderThickness="0"/>
+        <ComboBox Grid.Column="1" Margin="12,0,0,0" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory}"
+                  PlaceholderText="All" CornerRadius="6" Background="{DynamicResource SurfaceBrush}" BorderThickness="0"/>
+        <Button Grid.Column="2" Margin="12,0,0,0" Content="⟳ Refresh" CornerRadius="6" Click="OnRefresh" Height="30"
+                Background="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+      </Grid>
+      <TextBlock Text="{Binding ErrorMessage}" Foreground="#E04050" FontSize="12" IsVisible="{Binding !!ErrorMessage}"/>
+      <ProgressBar IsIndeterminate="True" Height="2" IsVisible="{Binding IsLoading}"/>
+    </StackPanel>
+    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+      <ItemsControl ItemsSource="{Binding Singers}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:SingerDownloadViewModel">
+            <Border Background="#16161C" BorderBrush="#2A2A36" BorderThickness="1" CornerRadius="8"
+                    Padding="14" Margin="0,0,12,12" Width="280" Height="160">
+              <Grid RowDefinitions="Auto,Auto,*,Auto">
+                <Grid ColumnDefinitions="Auto,*" Grid.Row="0">
+                  <Border Width="48" Height="48" CornerRadius="8" Background="{DynamicResource NeutralAccentBrushSemi}"
+                      VerticalAlignment="Top" Margin="0,0,10,0">
+                <TextBlock Text="{Binding Initial}"
+                               FontSize="20" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                  </Border>
+                  <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="SemiBold" TextWrapping="NoWrap"/>
+                    <TextBlock FontSize="11" Foreground="#7C6FF7" Margin="0,3,0,0">
+                      <Run Text="{Binding Engine}"/>
+                    </TextBlock>
+                  </StackPanel>
+                </Grid>
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="12" Margin="0,8,0,4">
+                  <TextBlock FontSize="11" Foreground="#888"><Run Text="🌐 "/><Run Text="{Binding Language}"/></TextBlock>
+                  <TextBlock FontSize="11" Foreground="#888"><Run Text="💾 "/><Run Text="{Binding Size}"/></TextBlock>
+                </StackPanel>
+                <TextBlock Grid.Row="2" Text="{Binding Description}" FontSize="11" Foreground="#666"
+                           TextWrapping="Wrap" MaxHeight="32" Margin="0,0,0,6"/>
+                <Grid Grid.Row="3" ColumnDefinitions="*,Auto" VerticalAlignment="Bottom">
+                  <ProgressBar Value="{Binding DownloadProgress}" Height="4" CornerRadius="2"
+                               IsVisible="{Binding IsDownloading}" Background="#2A2A36" Foreground="{DynamicResource AccentBrush1}"/>
+                  <Button Grid.Column="1" Classes="download-btn" Content="{Binding ActionLabel}"
+                          IsEnabled="{Binding CanDownload}" Command="{Binding $parent[Window].DataContext.DownloadCommand}"
+                          CommandParameter="{Binding}"/>
+                </Grid>
+              </Grid>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </Grid>
+</Window>

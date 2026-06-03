@@ -30,11 +30,11 @@
   <system:String x:Key="debug.copylog">ログをコピー</system:String>
   <system:String x:Key="debug.reverselogorder">古い順に並び変える</system:String>
 
-  <system:String x:Key="dialogs.about.caption">OpenUTAUについて</system:String>
+  <system:String x:Key="dialogs.about.caption">Stellar OpenUTAU Proについて</system:String>
   <system:String x:Key="dialogs.about.message">
-    OpenUtauはUTAUコミュニティのためのオープンソースなエディタであり、モダンなユーザー体験とインテリジェントな発音変換サポートを目指しています。Githubを中心に開発中です。
+    Stellar OpenUTAU ProはUTAUコミュニティのためのオープンソースなエディタであり、モダンなユーザー体験とインテリジェントな発音変換サポートを目指しています。Githubを中心に開発中です。
   </system:String>
-  <system:String x:Key="dialogs.exitsave.caption">OpenUtauを終了</system:String>
+  <system:String x:Key="dialogs.exitsave.caption">Stellar OpenUTAU Proを終了</system:String>
   <system:String x:Key="dialogs.exitsave.message">保存されていない変更があります。保存しますか？</system:String>
   <system:String x:Key="dialogs.export.caption">エクスポート</system:String>
   <system:String x:Key="dialogs.export.savefirst">プロジェクトを保存してください。</system:String>
@@ -89,7 +89,7 @@
   <system:String x:Key="errors.failed.loadprefs">環境設定の読み込みに失敗しました。設定を初期化します。</system:String>
   <system:String x:Key="errors.failed.openfile">読み込みに失敗しました</system:String>
   <system:String x:Key="errors.failed.openlocation">フォルダを開けませんでした</system:String>
-  <system:String x:Key="errors.failed.opennewerproject">プロジェクトファイルのバージョンが新しいため開けませんでした。OpenUtauをアップデートしてください！</system:String>
+  <system:String x:Key="errors.failed.opennewerproject">プロジェクトファイルのバージョンが新しいため開けませんでした。Stellar OpenUTAU Proをアップデートしてください！</system:String>
   <system:String x:Key="errors.failed.render">レンダリングに失敗しました。</system:String>
   <system:String x:Key="errors.failed.runeditingmacro">一括処理に失敗しました</system:String>
   <system:String x:Key="errors.failed.save">保存に失敗しました</system:String>
@@ -183,7 +183,7 @@
   <system:String x:Key="menu.edit.selectall">全て選択</system:String>
   <system:String x:Key="menu.edit.undo">元に戻す</system:String>
   <system:String x:Key="menu.file">ファイル</system:String>
-  <system:String x:Key="menu.file.exit">OpenUtauを終了</system:String>
+  <system:String x:Key="menu.file.exit">Stellar OpenUTAU Proを終了</system:String>
   <system:String x:Key="menu.file.exportaudio">音声をエクスポート</system:String>
   <system:String x:Key="menu.file.exportds">DiffSinger Scriptsをエクスポート...</system:String>
   <system:String x:Key="menu.file.exportmidi">MIDIをエクスポート</system:String>
@@ -209,11 +209,11 @@
   <system:String x:Key="menu.file.saveas">別名で保存...</system:String>
   <system:String x:Key="menu.file.savetemplate">テンプレートを保存...</system:String>
   <system:String x:Key="menu.help">ヘルプ</system:String>
-  <system:String x:Key="menu.help.about">OpenUtauについて</system:String>
+  <system:String x:Key="menu.help.about">Stellar OpenUTAU Proについて</system:String>
   <system:String x:Key="menu.help.checkupdate">アップデートを確認</system:String>
   <system:String x:Key="menu.help.logslocation">ログの場所を開く</system:String>
   <system:String x:Key="menu.help.reportissue">問題を報告</system:String>
-  <system:String x:Key="menu.help.wiki">OpenUtau マニュアル</system:String>
+  <system:String x:Key="menu.help.wiki">Stellar OpenUTAU Pro マニュアル</system:String>
   <system:String x:Key="menu.project">プロジェクト</system:String>
   <system:String x:Key="menu.project.expressions">表情...</system:String>
   <system:String x:Key="menu.project.remaptimeaxis">音符の位置を維持したままテンポを再設定</system:String>
@@ -432,7 +432,7 @@
   <system:String x:Key="prefs.caption">環境設定</system:String>
   <!--<system:String x:Key="prefs.diffsinger">DiffSinger</system:String>-->
   <system:String x:Key="prefs.editing">編集</system:String>
-  <system:String x:Key="prefs.note.restart">Note: この設定を変更した後は、OpenUtauを再起動してください。</system:String>
+  <system:String x:Key="prefs.note.restart">Note: この設定を変更した後は、Stellar OpenUTAU Proを再起動してください。</system:String>
   <system:String x:Key="prefs.off">オフ</system:String>
   <system:String x:Key="prefs.on">オン</system:String>
   <system:String x:Key="prefs.otoeditor">原音設定</system:String>
@@ -481,11 +481,11 @@
 3. moresamplerが不足しているllsmファイルを生成するのを辛抱強く待ってください。
   </system:String>
   <system:String x:Key="prefs.rendering.resampler.note">
-    Note: エンジンを使用するには、使用したいエンジンのDLLまたはEXEファイルをOpenUTAUフォルダ内のResamplersフォルダに追加し、選択してください。
+    Note: エンジンを使用するには、使用したいエンジンのDLLまたはEXEファイルをStellar OpenUTAU Proフォルダ内のResamplersフォルダに追加し、選択してください。
   </system:String>
   <system:String x:Key="prefs.rendering.skipmuted">ミュート中のトラックをレンダリングしない</system:String>
   <system:String x:Key="prefs.rendering.threads.cpuwarn">
-    警告：レンダースレッドが多すぎるとOpenUtauの動作が重くなる可能性があります。
+    警告：レンダースレッドが多すぎるとStellar OpenUTAU Proの動作が重くなる可能性があります。
   </system:String>
   <system:String x:Key="prefs.rendering.threads.numthreads">最大レンダースレッド数</system:String>
   <!--<system:String x:Key="prefs.rendering.wavtool">Wavtool</system:String>-->
@@ -630,7 +630,7 @@
   <system:String x:Key="updater.update">アップデート</system:String>
 
   <system:String x:Key="warning">警告</system:String>
-  <system:String x:Key="warning.asciipath">OpenUtauのファイルパス "{0}" に非ASCII文字が含まれています。 EXE形式のエンジンが動作しない可能性があります。</system:String>
+  <system:String x:Key="warning.asciipath">Stellar OpenUTAU Proのファイルパス "{0}" に非ASCII文字が含まれています。 EXE形式のエンジンが動作しない可能性があります。</system:String>
   <system:String x:Key="warning.renderer">このレンダラーには設定項目がありません</system:String>
 
   <system:String x:Key="welcome.new">新規</system:String>

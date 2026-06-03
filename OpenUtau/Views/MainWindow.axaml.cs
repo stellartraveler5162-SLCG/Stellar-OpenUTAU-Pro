@@ -104,6 +104,18 @@ namespace OpenUtau.App.Views {
             SetupPageTransitions();
         }
 
+        private void PositionPianoRollWindow(PianoRollDetachedWindow window) {
+            if (Screens == null) return;
+            var screen = Screens.ScreenFromVisual(this);
+            if (screen == null) return;
+            var area = screen.WorkingArea;
+            int h = (int)(area.Height * 0.5);
+            int w = (int)(area.Width * 0.8);
+            window.Width = w;
+            window.Height = h;
+            window.Position = new PixelPoint(area.X + (area.Width - w) / 2, area.Y + area.Height - h);
+        }
+
         private void SetupPageTransitions() {
             viewModel.WhenAnyValue(vm => vm.Page).Subscribe(page => {
                 var carousel = PageCarousel;
@@ -531,6 +543,15 @@ namespace OpenUtau.App.Views {
             await OpenSingersWindowAsync();
         }
 
+        void OnMenuSingerBrowser(object sender, RoutedEventArgs args) {
+            try {
+                var dialog = new SingerBrowser();
+                dialog.Show();
+            } catch (Exception e) {
+                DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(e));
+            }
+        }
+
         /// <summary>
         /// Check if a track has a singer and if it exists.
         /// If the user haven't selected a singer for the track, or the singer specified in ustx project doesn't exist, return null.
@@ -721,9 +742,14 @@ namespace OpenUtau.App.Views {
             }
         }
 
+        void OnMenuAbout(object sender, RoutedEventArgs args) {
+            var dialog = new AboutDialog();
+            dialog.ShowDialog(this);
+        }
+
         void OnMenuReportIssue(object sender, RoutedEventArgs args) {
             try {
-                OS.OpenWeb("https://github.com/stakira/OpenUtau/issues");
+                OS.OpenWeb("https://github.com/stellartraveler5162-SLCG/Stellar-OpenUTAU-Pro/issues");
             } catch (Exception e) {
                 DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(e));
             }
@@ -731,7 +757,7 @@ namespace OpenUtau.App.Views {
 
         void OnMenuWiki(object sender, RoutedEventArgs args) {
             try {
-                OS.OpenWeb("https://github.com/stakira/OpenUtau/wiki/Getting-Started");
+                OS.OpenWeb("https://github.com/stellartraveler5162-SLCG/Stellar-OpenUTAU-Pro#-stellar-openutau-pro-");
             } catch (Exception e) {
                 DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(e));
             }
@@ -1228,11 +1254,7 @@ namespace OpenUtau.App.Views {
                 if (pianoRollWindow != null) {
                     pianoRollWindow.Show();
                     pianoRollWindow.Activate();
-                    if (OS.IsMacOS()) {
-                        pianoRollWindow.Position = new PixelPoint(Position.X + (int)(Width * 0.75), Position.Y + 40);
-                    } else {
-                        pianoRollWindow.Position = new PixelPoint(Position.X + (int)(Width * 0.75), Position.Y + 40);
-                    }
+                    PositionPianoRollWindow(pianoRollWindow);
                 } else {
                     viewModel.ShowPianoRoll = true;
                     pianoRoll.Focus();
@@ -1259,6 +1281,7 @@ namespace OpenUtau.App.Views {
                 if (pianoRollWindow == null) {
                     pianoRollWindow = new(pianoRoll);
                     pianoRollWindow.Show();
+                    PositionPianoRollWindow(pianoRollWindow);
                 }
                 Preferences.Default.DetachPianoRoll = true;
             }

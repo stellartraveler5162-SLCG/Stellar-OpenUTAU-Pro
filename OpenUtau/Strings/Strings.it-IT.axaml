@@ -30,11 +30,11 @@
   <system:String x:Key="debug.copylog">Copia Log</system:String>
   <system:String x:Key="debug.reverselogorder">Inverti l'ordine dei log</system:String>
 
-  <system:String x:Key="dialogs.about.caption">Informazioni su OpenUTAU</system:String>
+  <system:String x:Key="dialogs.about.caption">Informazioni su Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.about.message">
-    OpenUTAU punta ad essere un programma open source con un'esperienza utente moderna e supporto fonetico intelligente per la communità di UTAU. Visitaci su GitHub.
+    Stellar OpenUTAU Pro punta ad essere un programma open source con un'esperienza utente moderna e supporto fonetico intelligente per la communità di UTAU. Visitaci su GitHub.
   </system:String>
-  <system:String x:Key="dialogs.exitsave.caption">Stai uscendo da OpenUtau</system:String>
+  <system:String x:Key="dialogs.exitsave.caption">Stai uscendo da Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.exitsave.message">Questo progetto attuale ha dei cambiamenti non salvati. Vuoi salvare?</system:String>
   <system:String x:Key="dialogs.export.caption">Esporta</system:String>
   <system:String x:Key="dialogs.export.savefirst">Salva prima il file di progetto</system:String>
@@ -51,7 +51,7 @@
   <system:String x:Key="dialogs.messagebox.yes">Si</system:String>
   <system:String x:Key="dialogs.noresampler.caption">Nessun resampler</system:String>
   <system:String x:Key="dialogs.noresampler.message">Nessun resampler valido. Aggiungi il file DLL o EXE del resampler nella cartella Resampler e scegli nelle Preferenze.</system:String>
-  <!--<system:String x:Key="dialogs.recovery">Previously, OpenUtau terminated abnormally. Do you want to recover?</system:String>-->
+  <!--<system:String x:Key="dialogs.recovery">Previously, Stellar OpenUTAU Pro terminated abnormally. Do you want to recover?</system:String>-->
   <!--<system:String x:Key="dialogs.recovery.caption">Recovery project</system:String>-->
   <!--<system:String x:Key="dialogs.remaptimeaxis.message">This tool will change the tempo of the project without changing the actual positions and durations (in seconds) of notes.
   New BPM:</system:String>-->
@@ -89,7 +89,7 @@
   <!--<system:String x:Key="errors.failed.loadprefs">Failed to load prefs. Initialize it.</system:String>-->
   <system:String x:Key="errors.failed.openfile">Apertura fallita</system:String>
   <!--<system:String x:Key="errors.failed.openlocation">Failed to open location</system:String>-->
-  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade OpenUtau!</system:String>-->
+  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade Stellar OpenUTAU Pro!</system:String>-->
   <!--<system:String x:Key="errors.failed.render">Failed to render.</system:String>-->
   <!--<system:String x:Key="errors.failed.runeditingmacro">Failed to run editing macro</system:String>-->
   <!--<system:String x:Key="errors.failed.save">Failed to save</system:String>-->
@@ -207,11 +207,11 @@
   <system:String x:Key="menu.file.saveas">Salva come</system:String>
   <system:String x:Key="menu.file.savetemplate">Salva Modello...</system:String>
   <system:String x:Key="menu.help">Aiuto</system:String>
-  <system:String x:Key="menu.help.about">Informazioni su OpenUTAU</system:String>
+  <system:String x:Key="menu.help.about">Informazioni su Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="menu.help.checkupdate">Controlla aggiornamenti</system:String>
   <system:String x:Key="menu.help.logslocation">Apri percorso dei log</system:String>
   <system:String x:Key="menu.help.reportissue">Segnala un problema</system:String>
-  <system:String x:Key="menu.help.wiki">OpenUTAU Wiki</system:String>
+  <system:String x:Key="menu.help.wiki">Stellar OpenUTAU Pro Wiki</system:String>
   <!--<system:String x:Key="menu.project">Project</system:String>-->
   <!--<system:String x:Key="menu.project.expressions">Expressions...</system:String>-->
   <!--<system:String x:Key="menu.project.remaptimeaxis">Adjust Tempo (Preserve Timing)</system:String>-->
@@ -426,7 +426,7 @@ Tieni premuto Ctrl per selezionare</system:String>
   <system:String x:Key="prefs.caption">Preferenze</system:String>
   <!--<system:String x:Key="prefs.diffsinger">DiffSinger</system:String>-->
   <!--<system:String x:Key="prefs.editing">Editing</system:String>-->
-  <system:String x:Key="prefs.note.restart">Nota: riavvia OpenUtau dopo aver modificato questo elemento.</system:String>
+  <system:String x:Key="prefs.note.restart">Nota: riavvia Stellar OpenUTAU Pro dopo aver modificato questo elemento.</system:String>
   <!--<system:String x:Key="prefs.off">Off</system:String>-->
   <!--<system:String x:Key="prefs.on">On</system:String>-->
   <system:String x:Key="prefs.otoeditor">Oto editor</system:String>

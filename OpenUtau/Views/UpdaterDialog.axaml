@@ -5,28 +5,24 @@
         mc:Ignorable="d"
         x:Class="OpenUtau.App.Views.UpdaterDialog"
         Width="400" Height="300" CanResize="False" WindowStartupLocation="CenterScreen"
-        Icon="/Assets/open-utau.ico"
-        Title="{DynamicResource updater.caption}" Closing="OnClosing">
-  <Grid RowDefinitions="*, 20, 20, *, *">
-    <Image Grid.Row="0" Margin="20" Width="96" Height="96"
-           VerticalAlignment="Top" HorizontalAlignment="Center"
-           Source="/Assets/open-utau.ico"/>
-    <Image Grid.Row="0" Height="16" Margin="0,136,0,10"
-           VerticalAlignment="Top" HorizontalAlignment="Center"
-           Source="/Assets/logotype.png" IsVisible="{Binding !IsDarkMode}"/>
-    <Image Grid.Row="0" Height="16" Margin="0,136,0,10"
-           VerticalAlignment="Top" HorizontalAlignment="Center"
-           Source="/Assets/logotype-w.png" IsVisible="{Binding IsDarkMode}"/>
-    <TextBlock Grid.Row="1" Margin="40,0" TextAlignment="Center"
+        Title="Stellar OpenUTAU Pro — Update" Closing="OnClosing"
+        Background="{DynamicResource BackgroundColor}">
+  <Grid RowDefinitions="Auto,Auto,Auto,*,Auto" Margin="20">
+    <TextBlock Grid.Row="0" Text="Stellar OpenUTAU Pro" FontSize="18" FontWeight="Bold"
+               HorizontalAlignment="Center" Foreground="#7C6FF7" Margin="0,16"/>
+    <TextBlock Grid.Row="1" Margin="0,8" TextAlignment="Center" Foreground="{DynamicResource SystemControlForegroundBaseLowBrush}"
                Text="{Binding AppVersion}"/>
-    <TextBlock Grid.Row="2" Margin="40,0" TextAlignment="Center"
-               Text="{DynamicResource updater.description}"/>
-    <TextBlock Grid.Row="3" Margin="40,0" TextAlignment="Center" VerticalAlignment="Bottom"
-               Text="{Binding UpdaterStatus}" FontWeight="Bold"/>
-    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,20,0,20"
-                HorizontalAlignment="Center" Spacing="20">
-      <Button Width="120" Content="{DynamicResource updater.github}" Command="{Binding OnGithub}"/>
-      <Button Width="120" Content="{DynamicResource updater.update}" Command="{Binding OnUpdate}"
+    <TextBlock Grid.Row="2" Margin="0,0" TextAlignment="Center" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+               Text="Open source AI singing synthesis workstation"/>
+    <TextBlock Grid.Row="3" Margin="0,20" TextAlignment="Center" VerticalAlignment="Center"
+               Text="{Binding UpdaterStatus}" FontWeight="Bold"
+               Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+    <StackPanel Grid.Row="4" Orientation="Horizontal" Margin="0,0,0,10"
+                HorizontalAlignment="Center" Spacing="16">
+      <Button Width="100" CornerRadius="6" Background="{DynamicResource SystemControlBackgroundAltMediumBrush}"
+              Content="{DynamicResource updater.github}" Command="{Binding OnGithub}"/>
+      <Button Width="100" CornerRadius="6" Background="{DynamicResource AccentBrush1}" Foreground="White"
+              Content="{DynamicResource updater.update}" Command="{Binding OnUpdate}"
               IsEnabled="{Binding UpdateAvailable}"
               FontWeight="{Binding UpdateButtonFontWeight}"/>
     </StackPanel>

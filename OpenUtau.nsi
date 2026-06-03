@@ -3,7 +3,7 @@
 ManifestDPIAware true
 
 ; HM NIS Edit Wizard helper defines
-!define PRODUCT_NAME "OpenUtau"
+!define PRODUCT_NAME "Stellar OpenUTAU Pro"
 !define PRODUCT_PUBLISHER "stakira"
 !define PRODUCT_WEB_SITE "https://www.openutau.com"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -47,8 +47,8 @@ ManifestDPIAware true
 ; MUI end ------
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
-OutFile "OpenUtau-win-${ARCH}.exe"
-InstallDir "$PROGRAMFILES64\OpenUtau"
+OutFile "Stellar-OpenUTAU-Pro-win-${ARCH}.exe"
+InstallDir "$PROGRAMFILES64\Stellar OpenUTAU Pro"
 ShowInstDetails show
 ShowUnInstDetails show
 
@@ -63,8 +63,8 @@ Section "MainSection" SEC01
 SectionEnd
 
 Section -AdditionalIcons
-  CreateShortCut "$SMPROGRAMS\OpenUtau.lnk" "$INSTDIR\OpenUtau.exe"
-  CreateShortCut "$DESKTOP\OpenUtau.lnk" "$INSTDIR\OpenUtau.exe"
+  CreateShortCut "$SMPROGRAMS\Stellar OpenUTAU Pro.lnk" "$INSTDIR\OpenUtau.exe"
+  CreateShortCut "$DESKTOP\Stellar OpenUTAU Pro.lnk" "$INSTDIR\OpenUtau.exe"
 SectionEnd
 
 Section -Post
@@ -81,8 +81,8 @@ Section -Post
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
 
-  WriteRegStr HKCR ".ustx" "" "OpenUtauFile"
-  WriteRegStr HKCR "OpenUtauFile" "" "OpenUtau Sequence File"
+  WriteRegStr HKCR ".ustx" "" "StellarOpenUtauProFile"
+  WriteRegStr HKCR "StellarOpenUtauProFile" "" "Stellar OpenUTAU Pro Sequence File"
   WriteRegStr HKCR "OpenUtauFile\DefaultIcon" "" "$INSTDIR\OpenUtau.exe"
   WriteRegStr HKCR "OpenUtauFile\shell\open\command" "" '"$INSTDIR\OpenUtau.exe" "%1"'
 SectionEnd
@@ -110,11 +110,11 @@ Section Uninstall
   Delete "$INSTDIR\*"
   RMDir "$INSTDIR"
 
-  Delete "$SMPROGRAMS\OpenUtau.lnk"
-  Delete "$DESKTOP\OpenUtau.lnk"
+  Delete "$SMPROGRAMS\Stellar OpenUTAU Pro.lnk"
+  Delete "$DESKTOP\Stellar OpenUTAU Pro.lnk"
 
   DeleteRegKey HKCR ".ustx"
-  DeleteRegKey HKCR "OpenUtauFile"
+  DeleteRegKey HKCR "StellarOpenUtauProFile"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
   SetAutoClose true

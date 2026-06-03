@@ -10,7 +10,7 @@
     <SatelliteResourceLanguages>none</SatelliteResourceLanguages>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <Version>0.0.0</Version>
+    <Version>1.0.0</Version>
     <ApplicationIcon>Assets\open-utau.ico</ApplicationIcon>
     <PublishReadyToRun>true</PublishReadyToRun>
     <DebugType>embedded</DebugType>
@@ -20,8 +20,8 @@
     <CFBundleName>Stellar OpenUTAU Pro</CFBundleName>
     <CFBundleDisplayName>Stellar OpenUTAU Pro</CFBundleDisplayName>
     <CFBundleIdentifier>com.stellar.openutau-pro</CFBundleIdentifier>
-    <CFBundleVersion>0.0.0</CFBundleVersion>
-    <CFBundleShortVersionString>0.0.0</CFBundleShortVersionString>
+    <CFBundleVersion>1.0.0</CFBundleVersion>
+    <CFBundleShortVersionString>1.0.0</CFBundleShortVersionString>
     <CFBundlePackageType>APPL</CFBundlePackageType>
     <CFBundleSignature>????</CFBundleSignature>
     <CFBundleExecutable>Stellar OpenUTAU Pro</CFBundleExecutable>
@@ -112,6 +112,12 @@
     </Compile>
     <Compile Update="Views\PasteParamDialog.axaml.cs">
       <DependentUpon>PasteParamDialog.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\SingerBrowser.axaml.cs">
+      <DependentUpon>SingerBrowser.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AboutDialog.axaml.cs">
+      <DependentUpon>AboutDialog.axaml</DependentUpon>
     </Compile>
     <Compile Update="Views\TrackSettingsDialog.axaml.cs">
       <DependentUpon>TrackSettingsDialog.axaml</DependentUpon>

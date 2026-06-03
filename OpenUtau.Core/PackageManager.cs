@@ -56,7 +56,7 @@ namespace OpenUtau.Core {
         public async Task<List<RegistrySoftware>> FetchRegistryAsync() {
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Add("Accept", "application/json");
-            client.DefaultRequestHeaders.Add("User-Agent", "OpenUtau");
+            client.DefaultRequestHeaders.Add("User-Agent", "Stellar OpenUTAU Pro");
             client.Timeout = TimeSpan.FromSeconds(30);
             using var response = await client.GetAsync(registryUrl);
             response.EnsureSuccessStatusCode();

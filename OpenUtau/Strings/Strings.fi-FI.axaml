@@ -30,11 +30,11 @@
   <!--<system:String x:Key="debug.copylog">Copy Log</system:String>-->
   <!--<system:String x:Key="debug.reverselogorder">Reverse Log Order</system:String>-->
 
-  <system:String x:Key="dialogs.about.caption">OpenUtausta</system:String>
+  <system:String x:Key="dialogs.about.caption">Stellar OpenUTAU Prosta</system:String>
   <system:String x:Key="dialogs.about.message">
-    OpenUtaun tavoitteena on olla avoimen lähdekoodin editointiympäristö UTAU-yhteisölle, jossa on moderni käyttökokemus ja älykäs foneettinen tuki. Vieraile Githubissa.
+    Stellar OpenUTAU Pron tavoitteena on olla avoimen lähdekoodin editointiympäristö UTAU-yhteisölle, jossa on moderni käyttökokemus ja älykäs foneettinen tuki. Vieraile Githubissa.
   </system:String>
-  <system:String x:Key="dialogs.exitsave.caption">Lopeta OpenUtau</system:String>
+  <system:String x:Key="dialogs.exitsave.caption">Lopeta Stellar OpenUTAU Pro</system:String>
   <system:String x:Key="dialogs.exitsave.message">Tämänhetkinen projekti sisältää tallentamattomia muutoksia. Haluatko tallentaa muutokset?</system:String>
   <system:String x:Key="dialogs.export.caption">Vie</system:String>
   <system:String x:Key="dialogs.export.savefirst">Muistathan tallentaa</system:String>
@@ -51,7 +51,7 @@
   <system:String x:Key="dialogs.messagebox.yes">Kyllä</system:String>
   <system:String x:Key="dialogs.noresampler.caption">Ei valittua resampleria</system:String>
   <system:String x:Key="dialogs.noresampler.message">Resampleria ei löydetty! Laita resampler.exe tai dll- tiedosto Resamplers -kansioon ja valitse se sitten asetuksista.</system:String>
-  <!--<system:String x:Key="dialogs.recovery">Previously, OpenUtau terminated abnormally. Do you want to recover?</system:String>-->
+  <!--<system:String x:Key="dialogs.recovery">Previously, Stellar OpenUTAU Pro terminated abnormally. Do you want to recover?</system:String>-->
   <!--<system:String x:Key="dialogs.recovery.caption">Recovery project</system:String>-->
   <!--<system:String x:Key="dialogs.remaptimeaxis.message">This tool will change the tempo of the project without changing the actual positions and durations (in seconds) of notes.
   New BPM:</system:String>-->
@@ -89,7 +89,7 @@
   <!--<system:String x:Key="errors.failed.loadprefs">Failed to load prefs. Initialize it.</system:String>-->
   <!--<system:String x:Key="errors.failed.openfile">Failed to open</system:String>-->
   <!--<system:String x:Key="errors.failed.openlocation">Failed to open location</system:String>-->
-  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade OpenUtau!</system:String>-->
+  <!--<system:String x:Key="errors.failed.opennewerproject">Project file is newer than software! Upgrade Stellar OpenUTAU Pro!</system:String>-->
   <!--<system:String x:Key="errors.failed.render">Failed to render.</system:String>-->
   <!--<system:String x:Key="errors.failed.runeditingmacro">Failed to run editing macro</system:String>-->
   <!--<system:String x:Key="errors.failed.save">Failed to save</system:String>-->
@@ -181,7 +181,7 @@
   <system:String x:Key="menu.edit.selectall">Valitse kaikki</system:String>
   <system:String x:Key="menu.edit.undo">Kumoa</system:String>
   <system:String x:Key="menu.file">Tiedosto</system:String>
-  <system:String x:Key="menu.file.exit">Lopeta OpenUtau</system:String>
+  <system:String x:Key="menu.file.exit">Lopeta Stellar OpenUTAU Pro</system:String>
   <!--<system:String x:Key="menu.file.exportaudio">Export Audio</system:String>-->
   <!--<system:String x:Key="menu.file.exportds">Export DiffSinger Scripts To</system:String>-->
   <!--<system:String x:Key="menu.file.exportmidi">Export Midi File</system:String>-->
@@ -207,11 +207,11 @@
   <system:String x:Key="menu.file.saveas">Tallenna nimellä...</system:String>
   <system:String x:Key="menu.file.savetemplate">Tallenna malli...</system:String>
   <system:String x:Key="menu.help">Apua</system:String>
-  <system:String x:Key="menu.help.about">Tietoa OpenUtausta</system:String>
+  <system:String x:Key="menu.help.about">Tietoa Stellar OpenUTAU Prosta</system:String>
   <!--<system:String x:Key="menu.help.checkupdate">Check Update</system:String>-->
   <!--<system:String x:Key="menu.help.logslocation">Open Logs Location</system:String>-->
   <!--<system:String x:Key="menu.help.reportissue">Report Issue</system:String>-->
-  <!--<system:String x:Key="menu.help.wiki">OpenUtau Documentation</system:String>-->
+  <!--<system:String x:Key="menu.help.wiki">Stellar OpenUTAU Pro Documentation</system:String>-->
   <!--<system:String x:Key="menu.project">Project</system:String>-->
   <!--<system:String x:Key="menu.project.expressions">Expressions...</system:String>-->
   <!--<system:String x:Key="menu.project.remaptimeaxis">Adjust Tempo (Preserve Timing)</system:String>-->
@@ -426,7 +426,7 @@ Warning: this option removes custom presets.</system:String>-->
   <system:String x:Key="prefs.caption">Asetukset</system:String>
   <!--<system:String x:Key="prefs.diffsinger">DiffSinger</system:String>-->
   <!--<system:String x:Key="prefs.editing">Editing</system:String>-->
-  <system:String x:Key="prefs.note.restart">HUOM: Käynnistäthän OpenUtau uudelleen muutettuasi tätä asetusta.</system:String>
+  <system:String x:Key="prefs.note.restart">HUOM: Käynnistäthän Stellar OpenUTAU Pro uudelleen muutettuasi tätä asetusta.</system:String>
   <!--<system:String x:Key="prefs.off">Off</system:String>-->
   <!--<system:String x:Key="prefs.on">On</system:String>-->
   <!--<system:String x:Key="prefs.otoeditor">Oto Editor</system:String>-->
@@ -473,11 +473,11 @@ Warning: this option removes custom presets.</system:String>-->
     3. Patiently wait for moresampler to generate missing llsm files.
   </system:String>-->
   <system:String x:Key="prefs.rendering.resampler.note">
-    HUOM: Jos haluat käyttää ulkoisia resamplereita, lisää resampler DLL tai EXE-tiedosto Resamplers-kansioon, joka sijaitsee OpenUtaun polulla ja valitse se asetuksista.
+    HUOM: Jos haluat käyttää ulkoisia resamplereita, lisää resampler DLL tai EXE-tiedosto Resamplers-kansioon, joka sijaitsee Stellar OpenUTAU Pron polulla ja valitse se asetuksista.
   </system:String>
   <!--<system:String x:Key="prefs.rendering.skipmuted">Skip muted tracks</system:String>-->
   <!--<system:String x:Key="prefs.rendering.threads.cpuwarn">
-    Warning: too many render threads may cause OpenUtau to run slowly.
+    Warning: too many render threads may cause Stellar OpenUTAU Pro to run slowly.
   </system:String>-->
   <!--<system:String x:Key="prefs.rendering.threads.numthreads">Maximum Render Threads</system:String>-->
   <!--<system:String x:Key="prefs.rendering.wavtool">Wavtool</system:String>-->
@@ -621,7 +621,7 @@ Yleiset
   <!--<system:String x:Key="updater.update">Update</system:String>-->
 
   <system:String x:Key="warning">Varoitus</system:String>
-  <system:String x:Key="warning.asciipath">OpenUtau -kotihakemistossasi "{0}" sisältää ei-ASCII merkkejä. Exe resampler ei välttämättä toimi.</system:String>
+  <system:String x:Key="warning.asciipath">Stellar OpenUTAU Pro -kotihakemistossasi "{0}" sisältää ei-ASCII merkkejä. Exe resampler ei välttämättä toimi.</system:String>
   <!--<system:String x:Key="warning.renderer">No settings for this renderer.</system:String>-->
 
   <!--<system:String x:Key="welcome.new">New</system:String>-->
