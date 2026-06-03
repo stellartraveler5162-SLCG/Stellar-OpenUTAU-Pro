@@ -1,0 +1,34 @@
+# Build artifacts
+bin/
+obj/
+publish/
+packages/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+
+# Runtimes (huge native binaries, download separately)
+runtimes/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test Results
+TestResults/
+
+# NuGet
+*.nupkg
+**/packages/*
+!**/packages.config

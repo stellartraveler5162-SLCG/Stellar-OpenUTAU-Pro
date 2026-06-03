@@ -1,0 +1,231 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OpenUtau.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="280" d:DesignHeight="104"
+             x:Class="OpenUtau.App.Controls.TrackHeader" Width="280" Height="104" TrackNo="{Binding TrackNo}">
+  <Design.DataContext>
+    <vm:TrackHeaderViewModel/>
+  </Design.DataContext>
+  <UserControl.Styles>
+    <Style Selector="ToggleButton">
+      <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="Slider.fader">
+      <Setter Property="Foreground" Value="{Binding TrackColor.AccentColor}"/>
+      <Style Selector="^:pointerover">
+        <Style Selector="^ /template/ RepeatButton#PART_DecreaseButton">
+          <Setter Property="Background" Value="{Binding TrackColor.AccentColorLight}" />
+        </Style>
+      </Style>
+      <Style Selector="^:pressed">
+        <Style Selector="^ /template/ RepeatButton#PART_DecreaseButton">
+          <Setter Property="Background" Value="{Binding TrackColor.AccentColorDark}" />
+        </Style>
+      </Style>
+    </Style>
+    <Style Selector="FlyoutPresenter">
+      <Setter Property="Padding" Value="5"/>
+      <Setter Property="MinHeight" Value="0"/>
+    </Style>
+  </UserControl.Styles>
+  <UserControl.Resources>
+    <ContextMenu x:Key="RenderersMenuRes" Classes="context" Name="RenderersMenu" Placement="BottomEdgeAlignedLeft" 
+                 HorizontalOffset="-3" ItemsSource="{Binding RenderersMenuItems}">
+      <ContextMenu.Styles>
+        <Style Selector="MenuItem">
+          <Setter Property="Header" Value="{Binding Header}"/>
+          <Setter Property="Command" Value="{Binding Command}"/>
+          <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+          <Setter Property="ItemsSource" Value="{Binding Items}"/>
+        </Style>
+      </ContextMenu.Styles>
+    </ContextMenu>
+    <ContextMenu x:Key="PhonemizersMenuRes" Classes="context" Name="PhonemizersMenu" Placement="BottomEdgeAlignedLeft" 
+                 HorizontalOffset="-3" ItemsSource="{Binding PhonemizerMenuItems}">
+      <ContextMenu.Styles>
+        <Style Selector="MenuItem">
+          <Setter Property="Header" Value="{Binding Header}"/>
+          <Setter Property="Command" Value="{Binding Command}"/>
+          <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+          <Setter Property="ItemsSource" Value="{Binding Items}"/>
+        </Style>
+      </ContextMenu.Styles>
+    </ContextMenu>
+    <ContextMenu x:Key="SingersMenuRes" Classes="context" Name="SingersMenu" Placement="BottomEdgeAlignedLeft" 
+                 HorizontalOffset="-3" ItemsSource="{Binding SingerMenuItems}">
+      <ContextMenu.Styles>
+        <Style Selector="MenuItem">
+          <Setter Property="Header" Value="{Binding Header}"/>
+          <Setter Property="Command" Value="{Binding Command}"/>
+          <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+          <Setter Property="ItemsSource" Value="{Binding Items}"/>
+          <Setter Property="Icon" Value="{Binding Icon}"/>
+          <Setter Property="ToolTip.Tip" Value="{Binding Location}"/>
+          <Setter Property="Height" Value="{Binding Height}"/>
+          <Setter Property="IsEnabled" Value="{Binding IsEnabled}"/>
+        </Style>
+      </ContextMenu.Styles>
+    </ContextMenu>
+  </UserControl.Resources>
+  <Border Margin="2,1,1,1" BorderThickness="0" CornerRadius="4" PointerPressed="HeaderPointerPressed"
+           Background="{DynamicResource SurfaceBrush}">
+    <Grid ColumnDefinitions="Auto,*,Auto" Background="Transparent">
+      <Panel Grid.Column="0" VerticalAlignment="Stretch" Width="50">
+        <Border Width="48" Height="48" CornerRadius="3" ClipToBounds="True" VerticalAlignment="Top" Margin="1,1,0,1"
+                BorderBrush="{DynamicResource PanelBorderBrush}" BorderThickness="0">
+          <Image Source="{Binding Avatar}" Stretch="UniformToFill" Width="48" Height="48"
+                 VerticalAlignment="Top" ToolTip.Tip="{Binding Singer}"
+                 RenderOptions.BitmapInterpolationMode="HighQuality"/>
+        </Border>
+        <Border Background="{Binding TrackAccentColor}" Height="16" Width="20" CornerRadius="0,2,0,3"
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+          <TextBlock TextAlignment="Center" FontWeight="Bold" FontSize="10"
+                     Text="{Binding TrackNo}" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+      </Panel>
+      <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" Grid.Column="1" Margin="4,2,2,2">
+        <StackPanel Grid.Column="0" Grid.Row="0" Spacing="0">
+          <Button Classes="clear" Margin="0" Padding="2,1,0,0" Height="18"
+                  HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Focusable="False"
+                  Content="{Binding TrackName}" Click="TrackNameButtonClicked" FontWeight="SemiBold"/>
+          <Button Classes="clear" Margin="0" Padding="2,0,0,0" Height="16" IsVisible="{Binding IsSingerVisible}"
+                  HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Focusable="False" FontSize="11"
+                  Content="{Binding Singer, TargetNullValue={StaticResource tracks.selectsinger}}" Click="SingerButtonClicked"
+                  ContextRequested="SingerButtonContextRequested" ToolTip.Tip="{Binding Singer}" ContextMenu="{StaticResource SingersMenuRes}"/>
+          <Button Classes="clear" Margin="0" Padding="2,0,0,0" Height="16" IsVisible="{Binding IsPhonemizerVisible}"
+                  HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Focusable="False" FontSize="11"
+                  Content="{Binding PhonemizerTag}" Click="PhonemizerButtonClicked" ContextRequested="PhonemizerButtonContextRequested"
+                  ToolTip.Tip="{Binding Phonemizer}" ContextMenu="{StaticResource PhonemizerMenuRes}"/>
+          <Button Classes="clear" Margin="0" Padding="2,0,0,0" Height="16" IsVisible="{Binding IsRendererVisible}"
+                  HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Focusable="False" FontSize="11"
+                  Content="{Binding Renderer}" Click="RendererButtonClicked" ContextRequested="RendererButtonContextRequested"
+                  ToolTip.Tip="{DynamicResource tracks.selectrenderer}" ContextMenu="{StaticResource RendererMenuRes}"/>
+        </StackPanel>
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" ColumnDefinitions="4,3*,4,24,6,3*,4,24">
+          <Grid.Styles>
+            <Style Selector="Slider, TextBlock, TextBox">
+              <Setter Property="VerticalAlignment" Value="Center"/>
+              <Setter Property="MinHeight" Value="0"/>
+              <Setter Property="Height" Value="NaN"/>
+            </Style>
+          </Grid.Styles>
+          <TextBlock Grid.Column="0" Margin="0" FontSize="8" Text="V" VerticalAlignment="Center" HorizontalAlignment="Center"
+                     Foreground="{DynamicResource SystemControlForegroundBaseHighBrushDisabled}"/>
+          <Slider Grid.Column="1" Name="VolumeSlider" HorizontalAlignment="Stretch" Classes="fader" Minimum="-24" Maximum="12" Value="{Binding Volume}"
+                  PointerPressed="VolumeFaderPointerPressed" ValueChanged="VolumeOrPanSliderValueChanged"
+                  ContextRequested="VolumeFaderContextRequested" IsEnabled="{Binding !Muted}"/>
+          <TextBlock Grid.Column="3" HorizontalAlignment="Left" Background="Transparent"
+                    TextAlignment="Center" FontSize="9" FontFamily="monospace" PointerPressed="VolumePointerPressed">
+            <TextBlock.Text>
+              <MultiBinding StringFormat="{}{0:+#00.0;-#00.0}">
+                <Binding Path="Volume"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+          <TextBox Grid.Column="3" Name="VolumeTextBox" MinWidth="24"
+                  HorizontalAlignment="Left" BorderThickness="0" IsVisible="False" IsEnabled="False"
+                  TextAlignment="Right" FontSize="9" FontFamily="monospace"
+                  KeyDown="VolumeOrPanTextBoxKeyDown" LostFocus="VolumeOrPanTextBoxLostFocus"/>
+          <TextBlock Grid.Column="4" Margin="0" FontSize="8" Text="P" VerticalAlignment="Center" HorizontalAlignment="Center"
+                     Foreground="{DynamicResource SystemControlForegroundBaseHighBrushDisabled}"/>
+          <Slider Grid.Column="5" Name="PanSlider" HorizontalAlignment="Stretch"
+                  Classes="fader" Minimum="-100" Maximum="100" Value="{Binding Pan}"
+                  PointerPressed="PanFaderPointerPressed" ValueChanged="VolumeOrPanSliderValueChanged"
+                  ContextRequested="PanFaderContextRequested" IsEnabled="{Binding !Muted}"/>
+          <TextBlock Grid.Column="7" HorizontalAlignment="Stretch" Background="Transparent"
+                    TextAlignment="Center" FontSize="9" FontFamily="monospace" PointerPressed="PanPointerPressed">
+            <TextBlock.Text>
+              <MultiBinding StringFormat="{}{0:00R;00L;C}">
+                <Binding Path="Pan"/>
+              </MultiBinding>
+            </TextBlock.Text>
+          </TextBlock>
+          <TextBox Grid.Column="7" Name="PanTextBox" MinWidth="24" HorizontalAlignment="Center"
+                  BorderThickness="0" IsVisible="False" IsEnabled="False" TextAlignment="Center" FontSize="9"
+                  FontFamily="monospace" KeyDown="VolumeOrPanTextBoxKeyDown" LostFocus="VolumeOrPanTextBoxLostFocus"/>
+        </Grid>
+        <Button Grid.Column="1" Grid.Row="0" Classes="clear" Height="17" Width="17" Margin="0" Padding="0"
+                VerticalAlignment="Top" Content="..." IsVisible="{Binding !IsRendererVisible}">
+          <Button.Flyout>
+            <Flyout>
+              <StackPanel Spacing="2">
+                <Button Classes="clear" Margin="1" Height="18" IsVisible="{Binding !IsSingerVisible}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Focusable="False"
+                        Content="{Binding Singer, TargetNullValue={StaticResource tracks.selectsinger}}" Click="SingerButtonClicked" 
+                        ContextRequested="SingerButtonContextRequested" ToolTip.Tip="{Binding Singer}" ContextMenu="{StaticResource SingersMenuRes}"/>
+                <Button Classes="clear" Margin="1" Height="18" IsVisible="{Binding !IsPhonemizerVisible}"
+                        HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Focusable="False"
+                        Content="{Binding PhonemizerTag}" Click="PhonemizerButtonClicked" ContextRequested="PhonemizerButtonContextRequested"
+                        ToolTip.Tip="{Binding Phonemizer}" ContextMenu="{StaticResource PhonemizerMenuRes}"/>
+                <Grid ColumnDefinitions="*,auto" IsVisible="{Binding !IsRendererVisible}">
+                  <Button Grid.Column="0" Classes="clear" Margin="1"
+                          Height="18" HorizontalContentAlignment="Left" Focusable="False"
+                          Content="{Binding Renderer}" Click="RendererButtonClicked" ContextRequested="RendererButtonContextRequested"
+                          ToolTip.Tip="{DynamicResource tracks.selectrenderer}" ContextMenu="{StaticResource RendererMenuRes}"/>
+                  <Button Grid.Column="1" Margin="1" Padding="0" Height="18" Background="Transparent"
+                          HorizontalAlignment="Right" Click="TrackSettingsButtonClicked"
+                          ToolTip.Tip="{DynamicResource tracks.tracksettings}">
+                    <Path Classes="clear" Width="18" Height="18"
+                          Data="M 12,14.34 A 2.35,2.35 0 0 1 9.66,12 A 2.35,2.35 0 0 1 12,9.66 A 2.35,2.35 0 0 1 14.35,12 A 2.35,2.35 0 0 1 12,14.34 M 16.98,12.64 A 5.2,5.2 0 0 0 16.98,11.32 L 18.39,10.22 C 18.52,10.12 18.55,9.95 18.47,9.8 L 17.13,7.48 A 0.33,0.33 0 0 0 16.73,7.33 L 15.06,8 A 4.86,4.86 0 0 0 13.92,7.35 L 13.67,5.57 A 0.34,0.34 0 0 0 13.34,5.29 H 10.66 C 10.49,5.29 10.36,5.41 10.33,5.57 L 10.08,7.35 C 9.66,7.51 9.29,7.75 8.94,8 L 7.28,7.33 A 0.33,0.33 0 0 0 6.87,7.48 L 5.53,9.8 A 0.33,0.33 0 0 0 5.61,10.23 L 7.02,11.32 A 5.73,5.73 0 0 0 7.02,12.64 L 5.61,13.75 A 0.33,0.33 0 0 0 5.53,14.18 L 6.87,16.5 C 6.95,16.65 7.13,16.7 7.27,16.65 L 8.94,15.97 C 9.29,16.24 9.65,16.47 10.08,16.63 L 10.33,18.41 C 10.35,18.57 10.49,18.69 10.66,18.69 H 13.34 C 13.51,18.69 13.64,18.57 13.67,18.41 L 13.92,16.63 C 14.34,16.46 14.71,16.23 15.06,15.97 L 16.72,16.65 C 16.87,16.7 17.05,16.65 17.13,16.5 L 18.47,14.18 A 0.34,0.34 0 0 0 18.39,13.75 L 16.98,12.64 Z"
+                          Fill="{StaticResource NeutralAccentBrush}"/>
+                  </Button>
+                </Grid>
+              </StackPanel>
+            </Flyout>
+          </Button.Flyout>
+        </Button>
+      </Grid>
+      <StackPanel Grid.Column="2" Spacing="1" Margin="2,2,2,2">
+        <ToggleButton Margin="0" Padding="0" Height="18" Width="22"
+                      HorizontalAlignment="Stretch" ToolTip.Tip="{DynamicResource tracks.mute}"
+                      IsChecked="{Binding Mute, Mode=OneWay}" Command="{Binding ToggleMute}">
+          <Path Classes="filled" Width="16" Height="16"
+                Data="M 15.31,17 A 0.51,0.56 0 0 1 14.81,16.44 V 9.2 A 0.07,0.08 0 0 0 14.66,9.17 L 12.39,14.5 a 0.29,0.32 0 0 1 -0.26,0.19 h -0.35 a 0.29,0.32 0 0 1 -0.26,-0.19 L 9.27,9.17 9.12,9.2 V 16.44 A 0.51,0.56 0 0 1 8.62,17 H 8.51 A 0.51,0.56 0 0 1 8,16.44 V 7.56 A 0.51,0.56 0 0 1 8.51,7 h 0.84 a 0.43,0.48 0 0 1 0.39,0.28 l 2.23,5.2 a 0.04,0.05 0 0 0 0.07,0 l 2.16,-5.2 a 0.43,0.48 0 0 1 0.41,-0.28 h 0.88 A 0.51,0.56 0 0 1 16,7.56 V 16.44 A 0.51,0.56 0 0 1 15.5,17 Z"/>
+          <ToggleButton.ContextMenu>
+            <ContextMenu>
+              <MenuItem Classes="context" Header="{StaticResource tracks.mute}" Command="{Binding ToggleMute}"/>
+              <MenuItem Classes="context" Header="{StaticResource tracks.mute.only}" Command="{Binding MuteOnly}"/>
+              <MenuItem Classes="context" Header="{StaticResource tracks.mute.allothers}" Command="{Binding MuteAllOthers}"/>
+              <MenuItem Classes="context" Header="{StaticResource tracks.mute.unmuteall}" Command="{Binding UnmuteAll}"/>
+            </ContextMenu>
+          </ToggleButton.ContextMenu>
+        </ToggleButton>
+        <ToggleButton Margin="0" Padding="0" Height="18" Width="22"
+                      HorizontalAlignment="Stretch" ToolTip.Tip="{DynamicResource tracks.solo}"
+                      IsChecked="{Binding Solo, Mode=OneWay}" Command="{Binding ToggleSolo}">
+          <Path Classes="filled" Width="16" Height="16"
+                Data="m 15.99,14.08 c 0,-0.7 -0.2,-1.23 -0.58,-1.62 C 15.03,12.07 14.44,11.79 13.68,11.6 13.29,11.51 12.84,11.43 12.28,11.33 11.74,11.24 11.31,11.18 11.01,11.12 10.46,11 10.06,10.82 9.84,10.6 9.61,10.36 9.51,10.04 9.51,9.64 c 0,-0.45 0.22,-0.82 0.67,-1.1 0.45,-0.28 1.04,-0.43 1.78,-0.43 0.67,0 1.33,0.1 1.97,0.31 0.64,0.2 1.58,0.49 1.99,0.81 H 16 V 7.71 C 15.53,7.51 14.58,7.33 13.97,7.2 13.37,7.07 12.69,7 11.96,7 10.84,7 9.91,7.26 9.17,7.78 8.44,8.28 8.07,8.95 8.07,9.76 c 0,0.71 0.21,1.27 0.65,1.72 0.45,0.44 1.13,0.75 2.06,0.93 0.45,0.09 0.88,0.16 1.29,0.21 0.41,0.06 0.79,0.13 1.13,0.22 0.47,0.11 0.79,0.28 1.03,0.47 0.23,0.21 0.34,0.52 0.34,0.95 0,0.5 -0.24,0.89 -0.71,1.19 -0.47,0.3 -1.14,0.43 -1.99,0.43 -0.61,0 -1.24,-0.11 -1.94,-0.33 C 9.23,15.32 8.62,15.02 8.09,14.61 H 8 v 1.61 C 8.61,16.48 9.22,16.68 9.82,16.81 10.41,16.93 11.08,17 11.83,17 c 0.7,0 1.29,-0.07 1.78,-0.23 0.5,-0.16 0.94,-0.38 1.3,-0.65 0.33,-0.26 0.6,-0.56 0.79,-0.93 C 15.89,14.82 15.99,14.45 15.99,14.07 Z"/>
+          <ToggleButton.ContextMenu>
+            <ContextMenu>
+              <MenuItem Classes="context" Header="{StaticResource tracks.solo.only}" Command="{Binding ToggleSolo}"/>
+              <MenuItem Classes="context" Header="{StaticResource tracks.solo.add}" Command="{Binding SoloAdditionally}"/>
+              <MenuItem Classes="context" Header="{StaticResource tracks.solo.unsoloall}" Command="{Binding UnsoloAll}"/>
+            </ContextMenu>
+          </ToggleButton.ContextMenu>
+        </ToggleButton>
+        <Border Background="Transparent" Height="18" Margin="0" IsVisible="{Binding IsRendererVisible}"/>
+        <Button Margin="0" Padding="0" Height="18" Width="22" Background="Transparent"
+                HorizontalAlignment="Stretch" Click="TrackSettingsButtonClicked" IsVisible="{Binding IsRendererVisible}"
+                ToolTip.Tip="{DynamicResource tracks.tracksettings}">
+          <Path Classes="clear" Width="16" Height="16"
+                Data="M 12,14.34 A 2.35,2.35 0 0 1 9.66,12 A 2.35,2.35 0 0 1 12,9.66 A 2.35,2.35 0 0 1 14.35,12 A 2.35,2.35 0 0 1 12,14.34 M 16.98,12.64 A 5.2,5.2 0 0 0 16.98,11.32 L 18.39,10.22 C 18.52,10.12 18.55,9.95 18.47,9.8 L 17.13,7.48 A 0.33,0.33 0 0 0 16.73,7.33 L 15.06,8 A 4.86,4.86 0 0 0 13.92,7.35 L 13.67,5.57 A 0.34,0.34 0 0 0 13.34,5.29 H 10.66 C 10.49,5.29 10.36,5.41 10.33,5.57 L 10.08,7.35 C 9.66,7.51 9.29,7.75 8.94,8 L 7.28,7.33 A 0.33,0.33 0 0 0 6.87,7.48 L 5.53,9.8 A 0.33,0.33 0 0 0 5.61,10.23 L 7.02,11.32 A 5.73,5.73 0 0 0 7.02,12.64 L 5.61,13.75 A 0.33,0.33 0 0 0 5.53,14.18 L 6.87,16.5 C 6.95,16.65 7.13,16.7 7.27,16.65 L 8.94,15.97 C 9.29,16.24 9.65,16.47 10.08,16.63 L 10.33,18.41 C 10.35,18.57 10.49,18.69 10.66,18.69 H 13.34 C 13.51,18.69 13.64,18.57 13.67,18.41 L 13.92,16.63 C 14.34,16.46 14.71,16.23 15.06,15.97 L 16.72,16.65 C 16.87,16.7 17.05,16.65 17.13,16.5 L 18.47,14.18 A 0.34,0.34 0 0 0 18.39,13.75 L 16.98,12.64 Z"
+                Fill="{StaticResource NeutralAccentBrush}"/>
+        </Button>
+      </StackPanel>
+      <Grid.ContextMenu>
+        <ContextMenu>
+          <MenuItem Classes="context" Header="{DynamicResource tracks.remove}" Command="{Binding Remove}"/>
+          <MenuItem Classes="context" Header="{DynamicResource tracks.moveup}" Command="{Binding MoveUp}"/>
+          <MenuItem Classes="context" Header="{DynamicResource tracks.movedown}" Command="{Binding MoveDown}"/>
+          <MenuItem Classes="context" Header="{DynamicResource tracks.rename}" Command="{Binding Rename}"/>
+          <MenuItem Classes="context" Header="{DynamicResource tracks.trackcolor}" Command="{Binding SelectTrackColor}"/>
+          <MenuItem Classes="context" Header="{DynamicResource tracks.duplicate}" Command="{Binding Duplicate}"/>
+          <MenuItem Classes="context" Header="{DynamicResource tracks.duplicatesettings}" Command="{Binding DuplicateSettings}"/>
+          <MenuItem Classes="context" Header="{DynamicResource dialogs.voicecolorremapping}" Command="{Binding VoiceColorRemapping}"/>
+        </ContextMenu>
+      </Grid.ContextMenu>
+    </Grid>
+  </Border>
+</UserControl>
