@@ -16,33 +16,38 @@
       <Setter Property="Focusable" Value="False"/>
     </Style>
     <Style Selector="Button.playback-ctrl">
-      <Setter Property="Margin" Value="1"/>
+      <Setter Property="Margin" Value="2"/>
       <Setter Property="Padding" Value="0"/>
-      <Setter Property="Width" Value="34"/>
-      <Setter Property="Height" Value="30"/>
-      <Setter Property="CornerRadius" Value="6"/>
+      <Setter Property="Width" Value="36"/>
+      <Setter Property="Height" Value="34"/>
+      <Setter Property="CornerRadius" Value="18"/>
       <Setter Property="Background" Value="Transparent"/>
       <Setter Property="HorizontalContentAlignment" Value="Center"/>
       <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="RenderTransform" Value="scale(1)"/>
       <Setter Property="Transitions">
         <Transitions>
-          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.25"/>
         </Transitions>
       </Setter>
     </Style>
+    <Style Selector="Button.playback-ctrl:pressed">
+      <Setter Property="RenderTransform" Value="scale(0.9)"/>
+    </Style>
     <Style Selector="Button.playback-ctrl:pointerover">
-      <Setter Property="Background" Value="{DynamicResource NeutralAccentBrushSemi}"/>
+      <Setter Property="Background" Value="{DynamicResource GlassGlowBrush}"/>
     </Style>
     <Style Selector="Border.transport-chip">
       <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
-      <Setter Property="CornerRadius" Value="8"/>
-      <Setter Property="Height" Value="30"/>
-      <Setter Property="Padding" Value="10,0"/>
-      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="CornerRadius" Value="20"/>
+      <Setter Property="Height" Value="32"/>
+      <Setter Property="Padding" Value="12,0"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource GlassBorderBrush}"/>
     </Style>
   </Window.Styles>
   <Grid>
-    <Grid Name="MainGrid" Margin="{Binding $parent[1].WindowDecorationMargin}" RowDefinitions="28,42,4,*">
+    <Grid Name="MainGrid" Margin="{Binding $parent[1].WindowDecorationMargin}" RowDefinitions="28,46,4,*">
       <!-- Menu Bar -->
       <Menu Grid.Row="0" Height="28" Background="{DynamicResource TitleBarBrush}" BorderThickness="0"
             Opened="OnMainMenuOpened" Closed="OnMainMenuClosed" PointerExited="OnMainMenuPointerLeave" ZIndex="10">
@@ -114,7 +119,8 @@
       </Menu>
 
       <!-- Transport Bar -->
-      <Border Grid.Row="1" Background="{DynamicResource TransportBgBrush}" BorderBrush="{DynamicResource PanelBorderBrush}" BorderThickness="0,0,0,1" Padding="12,0">
+      <Border Grid.Row="1" Background="{DynamicResource TransportBgBrush}" Padding="14,0"
+              BorderBrush="{DynamicResource GlassBorderBrush}" BorderThickness="0,0,0,1">
         <Grid ColumnDefinitions="Auto,*,Auto">
           <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
             <Border Classes="transport-chip" Width="56">
@@ -131,24 +137,30 @@
                          Text="{Binding Path=PlaybackViewModel.Bpm, StringFormat={}{0:#0.00}}" FontSize="12"/>
             </Border>
           </StackPanel>
-          <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="4">
+          <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="6">
             <Button Classes="playback-ctrl" Command="{Binding PlaybackViewModel.SeekStart}">
               <Path Fill="{DynamicResource SystemControlForegroundBaseHighBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"
                     Data="M 0 0 L 4 0 L 4 12 L 0 12 Z M 4 6 L 12 0 L 12 12 Z"/>
             </Button>
-            <Button Classes="playback-ctrl" Click="OnPlayOrPause" Background="{DynamicResource AccentBrush1}" CornerRadius="8" Width="42" Height="32">
-              <Path Fill="White" VerticalAlignment="Center" HorizontalAlignment="Center" Data="M 0 0 L 12 8.5 L 0 17 Z"/>
+            <Button Classes="playback-ctrl" Click="OnPlayOrPause" Width="44" Height="38" CornerRadius="22">
+              <Button.Background>
+                <RadialGradientBrush Center="50%,40%" GradientOrigin="50%,40%" Radius="1">
+                  <GradientStop Color="#7C6FF7" Offset="0"/>
+                  <GradientStop Color="#5A4FCF" Offset="1"/>
+                </RadialGradientBrush>
+              </Button.Background>
+              <Path Fill="White" VerticalAlignment="Center" HorizontalAlignment="Center" Data="M 0 0 L 14 10 L 0 20 Z"/>
             </Button>
             <Button Classes="playback-ctrl" Command="{Binding PlaybackViewModel.Pause}">
               <Path Fill="{DynamicResource SystemControlForegroundBaseHighBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                    Data="M 0 0 L 3 0 L 3 11 L 0 11 Z M 7 0 L 10 0 L 10 11 L 7 11 Z"/>
+                    Data="M 0 0 L 4 0 L 4 13 L 0 13 Z M 8 0 L 12 0 L 12 13 L 8 13 Z"/>
             </Button>
             <Button Classes="playback-ctrl" Command="{Binding PlaybackViewModel.SeekEnd}">
               <Path Fill="{DynamicResource SystemControlForegroundBaseHighBrush}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                    Data="M 0 0 L 8 5.5 L 0 11 Z M 8 0 L 12 0 L 12 11 L 8 11 Z"/>
+                    Data="M 0 0 L 9 6.5 L 0 13 Z M 9 0 L 14 0 L 14 13 L 9 13 Z"/>
             </Button>
           </StackPanel>
-          <Border Grid.Column="2" Classes="transport-chip" Width="108" HorizontalAlignment="Right">
+          <Border Grid.Column="2" Classes="transport-chip" Width="120" HorizontalAlignment="Right">
             <TextBlock Text="{Binding Path=PlaybackViewModel.PlayPosTime, StringFormat={}{0:mm\\:ss\\.fff}}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontFamily="Monospace"/>
           </Border>
         </Grid>
@@ -163,7 +175,7 @@
                      IsVisible="{Binding ShowProgressBar}"
                      MaxWidth="300"/>
           <Border Grid.Column="0" Grid.ColumnSpan="2" Height="3"
-                  Background="#2A2A36" CornerRadius="2" Margin="12,0"
+                  Background="#282840" CornerRadius="2" Margin="14,0"
                   IsVisible="{Binding ShowProgressBar}">
             <Border Width="{Binding ProgressBarWidth}" Height="3"
                     Background="{DynamicResource AccentBrush1}" CornerRadius="2"
@@ -239,13 +251,16 @@
 
         <!-- Page 1: Main Editor -->
         <Grid RowDefinitions="*" Background="{DynamicResource BackgroundColor}">
-          <Grid ColumnDefinitions="280,*,24">
+          <Grid ColumnDefinitions="288,*,24">
             <Grid.RowDefinitions>
               <RowDefinition Height="24"/>
               <RowDefinition Height="*" MinHeight="0.01"/>
               <RowDefinition Height="Auto"/>
               <RowDefinition Height="*" MinHeight="{Binding PianoRollMinHeight}" MaxHeight="{Binding PianoRollMaxHeight}"/>
             </Grid.RowDefinitions>
+            <Border Grid.Row="1" Grid.Column="0" Grid.RowSpan="3"
+                    Background="{DynamicResource SidebarBrush}"
+                    BorderBrush="{DynamicResource GlassBorderBrush}" BorderThickness="0,0,1,0"/>
             <ScrollBar Name="HScrollBar" Classes="music" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       Margin="0,4,0,4" Orientation="Horizontal" AllowAutoHide="False"
                       DataContext="{Binding TracksViewModel}"
@@ -267,7 +282,7 @@
                       PointerWheelChanged="TimelinePointerWheelChanged" PointerPressed="TimelinePointerPressed"
                       PointerMoved="TimelinePointerMoved" PointerReleased="TimelinePointerReleased">
                 <Path Name="PlayPos" Canvas.Left="{Binding TracksViewModel.PlayPosX}" Canvas.Top="0" ZIndex="100" IsHitTestVisible="False"
-                      Fill="{DynamicResource AccentBrush1}" Data="M -6 0 L 6 0 L 6 3 L 0 10 L -6 3 Z"/>
+                      Fill="{DynamicResource AccentBrush1}" Data="M -7 0 L 7 0 L 7 3 L 0 11 L -7 3 Z"/>
                 <Canvas.ContextMenu>
                   <ContextMenu Name="TimelineContextMenu" ItemsSource="{Binding TimelineContextMenuItems}">
                     <ContextMenu.Styles>
@@ -312,9 +327,10 @@
               </c:PartsCanvas>
               <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent"
                       BoxShadow="inset 0 0 5 1 #3F000000" ClipToBounds="True" IsHitTestVisible="False">
-                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10,5"
-                        IsVisible="{Binding TracksViewModel.PlayPosWaitingRendering}" Background="{DynamicResource BackgroundBrushSemi}">
-                  <TextBlock Text="{DynamicResource progress.waitingrendering}" FontSize="15"/>
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Padding="12,6"
+                        IsVisible="{Binding TracksViewModel.PlayPosWaitingRendering}" Background="{DynamicResource CardBgBrush}"
+                        BorderBrush="{DynamicResource GlassBorderBrush}" BorderThickness="1" CornerRadius="12">
+                  <TextBlock Text="{DynamicResource progress.waitingrendering}" FontSize="14" Foreground="{DynamicResource AccentBrush1}"/>
                 </Border>
               </Border>
             </Grid>
@@ -323,7 +339,7 @@
               <c:ViewScaler Name="VScaler" DataContext="{Binding TracksViewModel}" Value="{Binding TrackHeight}" Min="{Binding TrackHeightMin}" Max="{Binding TrackHeightMax}"/>
             </Border>
             <GridSplitter Grid.Row="2" Grid.ColumnSpan="3" Height="4" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                         Background="{DynamicResource PanelBorderBrush}" Focusable="False" Cursor="SizeNorthSouth" IsVisible="{Binding ShowPianoRoll}"/>
+                         Background="{DynamicResource GlassBorderBrush}" Focusable="False" Cursor="SizeNorthSouth" IsVisible="{Binding ShowPianoRoll}"/>
             <Canvas Grid.Row="3" Grid.ColumnSpan="3" IsVisible="{Binding ShowPianoRoll}">
               <ContentControl Name="PianoRollContainer" Width="{Binding $parent[Canvas].Bounds.Width}" Height="{Binding $parent[Canvas].Bounds.Height}"/>
             </Canvas>

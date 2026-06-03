@@ -127,9 +127,18 @@ namespace OpenUtau.App.Views {
                 if (oldItem == null || newItem == null) return;
                 carousel.SelectedIndex = page;
                 newItem.Opacity = 0;
-                newItem.Transitions = new Transitions { new DoubleTransition { Property = Visual.OpacityProperty, Duration = TimeSpan.FromMilliseconds(200) } };
-                Dispatcher.UIThread.Post(() => { newItem.Opacity = 1; }, DispatcherPriority.Render);
-                oldItem.Transitions = new Transitions { new DoubleTransition { Property = Visual.OpacityProperty, Duration = TimeSpan.FromMilliseconds(200) } };
+                newItem.RenderTransform = new Avalonia.Media.TranslateTransform(0, 30);
+                newItem.Transitions = new Transitions {
+                    new DoubleTransition { Property = Visual.OpacityProperty, Duration = TimeSpan.FromMilliseconds(300) },
+                    new TransformOperationsTransition { Property = Visual.RenderTransformProperty, Duration = TimeSpan.FromMilliseconds(350) }
+                };
+                Dispatcher.UIThread.Post(() => {
+                    newItem.Opacity = 1;
+                    newItem.RenderTransform = new Avalonia.Media.TranslateTransform(0, 0);
+                }, DispatcherPriority.Render);
+                oldItem.Transitions = new Transitions {
+                    new DoubleTransition { Property = Visual.OpacityProperty, Duration = TimeSpan.FromMilliseconds(250) }
+                };
                 Dispatcher.UIThread.Post(() => { oldItem.Opacity = 0; }, DispatcherPriority.Render);
             });
         }

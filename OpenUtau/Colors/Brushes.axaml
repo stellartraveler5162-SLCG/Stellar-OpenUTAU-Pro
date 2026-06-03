@@ -29,9 +29,9 @@
   <SolidColorBrush x:Key="SystemControlHighlightBaseHighBrush"
                    Color="{DynamicResource ForegroundColorPointerOver}" />
   <SolidColorBrush x:Key="MenuFlyoutPresenterBackground"
-                   Color="{DynamicResource BackgroundColor}" />
+                   Color="{DynamicResource CardBgColor}" />
   <SolidColorBrush x:Key="MenuFlyoutItemBackground"
-                   Color="{DynamicResource BackgroundColor}" />
+                   Color="{DynamicResource CardBgColor}" />
   <SolidColorBrush x:Key="MenuFlyoutItemBackgroundPointerOver"
                    Color="{DynamicResource BackgroundColorPointerOver}" />
   <SolidColorBrush x:Key="MenuFlyoutItemBackgroundDisabled"
@@ -67,7 +67,7 @@
   <SolidColorBrush x:Key="ButtonBackgroundDisabled"
                    Color="{DynamicResource BackgroundColorDisabled}" />
   <SolidColorBrush x:Key="MenuFlyoutPresenterBorderBrush"
-                   Color="{DynamicResource BorderColor}" />
+                   Color="{DynamicResource CardBorderColor}" />
 
   <SolidColorBrush x:Key="TickLineBrush"
                    Color="{DynamicResource TickLineColor}" />
@@ -108,9 +108,9 @@
   <SolidColorBrush x:Key="SelectedTrackAccentBrush"
                    Color="#7C6FF7" />
   <SolidColorBrush x:Key="SelectedTrackAccentLightBrush"
-                   Color="#9B8FFF" />
+                   Color="#A898FF" />
   <SolidColorBrush x:Key="SelectedTrackAccentLightBrushSemi"
-                   Color="#9B8FFF" Opacity="0.5"/>
+                   Color="#A898FF" Opacity="0.5"/>
   <SolidColorBrush x:Key="SelectedTrackAccentDarkBrush"
                    Color="#5A4FCF" />
   <SolidColorBrush x:Key="SelectedTrackCenterKeyBrush"
@@ -132,6 +132,19 @@
                    Color="{DynamicResource PanelBorderColor}" />
   <SolidColorBrush x:Key="EditorBgBrush"
                    Color="{DynamicResource EditorBgColor}" />
+
+  <SolidColorBrush x:Key="GlassOverlayBrush"
+                   Color="{DynamicResource GlassOverlayColor}" />
+  <SolidColorBrush x:Key="GlassBorderBrush"
+                   Color="{DynamicResource GlassBorderColor}" />
+  <SolidColorBrush x:Key="GlassGlowBrush"
+                   Color="{DynamicResource GlassGlowColor}" />
+  <SolidColorBrush x:Key="CardBgBrush"
+                   Color="{DynamicResource CardBgColor}" />
+  <SolidColorBrush x:Key="CardBorderBrush"
+                   Color="{DynamicResource CardBorderColor}" />
+  <SolidColorBrush x:Key="ButtonHoverGlowBrush"
+                   Color="{DynamicResource ButtonHoverGlowColor}" />
 
   <LinearGradientBrush x:Key="WhiteKeyBrush" StartPoint="0%,50%" EndPoint="100%,50%">
     <LinearGradientBrush.GradientStops>
