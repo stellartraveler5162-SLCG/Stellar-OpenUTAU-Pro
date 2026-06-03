@@ -6,6 +6,8 @@ Stellar OpenUTAU Pro 是基于 [OpenUtau](https://github.com/stakira/OpenUtau) �
 ![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows-lightgrey)
 ![.NET](https://img.shields.io/badge/.NET-8.0-purple)
 
+<p align="center"><b><sub>PROUDLY USING AI ASSISTED CREATION</sub></b></p>
+
 ---
 
 ## 本软件做了什么
