@@ -102,6 +102,7 @@ namespace OpenUtau.App.Views {
             Log.Information("Created main window.");
             this.Cursor = null;
             SetupPageTransitions();
+            SetupMixer();
         }
 
         private void PositionPianoRollWindow(PianoRollDetachedWindow window) {
@@ -145,6 +146,22 @@ namespace OpenUtau.App.Views {
 
         public void InitProject() {
             viewModel.InitProject(this);
+        }
+
+        private void SetupMixer() {
+            var mixerItems = new Avalonia.Collections.AvaloniaList<TrackHeaderViewModel>();
+            MixerItems.ItemsSource = mixerItems;
+
+            var tracks = viewModel.TracksViewModel.Tracks;
+            Action rebuild = () => {
+                mixerItems.Clear();
+                foreach (var track in tracks) {
+                    mixerItems.Add(new TrackHeaderViewModel(track));
+                }
+            };
+            rebuild();
+
+            tracks.CollectionChanged += (_, _) => rebuild();
         }
 
         void OnEditTimeSignature(object sender, PointerPressedEventArgs args) {

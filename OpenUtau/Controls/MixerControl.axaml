@@ -1,0 +1,121 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:OpenUtau.App.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="72" d:DesignHeight="230"
+             x:Class="OpenUtau.App.Controls.MixerControl" Width="72" Height="230">
+  <UserControl.Styles>
+    <Style Selector="ToggleButton.mixer-mute">
+      <Setter Property="Width" Value="24"/>
+      <Setter Property="Height" Value="20"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="CornerRadius" Value="5"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrushDisabled}"/>
+      <Setter Property="RenderTransform" Value="scale(1)"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="ToggleButton.mixer-mute:pressed">
+      <Setter Property="RenderTransform" Value="scale(0.9)"/>
+    </Style>
+    <Style Selector="ToggleButton.mixer-mute:checked">
+      <Setter Property="Background" Value="#C0392B"/>
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="ToggleButton.mixer-solo">
+      <Setter Property="Width" Value="24"/>
+      <Setter Property="Height" Value="20"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Margin" Value="0"/>
+      <Setter Property="CornerRadius" Value="5"/>
+      <Setter Property="Background" Value="Transparent"/>
+      <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrushDisabled}"/>
+      <Setter Property="RenderTransform" Value="scale(1)"/>
+      <Setter Property="Transitions">
+        <Transitions>
+          <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+        </Transitions>
+      </Setter>
+    </Style>
+    <Style Selector="ToggleButton.mixer-solo:pressed">
+      <Setter Property="RenderTransform" Value="scale(0.9)"/>
+    </Style>
+    <Style Selector="ToggleButton.mixer-solo:checked">
+      <Setter Property="Background" Value="#F39C12"/>
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="Slider.mixer-fader">
+      <Setter Property="Orientation" Value="Vertical"/>
+      <Setter Property="Foreground" Value="{Binding TrackAccentColor}"/>
+      <Setter Property="IsSnapToTickEnabled" Value="False"/>
+    </Style>
+    <Style Selector="Slider.mixer-fader /template/ Thumb">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" CornerRadius="5"
+                  Width="44" Height="12"
+                  BoxShadow="0 2 6 #40000000"/>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+    <Style Selector="Slider.mixer-pan">
+      <Setter Property="Foreground" Value="{Binding TrackAccentColor}"/>
+    </Style>
+  </UserControl.Styles>
+  <Border CornerRadius="12" Padding="4,5,4,8"
+          Background="{DynamicResource CardBgBrush}"
+          BorderBrush="{DynamicResource GlassBorderBrush}" BorderThickness="1">
+    <Grid RowDefinitions="5,Auto,Auto,*,Auto,Auto">
+      <Border Grid.Row="0" Background="{Binding TrackAccentColor}" CornerRadius="2,2,0,0"/>
+
+      <StackPanel Grid.Row="1" HorizontalAlignment="Center" Margin="0,4,0,2">
+        <TextBlock Text="{Binding TrackNo, StringFormat=\{0\}}" FontSize="10" FontWeight="Bold"
+                   Foreground="{Binding TrackAccentColor}" HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding TrackName}" FontSize="9"
+                   MaxWidth="60" TextTrimming="CharacterEllipsis" TextAlignment="Center"
+                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                   Margin="0,1,0,0"/>
+      </StackPanel>
+
+      <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="4" Margin="0,3">
+        <ToggleButton Classes="mixer-mute" IsChecked="{Binding Mute}"
+                      ToolTip.Tip="Mute">
+          <TextBlock Text="M" FontSize="10" FontWeight="Bold"/>
+        </ToggleButton>
+        <ToggleButton Classes="mixer-solo" IsChecked="{Binding Solo}"
+                      ToolTip.Tip="Solo (S)">
+          <TextBlock Text="S" FontSize="10" FontWeight="Bold"/>
+        </ToggleButton>
+      </StackPanel>
+
+      <Slider Grid.Row="3" Classes="mixer-fader" Margin="6,6,6,4"
+              Minimum="-24" Maximum="12"
+              Value="{Binding Volume}"
+              IsEnabled="{Binding !Muted}"
+              HorizontalAlignment="Center" Width="24"/>
+
+      <TextBlock Grid.Row="4" HorizontalAlignment="Center" FontSize="8" FontFamily="monospace"
+                 TextAlignment="Center" Background="Transparent"
+                 Foreground="{DynamicResource SystemControlForegroundBaseHighBrushDisabled}"
+                 Text="{Binding Volume, StringFormat=\{0:+#0;-#0\}}"/>
+
+      <Grid Grid.Row="5" ColumnDefinitions="12,*,12" Margin="0,4,0,0">
+        <TextBlock Grid.Column="0" Text="L" FontSize="7" VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrushDisabled}"/>
+        <Slider Grid.Column="1" Margin="2,0" Minimum="-100" Maximum="100"
+                Value="{Binding Pan}" IsEnabled="{Binding !Muted}"
+                Classes="mixer-pan" Height="12"/>
+        <TextBlock Grid.Column="2" Text="R" FontSize="7" VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Foreground="{DynamicResource SystemControlForegroundBaseHighBrushDisabled}"/>
+      </Grid>
+    </Grid>
+  </Border>
+</UserControl>
