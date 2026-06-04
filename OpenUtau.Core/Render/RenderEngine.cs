@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -199,6 +199,9 @@ namespace OpenUtau.Core.Render {
                 request.sources = new WaveSource[request.phrases.Length];
                 for (var i = 0; i < request.phrases.Length; i++) {
                     var phrase = request.phrases[i];
+                    if (phrase.phones.Length == 0) {
+                        continue;
+                    }
                     var firstPhone = phrase.phones.First();
                     var lastPhone = phrase.phones.Last();
                     var layout = phrase.renderer.Layout(phrase);

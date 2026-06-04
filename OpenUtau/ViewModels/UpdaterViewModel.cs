@@ -86,30 +86,35 @@ namespace OpenUtau.App.ViewModels {
         }
 
         async void Init() {
-            UpdaterStatus = ThemeManager.GetString("updater.status.checking");
-            sparkle = await NewUpdaterAsync();
-            if (sparkle == null) {
-                UpdaterStatus = ThemeManager.GetString("updater.status.unknown");
-                return;
-            }
-            updateInfo = await sparkle.CheckForUpdatesQuietly();
-            if (updateInfo == null) {
-                UpdaterStatus = ThemeManager.GetString("updater.status.unknown");
-                return;
-            }
-            switch (updateInfo.Status) {
-                case UpdateStatus.UpdateAvailable:
-                case UpdateStatus.UserSkipped:
-                    UpdaterStatus = string.Format(ThemeManager.GetString("updater.status.available"), updateInfo.Updates[0].Version);
-                    UpdateAvailable = true;
-                    UpdateButtonFontWeight = FontWeight.Bold;
-                    break;
-                case UpdateStatus.UpdateNotAvailable:
-                    UpdaterStatus = ThemeManager.GetString("updater.status.notavailable");
-                    break;
-                case UpdateStatus.CouldNotDetermine:
+            try {
+                UpdaterStatus = ThemeManager.GetString("updater.status.checking");
+                sparkle = await NewUpdaterAsync();
+                if (sparkle == null) {
                     UpdaterStatus = ThemeManager.GetString("updater.status.unknown");
-                    break;
+                    return;
+                }
+                updateInfo = await sparkle.CheckForUpdatesQuietly();
+                if (updateInfo == null) {
+                    UpdaterStatus = ThemeManager.GetString("updater.status.unknown");
+                    return;
+                }
+                switch (updateInfo.Status) {
+                    case UpdateStatus.UpdateAvailable:
+                    case UpdateStatus.UserSkipped:
+                        UpdaterStatus = string.Format(ThemeManager.GetString("updater.status.available"), updateInfo.Updates[0].Version);
+                        UpdateAvailable = true;
+                        UpdateButtonFontWeight = FontWeight.Bold;
+                        break;
+                    case UpdateStatus.UpdateNotAvailable:
+                        UpdaterStatus = ThemeManager.GetString("updater.status.notavailable");
+                        break;
+                    case UpdateStatus.CouldNotDetermine:
+                        UpdaterStatus = ThemeManager.GetString("updater.status.unknown");
+                        break;
+                }
+            } catch (Exception e) {
+                Log.Error(e, "Updater init failed.");
+                UpdaterStatus = ThemeManager.GetString("updater.status.unknown");
             }
         }
 

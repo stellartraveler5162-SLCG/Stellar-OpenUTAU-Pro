@@ -19,7 +19,8 @@ namespace OpenUtau.Audio {
         private volatile ISampleProvider? sampleProvider;
         private volatile bool sampleProviderReady;
         private double currentTimeMs;
-        private bool eof;
+        private volatile bool eof;
+        private GCHandle callbackHandle;
 
         private List<AudioOutputDevice> devices = new List<AudioOutputDevice>();
         private IntPtr callbackPtr = IntPtr.Zero;
@@ -29,7 +30,7 @@ namespace OpenUtau.Audio {
         public MiniAudioOutput() {
             unsafe {
                 var f = (ou_audio_data_callback_t)DataCallback;
-                GCHandle.Alloc(f);
+                callbackHandle = GCHandle.Alloc(f);
                 callbackPtr = Marshal.GetFunctionPointerForDelegate(f);
             }
             if (Preferences.Default.UseSystemDefaultAudioDevice) {
@@ -249,16 +250,16 @@ namespace OpenUtau.Audio {
         protected virtual void Dispose(bool disposing) {
             if (!disposedValue) {
                 if (disposing) {
-                    // dispose managed state (managed objects)
                 }
 
-                // free unmanaged resources (unmanaged objects) and override finalizer
                 if (nativeContext != IntPtr.Zero) {
                     ou_free_audio_device(nativeContext);
                     nativeContext = IntPtr.Zero;
                 }
 
-                // set large fields to null
+                if (callbackHandle.IsAllocated) {
+                    callbackHandle.Free();
+                }
 
                 disposedValue = true;
             }

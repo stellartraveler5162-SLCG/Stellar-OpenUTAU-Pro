@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -14,8 +14,8 @@ namespace OpenUtau.Core.Ustx {
         public string Set { get; private set; }
         public USubbank[] Subbanks { get; private set; }
         public string Color { get => string.Join(", ", Subbanks.Select(x => string.IsNullOrWhiteSpace(x.Color) ? "(main)" : x.Color)); }
-        public string Prefix { get => Subbanks.First().Prefix; }
-        public string Suffix { get => Subbanks.First().Suffix; }
+        public string Prefix { get => Subbanks.FirstOrDefault()?.Prefix ?? string.Empty; }
+        public string Suffix { get => Subbanks.FirstOrDefault()?.Suffix ?? string.Empty; }
         public string File { get; private set; }
         public string DisplayFile { get; private set; }
         public double Offset {

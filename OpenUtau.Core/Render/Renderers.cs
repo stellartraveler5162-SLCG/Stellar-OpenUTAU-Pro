@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,6 +78,9 @@ namespace OpenUtau.Core.Render {
             = new ConcurrentDictionary<string, object>();
 
         public static object GetCacheLock(string key) {
+            if (cacheLockMap.Count > 10000) {
+                cacheLockMap.Clear();
+            }
             return cacheLockMap.GetOrAdd(key, _ => new object());
         }
 

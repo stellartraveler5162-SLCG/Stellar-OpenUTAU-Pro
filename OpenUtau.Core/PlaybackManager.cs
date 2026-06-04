@@ -117,15 +117,12 @@ namespace OpenUtau.Core {
             return position + count;
         }
         public void StartTone(double freq) {
-            if (activeFrequencies.ContainsKey(freq)) {
-                if (activeFrequencies[freq].isActive) {
-                    // Don't cut off tone to replace with the same frequency
-                    // Should never happen
-                    return;
-                }
-            }
-
             lock (_lockObj) {
+                if (activeFrequencies.ContainsKey(freq)) {
+                    if (activeFrequencies[freq].isActive) {
+                        return;
+                    }
+                }
                 activeFrequencies[freq] = new SineGenerator(freq, gain);
             }
         }

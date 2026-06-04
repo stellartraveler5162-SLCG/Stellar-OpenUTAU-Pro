@@ -144,7 +144,7 @@
             </Button>
             <Button Classes="playback-ctrl" Click="OnPlayOrPause" Width="44" Height="38" CornerRadius="22">
               <Button.Background>
-                <RadialGradientBrush Center="50%,40%" GradientOrigin="50%,40%" Radius="1">
+                <RadialGradientBrush Center="50%,40%" GradientOrigin="50%,40%" RadiusX="100%" RadiusY="100%">
                   <GradientStop Color="#7C6FF7" Offset="0"/>
                   <GradientStop Color="#5A4FCF" Offset="1"/>
                 </RadialGradientBrush>
