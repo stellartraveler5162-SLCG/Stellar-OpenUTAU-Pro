@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML.OnnxRuntime;
@@ -22,16 +23,23 @@ namespace OpenUtau.Core {
     }
 
     public class Onnx {
-        private static readonly Dictionary<int, OrtEpDevice> devices = initializeDevices();
+        private static readonly ConcurrentDictionary<int, OrtEpDevice> devices = initializeDevices();
+        private static volatile bool dmlDisabled;
 
-        private static Dictionary<int, OrtEpDevice> initializeDevices() {
-            var env = OrtEnv.Instance();
-            var ortDevices = env.GetEpDevices();
-
-            return ortDevices
-                .Where(device => device.EpName.ToLower().Contains("dml"))
-                .Select((device, index) => new { index, device })
-                .ToDictionary(x => x.index, x => x.device);
+        private static ConcurrentDictionary<int, OrtEpDevice> initializeDevices() {
+            try {
+                var env = OrtEnv.Instance();
+                var ortDevices = env.GetEpDevices();
+                var dict = new ConcurrentDictionary<int, OrtEpDevice>();
+                int i = 0;
+                foreach (var device in ortDevices.Where(d => d.EpName.ToLower().Contains("dml"))) {
+                    dict[i++] = device;
+                }
+                return dict;
+            } catch (Exception e) {
+                Log.Warning(e, "Failed to enumerate ONNX EP devices, DirectML unavailable.");
+                return new ConcurrentDictionary<int, OrtEpDevice>();
+            }
         }
 
         public static List<string> getRunnerOptions() {
@@ -59,30 +67,34 @@ namespace OpenUtau.Core {
         public static List<GpuInfo> getGpuInfo() {
             if (OS.IsAndroid()) {
                 return new List<GpuInfo>{new GpuInfo {
-                    deviceId = 0, // eliminate exception of taking OnnxGpuOptions[0]
+                    deviceId = 0,
                 }};
             }
             List<GpuInfo> gpuList = new List<GpuInfo>();
-            var env = OrtEnv.Instance();
-            var ortDevices = env.GetEpDevices();
+            try {
+                var env = OrtEnv.Instance();
+                var ortDevices = env.GetEpDevices();
 
-            var i = 0;
-            foreach (var device in ortDevices.Where(device => device.EpName.ToLower().Contains("dml"))) {
-                var description = "";
-                foreach (var item in device.HardwareDevice.Metadata.Entries) {
-                    if (item.Key.ToLower() == "description") {
-                        description = $"{item.Value} ({device.HardwareDevice.Type})";
-                        break;
+                int i = 0;
+                foreach (var device in ortDevices.Where(d => d.EpName.ToLower().Contains("dml"))) {
+                    var description = "";
+                    foreach (var item in device.HardwareDevice.Metadata.Entries) {
+                        if (item.Key.ToLower() == "description") {
+                            description = $"{item.Value} ({device.HardwareDevice.Type})";
+                            break;
+                        }
                     }
+                    if (string.IsNullOrEmpty(description)) {
+                        description = $"{device.EpName} {device.HardwareDevice.Vendor} ({device.HardwareDevice.Type})";
+                    }
+                    devices[i] = device;
+                    gpuList.Add(new GpuInfo {
+                        deviceId = i++,
+                        description = description
+                    });
                 }
-                if (string.IsNullOrEmpty(description)) { // fallback
-                    description = $"{device.EpName} {device.HardwareDevice.Vendor} ({device.HardwareDevice.Type})";
-                }
-                devices[i] = device;
-                gpuList.Add(new GpuInfo {
-                    deviceId = i++,
-                    description = description
-                });
+            } catch (Exception e) {
+                Log.Warning(e, "Failed to enumerate GPU info, DirectML may be unavailable.");
             }
             if (gpuList.Count == 0) {
                 gpuList.Add(new GpuInfo {
@@ -104,6 +116,10 @@ namespace OpenUtau.Core {
             }
             switch (runner) {
                 case "DirectML":
+                    if (dmlDisabled) {
+                        Log.Information("DirectML was previously disabled, using CPU.");
+                        break;
+                    }
                     if (devices.TryGetValue(Preferences.Default.OnnxGpu, out var d)) {
                         options.AppendExecutionProvider(
                             OrtEnv.Instance(),
@@ -111,19 +127,16 @@ namespace OpenUtau.Core {
                             new Dictionary<string, string> { }
                         );
                     } else {
-                        Log.Warning("DirectML device {0} not found in {1} available devices, falling back to CPU",
+                        Log.Warning("DirectML device {0} not found in {1} available devices, using CPU",
                             Preferences.Default.OnnxGpu, devices.Count);
                     }
                     break;
                 case "CoreML":
-                    // Note: MLProgram format has stricter validation and may fail with complex DiffSinger models
-                    // that have topological sorting issues (e.g., variance_predictor with diffusion embeddings)
-                    // so we always use NeuralNetwork format (default) as MLProgram fails with complex models.
                     options.AppendExecutionProvider("CoreML", new Dictionary<string, string> {
                         { "MLComputeUnits", "ALL" },
                         { "RequireStaticInputShapes", "1"},
                         { "ModelFormat", "NeuralNetwork"},
-                        { "EnableOnSubgraphs", coremlEnableOnSubgraphs ? "1" : "0" }  // Disable subgraph processing to avoid complex control flow issues
+                        { "EnableOnSubgraphs", coremlEnableOnSubgraphs ? "1" : "0" }
                     });
                     break;
                 case "NNAPI":
@@ -133,45 +146,67 @@ namespace OpenUtau.Core {
             return options;
         }
 
+        private static InferenceSession createCpuSession(byte[] model) {
+            var options = new SessionOptions();
+            options.AppendExecutionProvider_CPU();
+            return new InferenceSession(model, options);
+        }
+
+        private static InferenceSession createCpuSession(string modelPath) {
+            var options = new SessionOptions();
+            options.AppendExecutionProvider_CPU();
+            return new InferenceSession(modelPath, options);
+        }
+
         public static InferenceSession getInferenceSession(byte[] model, OnnxRunnerChoice runnerChoice = OnnxRunnerChoice.Default) {
             if (runnerChoice == OnnxRunnerChoice.CPU ||
                 (runnerChoice == OnnxRunnerChoice.CPUForCoreML && Preferences.Default.OnnxRunner == "CoreML")) {
-                return new InferenceSession(model);
-            } else {
-                if (OS.IsMacOS() && Preferences.Default.OnnxRunner == "CoreML") {
-                    try {
-                        return new InferenceSession(model, getOnnxSessionOptions(coremlEnableOnSubgraphs: true));
-                    } catch (Exception e) {
-                        Log.Warning(e, "Failed to create session with CoreML subgraphs enabled, falling back to default settings");
-                    }
-                }
+                return createCpuSession(model);
+            }
+
+            if (OS.IsMacOS() && Preferences.Default.OnnxRunner == "CoreML") {
                 try {
-                    return new InferenceSession(model, getOnnxSessionOptions());
+                    return new InferenceSession(model, getOnnxSessionOptions(coremlEnableOnSubgraphs: true));
                 } catch (Exception e) {
-                    Log.Warning(e, "Failed to create session with configured runner, falling back to CPU");
-                    return new InferenceSession(model);
+                    Log.Warning(e, "Failed to create CoreML session, falling back to default CoreML settings");
                 }
+            }
+
+            try {
+                return new InferenceSession(model, getOnnxSessionOptions());
+            } catch (Exception e) {
+                Log.Warning(e, "Failed to create session with {0}, falling back to CPU", Preferences.Default.OnnxRunner);
+                if (Preferences.Default.OnnxRunner == "DirectML") {
+                    dmlDisabled = true;
+                    Log.Warning("Disabling DirectML for the rest of this session. Restart to retry.");
+                }
+                return createCpuSession(model);
             }
         }
 
         public static InferenceSession getInferenceSession(string modelPath, OnnxRunnerChoice runnerChoice = OnnxRunnerChoice.Default) {
             if (runnerChoice == OnnxRunnerChoice.CPU ||
                 (runnerChoice == OnnxRunnerChoice.CPUForCoreML && Preferences.Default.OnnxRunner == "CoreML")) {
-                return new InferenceSession(modelPath);
-            } else {
-                if (OS.IsMacOS() && Preferences.Default.OnnxRunner == "CoreML") {
-                    try {
-                        return new InferenceSession(modelPath, getOnnxSessionOptions(coremlEnableOnSubgraphs: true));
-                    } catch (Exception e) {
-                        Log.Warning(e, "Failed to create session with CoreML subgraphs enabled, falling back to default settings");
-                    }
-                }
+                return createCpuSession(modelPath);
+            }
+
+            if (OS.IsMacOS() && Preferences.Default.OnnxRunner == "CoreML") {
                 try {
-                    return new InferenceSession(modelPath, getOnnxSessionOptions());
+                    return new InferenceSession(modelPath, getOnnxSessionOptions(coremlEnableOnSubgraphs: true));
                 } catch (Exception e) {
-                    Log.Warning(e, "Failed to create session with configured runner, falling back to CPU");
-                    return new InferenceSession(modelPath);
+                    Log.Warning(e, "Failed to create CoreML session, falling back to default CoreML settings");
                 }
+            }
+
+            try {
+                return new InferenceSession(modelPath, getOnnxSessionOptions());
+            } catch (Exception e) {
+                Log.Warning(e, "Failed to create session with {0}, falling back to CPU", Preferences.Default.OnnxRunner);
+                if (Preferences.Default.OnnxRunner == "DirectML") {
+                    dmlDisabled = true;
+                    Log.Warning("Disabling DirectML for the rest of this session. Restart to retry.");
+                }
+                return createCpuSession(modelPath);
             }
         }
 

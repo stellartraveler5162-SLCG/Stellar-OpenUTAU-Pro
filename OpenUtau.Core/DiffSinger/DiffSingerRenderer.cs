@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -442,7 +442,15 @@ namespace OpenUtau.Core.DiffSinger {
                     if(cancellation.IsCancellationRequested) {
                         return null;
                     }
-                    acousticOutputs = acousticModel.Run(acousticInputs).Cast<NamedOnnxValue>().ToList();
+                    try {
+                        acousticOutputs = acousticModel.Run(acousticInputs).Cast<NamedOnnxValue>().ToList();
+                    } catch (Exception e) {
+                        Log.Error(e, "Acoustic model inference failed (DirectML may have run out of GPU memory). Try switching to CPU in Preferences.");
+                        throw new MessageCustomizableException(
+                            "GPU inference failed. Please switch to CPU in Preferences → Renderer.",
+                            "GPU 推理失败，请前往偏好设置 → 渲染器 切换为 CPU。",
+                            e);
+                    }
                 }
                 acousticCache?.Save(acousticOutputs);
                 phrase.AddCacheFile(acousticCache?.Filename);
@@ -482,7 +490,15 @@ namespace OpenUtau.Core.DiffSinger {
                     if(cancellation.IsCancellationRequested) {
                         return null;
                     }
-                    vocoderOutputs = vocoder.session.Run(vocoderInputs).Cast<NamedOnnxValue>().ToList();
+                    try {
+                        vocoderOutputs = vocoder.session.Run(vocoderInputs).Cast<NamedOnnxValue>().ToList();
+                    } catch (Exception e) {
+                        Log.Error(e, "Vocoder inference failed (DirectML may have run out of GPU memory). Try switching to CPU in Preferences.");
+                        throw new MessageCustomizableException(
+                            "GPU inference failed. Please switch to CPU in Preferences → Renderer.",
+                            "GPU 推理失败，请前往偏好设置 → 渲染器 切换为 CPU。",
+                            e);
+                    }
                 }
                 vocoderCache?.Save(vocoderOutputs);
                 phrase.AddCacheFile(vocoderCache?.Filename);
