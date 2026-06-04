@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML.OnnxRuntime;
@@ -104,12 +104,16 @@ namespace OpenUtau.Core {
             }
             switch (runner) {
                 case "DirectML":
-                    var d = devices[Preferences.Default.OnnxGpu];
-                    options.AppendExecutionProvider(
-                        OrtEnv.Instance(),
-                        new List<OrtEpDevice> { d },
-                        new Dictionary<string, string> { }
-                     );
+                    if (devices.TryGetValue(Preferences.Default.OnnxGpu, out var d)) {
+                        options.AppendExecutionProvider(
+                            OrtEnv.Instance(),
+                            new List<OrtEpDevice> { d },
+                            new Dictionary<string, string> { }
+                        );
+                    } else {
+                        Log.Warning("DirectML device {0} not found in {1} available devices, falling back to CPU",
+                            Preferences.Default.OnnxGpu, devices.Count);
+                    }
                     break;
                 case "CoreML":
                     // Note: MLProgram format has stricter validation and may fail with complex DiffSinger models
@@ -134,7 +138,6 @@ namespace OpenUtau.Core {
                 (runnerChoice == OnnxRunnerChoice.CPUForCoreML && Preferences.Default.OnnxRunner == "CoreML")) {
                 return new InferenceSession(model);
             } else {
-                // Try with CoreML subgraphs enabled first, fallback to default if it fails
                 if (OS.IsMacOS() && Preferences.Default.OnnxRunner == "CoreML") {
                     try {
                         return new InferenceSession(model, getOnnxSessionOptions(coremlEnableOnSubgraphs: true));
@@ -142,7 +145,12 @@ namespace OpenUtau.Core {
                         Log.Warning(e, "Failed to create session with CoreML subgraphs enabled, falling back to default settings");
                     }
                 }
-                return new InferenceSession(model, getOnnxSessionOptions());
+                try {
+                    return new InferenceSession(model, getOnnxSessionOptions());
+                } catch (Exception e) {
+                    Log.Warning(e, "Failed to create session with configured runner, falling back to CPU");
+                    return new InferenceSession(model);
+                }
             }
         }
 
@@ -151,7 +159,6 @@ namespace OpenUtau.Core {
                 (runnerChoice == OnnxRunnerChoice.CPUForCoreML && Preferences.Default.OnnxRunner == "CoreML")) {
                 return new InferenceSession(modelPath);
             } else {
-                // Try with CoreML subgraphs enabled first, fallback to default if it fails
                 if (OS.IsMacOS() && Preferences.Default.OnnxRunner == "CoreML") {
                     try {
                         return new InferenceSession(modelPath, getOnnxSessionOptions(coremlEnableOnSubgraphs: true));
@@ -159,7 +166,12 @@ namespace OpenUtau.Core {
                         Log.Warning(e, "Failed to create session with CoreML subgraphs enabled, falling back to default settings");
                     }
                 }
-                return new InferenceSession(modelPath, getOnnxSessionOptions());
+                try {
+                    return new InferenceSession(modelPath, getOnnxSessionOptions());
+                } catch (Exception e) {
+                    Log.Warning(e, "Failed to create session with configured runner, falling back to CPU");
+                    return new InferenceSession(modelPath);
+                }
             }
         }
 

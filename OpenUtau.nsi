@@ -6,7 +6,7 @@ SetCompressor zlib
 !define PRODUCT_PUBLISHER "Stellarloom Limited"
 !define PRODUCT_WEB_SITE "https://github.com/stellartraveler5162-SLCG/Stellar-OpenUTAU-Pro"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
-!define PRODUCT_UNINST_ROOT_KEY "HKLM"
+!define PRODUCT_UNINST_ROOT_KEY "HKCU"
 
 !include "MUI2.nsh"
 
@@ -36,7 +36,7 @@ SetCompressor zlib
 
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}"
 OutFile "Stellar-OpenUTAU-Pro-Windows-x64-Setup.exe"
-InstallDir "$PROGRAMFILES64\Stellar OpenUTAU Pro"
+InstallDir "$LOCALAPPDATA\Stellar OpenUTAU Pro"
 ShowInstDetails show
 ShowUnInstDetails show
 
