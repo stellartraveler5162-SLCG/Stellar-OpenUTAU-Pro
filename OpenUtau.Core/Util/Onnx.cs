@@ -23,23 +23,46 @@ namespace OpenUtau.Core {
     }
 
     public class Onnx {
-        private static readonly ConcurrentDictionary<int, OrtEpDevice> devices = initializeDevices();
+        private static readonly ConcurrentDictionary<int, OrtEpDevice> devices = new();
         private static volatile bool dmlDisabled;
+        private static volatile bool dmlEnumerated;
 
-        private static ConcurrentDictionary<int, OrtEpDevice> initializeDevices() {
-            try {
-                var env = OrtEnv.Instance();
-                var ortDevices = env.GetEpDevices();
-                var dict = new ConcurrentDictionary<int, OrtEpDevice>();
-                int i = 0;
-                foreach (var device in ortDevices.Where(d => d.EpName.ToLower().Contains("dml"))) {
-                    dict[i++] = device;
+        private static void ensureDmlEnumerated() {
+            if (dmlEnumerated || dmlDisabled) return;
+            lock (devices) {
+                if (dmlEnumerated || dmlDisabled) return;
+                try {
+                    var env = OrtEnv.Instance();
+                    var ortDevices = env.GetEpDevices();
+                    int i = 0;
+                    foreach (var device in ortDevices.Where(d => d.EpName.ToLower().Contains("dml"))) {
+                        devices[i++] = device;
+                    }
+                    if (devices.Count == 0) {
+                        Log.Warning("DirectML: no GPU devices found. DirectML will be unavailable.");
+                        dmlDisabled = true;
+                    } else {
+                        Log.Information("DirectML: found {0} GPU device(s) including [{1}] {2}",
+                            devices.Count,
+                            devices.TryGetValue(0, out var d0) ? d0.HardwareDevice.Type : "?",
+                            getGpuDescription(devices[0]));
+                    }
+                } catch (Exception e) {
+                    Log.Warning(e, "DirectML: device enumeration failed. DirectML will be unavailable.");
+                    dmlDisabled = true;
                 }
-                return dict;
-            } catch (Exception e) {
-                Log.Warning(e, "Failed to enumerate ONNX EP devices, DirectML unavailable.");
-                return new ConcurrentDictionary<int, OrtEpDevice>();
+                dmlEnumerated = true;
             }
+        }
+
+        private static string getGpuDescription(OrtEpDevice device) {
+            try {
+                foreach (var item in device.HardwareDevice.Metadata.Entries) {
+                    if (item.Key.ToLower() == "description")
+                        return item.Value;
+                }
+            } catch { }
+            return $"{device.HardwareDevice.Vendor} ({device.HardwareDevice.Type})";
         }
 
         public static List<string> getRunnerOptions() {
@@ -77,21 +100,16 @@ namespace OpenUtau.Core {
 
                 int i = 0;
                 foreach (var device in ortDevices.Where(d => d.EpName.ToLower().Contains("dml"))) {
-                    var description = "";
-                    foreach (var item in device.HardwareDevice.Metadata.Entries) {
-                        if (item.Key.ToLower() == "description") {
-                            description = $"{item.Value} ({device.HardwareDevice.Type})";
-                            break;
-                        }
-                    }
-                    if (string.IsNullOrEmpty(description)) {
-                        description = $"{device.EpName} {device.HardwareDevice.Vendor} ({device.HardwareDevice.Type})";
-                    }
+                    var description = getGpuDescription(device);
                     devices[i] = device;
                     gpuList.Add(new GpuInfo {
                         deviceId = i++,
                         description = description
                     });
+                }
+                if (gpuList.Count > 0) {
+                    dmlEnumerated = true;
+                    dmlDisabled = false;
                 }
             } catch (Exception e) {
                 Log.Warning(e, "Failed to enumerate GPU info, DirectML may be unavailable.");
@@ -116,8 +134,9 @@ namespace OpenUtau.Core {
             }
             switch (runner) {
                 case "DirectML":
-                    if (dmlDisabled) {
-                        Log.Information("DirectML was previously disabled, using CPU.");
+                    ensureDmlEnumerated();
+                    if (dmlDisabled || devices.Count == 0) {
+                        Log.Information("DirectML unavailable, using CPU.");
                         break;
                     }
                     if (devices.TryGetValue(Preferences.Default.OnnxGpu, out var d)) {
@@ -168,7 +187,7 @@ namespace OpenUtau.Core {
                 try {
                     return new InferenceSession(model, getOnnxSessionOptions(coremlEnableOnSubgraphs: true));
                 } catch (Exception e) {
-                    Log.Warning(e, "Failed to create CoreML session, falling back to default CoreML settings");
+                    Log.Warning(e, "Failed to create CoreML session with subgraphs, falling back");
                 }
             }
 
@@ -194,7 +213,7 @@ namespace OpenUtau.Core {
                 try {
                     return new InferenceSession(modelPath, getOnnxSessionOptions(coremlEnableOnSubgraphs: true));
                 } catch (Exception e) {
-                    Log.Warning(e, "Failed to create CoreML session, falling back to default CoreML settings");
+                    Log.Warning(e, "Failed to create CoreML session with subgraphs, falling back");
                 }
             }
 
