@@ -187,6 +187,7 @@ namespace OpenUtau.Core {
         CancellationTokenSource renderCancellation;
 
         public Audio.IAudioOutput AudioOutput { get; set; } = new Audio.DummyAudioOutput();
+        public bool IsDummyOutput => AudioOutput is Audio.DummyAudioOutput;
         public bool OutputActive => AudioOutput.PlaybackState == PlaybackState.Playing;
         public bool StartingToPlay { get; private set; }
         public bool PlayingMaster { get; private set; }
@@ -200,6 +201,7 @@ namespace OpenUtau.Core {
         }
 
         public void PlayTone(double freq) {
+            if (IsDummyOutput) return;
             toneGenerator.StartTone(freq);
 
             // If nothing is playing, start editing mix
@@ -246,6 +248,13 @@ namespace OpenUtau.Core {
         }
 
         public void Play(UProject project, int tick, int endTick = -1, int trackNo = -1) {
+            if (IsDummyOutput) {
+                DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(
+                    new MessageCustomizableException("No audio device available.",
+                        "未检测到可用音频输出设备。请检查声卡驱动并在偏好设置中选择播放设备。",
+                        new Exception("No audio device available."))));
+                return;
+            }
             if (AudioOutput.PlaybackState == PlaybackState.Paused) {
                 PlayingMaster = true;
                 AudioOutput.Play();

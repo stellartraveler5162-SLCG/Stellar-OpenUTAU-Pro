@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -61,20 +61,35 @@ namespace OpenUtau.App.Views {
 
         private static void InitAudio() {
             Log.Information("Initializing audio.");
+            bool ok = false;
             if (!OS.IsWindows() || Core.Util.Preferences.Default.PreferPortAudio) {
                 try {
                     PlaybackManager.Inst.AudioOutput = new Audio.MiniAudioOutput();
+                    ok = true;
                 } catch (Exception e1) {
                     Log.Error(e1, "Failed to init MiniAudio");
                 }
             } else {
                 try {
                     PlaybackManager.Inst.AudioOutput = new NAudioOutput();
-                } catch (Exception e2) {
-                    Log.Error(e2, "Failed to init NAudio");
+                    ok = true;
+                } catch (Exception e1) {
+                    Log.Error(e1, "Failed to init NAudio");
+                }
+                if (!ok) {
+                    try {
+                        Log.Information("Falling back to MiniAudio on Windows.");
+                        PlaybackManager.Inst.AudioOutput = new Audio.MiniAudioOutput();
+                        ok = true;
+                    } catch (Exception e2) {
+                        Log.Error(e2, "Failed to init MiniAudio fallback on Windows");
+                    }
                 }
             }
-            Log.Information("Initialized audio.");
+            if (!ok) {
+                Log.Error("All audio output backends failed. Playback will be silent.");
+            }
+            Log.Information("Initialized audio (ok={0}).", ok);
         }
     }
 }

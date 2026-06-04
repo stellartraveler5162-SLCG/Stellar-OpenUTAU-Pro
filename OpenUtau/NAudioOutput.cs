@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using NAudio.Wave;
@@ -53,6 +53,7 @@ namespace OpenUtau.App {
             get {
                 lock (lockObj) {
                     if (Preferences.Default.UseSystemDefaultAudioDevice) {
+                        if (waveOutEvent != null) return waveOutEvent.PlaybackState; // WaveOut fallback
                         return wasapiOut == null ? PlaybackState.Stopped : wasapiOut.PlaybackState;
                     }
                     return waveOutEvent == null ? PlaybackState.Stopped : waveOutEvent.PlaybackState;
@@ -65,6 +66,7 @@ namespace OpenUtau.App {
         public long GetPosition() {
             lock (lockObj) {
                 if (Preferences.Default.UseSystemDefaultAudioDevice) {
+                    if (waveOutEvent != null) return waveOutEvent.GetPosition() / Channels;
                     return wasapiOut == null ? 0 : wasapiOut.GetPosition() / Channels;
                 }
                 return waveOutEvent == null ? 0 : waveOutEvent.GetPosition() / Channels;
@@ -74,7 +76,6 @@ namespace OpenUtau.App {
         public void Init(ISampleProvider sampleProvider) {
             lock (lockObj) {
                 if (Preferences.Default.UseSystemDefaultAudioDevice) {
-                    // Re-register notification client if Stop() previously unregistered it.
                     if (notificationClient == null && mmEnumerator != null) {
                         notificationClient = new DefaultDeviceNotificationClient(() => Task.Run(() => PlaybackManager.Inst.StopPlayback()));
                         mmEnumerator.RegisterEndpointNotificationCallback(notificationClient);
@@ -84,9 +85,36 @@ namespace OpenUtau.App {
                         wasapiOut.Stop();
                         wasapiOut.Dispose();
                     }
-                    wasapiOut = new WasapiOut(AudioClientShareMode.Shared, 200);
-                    wasapiOut.PlaybackStopped += OnWasapiPlaybackStopped;
-                    wasapiOut.Init(sampleProvider);
+                    Exception? wasapiEx = null;
+                    try {
+                        wasapiOut = new WasapiOut(AudioClientShareMode.Shared, 200);
+                        wasapiOut.PlaybackStopped += OnWasapiPlaybackStopped;
+                        wasapiOut.Init(sampleProvider);
+                        return;
+                    } catch (Exception e1) {
+                        wasapiEx = e1;
+                        Log.Warning(e1, "WasapiOut init failed, falling back to WaveOut.");
+                        if (wasapiOut != null) {
+                            wasapiOut.PlaybackStopped -= OnWasapiPlaybackStopped;
+                            wasapiOut.Dispose();
+                            wasapiOut = null;
+                        }
+                    }
+                    if (notificationClient != null && mmEnumerator != null) {
+                        mmEnumerator.UnregisterEndpointNotificationCallback(notificationClient);
+                        notificationClient = null;
+                    }
+                    if (waveOutEvent != null) {
+                        waveOutEvent.Stop();
+                        waveOutEvent.Dispose();
+                    }
+                    try {
+                        waveOutEvent = new WaveOutEvent() { DeviceNumber = 0 };
+                        waveOutEvent.Init(sampleProvider);
+                    } catch (Exception e2) {
+                        Log.Error(e2, "WaveOut init also failed after WasapiOut failure.");
+                        throw new Exception("WasapiOut 和 WaveOut 都无法初始化音频设备，请检查音频驱动程序。", wasapiEx);
+                    }
                 } else {
                     if (waveOutEvent != null) {
                         waveOutEvent.Stop();
@@ -103,6 +131,7 @@ namespace OpenUtau.App {
         public void Pause() {
             lock (lockObj) {
                 if (Preferences.Default.UseSystemDefaultAudioDevice) {
+                    if (waveOutEvent != null) { waveOutEvent.Pause(); return; }
                     wasapiOut?.Pause();
                 } else {
                     waveOutEvent?.Pause();
@@ -113,6 +142,7 @@ namespace OpenUtau.App {
         public void Play() {
             lock (lockObj) {
                 if (Preferences.Default.UseSystemDefaultAudioDevice) {
+                    if (waveOutEvent != null) { waveOutEvent.Play(); return; }
                     wasapiOut?.Play();
                 } else {
                     waveOutEvent?.Play();
@@ -132,6 +162,11 @@ namespace OpenUtau.App {
                         wasapiOut.Stop();
                         wasapiOut.Dispose();
                         wasapiOut = null;
+                    }
+                    if (waveOutEvent != null) {
+                        waveOutEvent.Stop();
+                        waveOutEvent.Dispose();
+                        waveOutEvent = null;
                     }
                 } else {
                     if (waveOutEvent != null) {
