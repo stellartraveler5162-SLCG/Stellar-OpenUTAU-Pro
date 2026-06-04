@@ -623,7 +623,7 @@ namespace OpenUtau.Core.DiffSinger {
             };
             //speakers
             var dsSinger = singer as DiffSingerSinger;
-            if(dsSinger!=null && dsSinger.dsConfig.speakers != null) {
+            if(dsSinger!=null && dsSinger.dsConfig.speakers != null && dsSinger.Subbanks != null) {
                 result.AddRange(Enumerable.Zip(
                     dsSinger.Subbanks,
                     Enumerable.Range(1, dsSinger.Subbanks.Count),

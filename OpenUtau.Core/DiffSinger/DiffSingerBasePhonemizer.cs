@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -197,15 +197,18 @@ namespace OpenUtau.Core.DiffSinger
             var speaker = singer.Subbanks
                 .FirstOrDefault(subbank => subbank.Color == attr.voiceColor && subbank.toneSet.Contains(note.tone));
             if (speaker is null) {
-                //Fall back to the first subbank matching the voice color
                 speaker = singer.Subbanks
                     .FirstOrDefault(subbank => subbank.Color == attr.voiceColor);
             }
             if (speaker is null) {
-                //Fall back to the first defined subbank
                 speaker = singer.Subbanks.FirstOrDefault();
             }
             if (speaker is null) {
+                if (singer.Subbanks == null || singer.Subbanks.Count == 0) {
+                    Log.Warning("No subbanks defined for singer \"{0}\", using empty speaker suffix.",
+                        singer.Name);
+                    return string.Empty;
+                }
                 throw new Exception(
                     $"No subbanks defined for singer \"{singer.Name}\". " +
                     "Please check the singer's configuration.");
