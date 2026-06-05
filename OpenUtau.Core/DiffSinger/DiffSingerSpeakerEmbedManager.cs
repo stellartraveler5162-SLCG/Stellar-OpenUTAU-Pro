@@ -24,25 +24,51 @@ namespace OpenUtau.Core.DiffSinger
         }
         public NDArray loadSpeakerEmbed(string speaker) {
             string path = Path.Join(rootPath, speaker + ".emb");
-            if(File.Exists(path)) {
-                using var reader = new BinaryReader(File.OpenRead(path));
-                return np.array<float>(Enumerable.Range(0, dsConfig.hiddenSize)
-                    .Select(i => reader.ReadSingle()));
-            } else {
+            if(!File.Exists(path)) {
                 throw new Exception($"Speaker embed file {path} not found");
             }
+            using var reader = new BinaryReader(File.OpenRead(path));
+            var fileSize = reader.BaseStream.Length;
+            var expectedSize = dsConfig.hiddenSize * 4L;
+            int actualDim;
+            if (fileSize != expectedSize) {
+                actualDim = (int)(fileSize / 4L);
+                Log.Warning("Speaker embed file \"{0}\" has {1} floats ({2} bytes), but dsConfig.hiddenSize is {3}. " +
+                    "Using actual file dimension {1}. This usually means the singer or subbank is from a different model version.",
+                    path, actualDim, fileSize, dsConfig.hiddenSize);
+            } else {
+                actualDim = dsConfig.hiddenSize;
+            }
+            return np.array<float>(Enumerable.Range(0, actualDim)
+                .Select(i => reader.ReadSingle()));
         }
 
         public NDArray getSpeakerEmbeds() {
             if(speakerEmbeds == null) {
                 if(dsConfig.speakers == null) {
                     return null;
-                } else {
-                    var embeds = np.zeros<float>(dsConfig.hiddenSize, dsConfig.speakers.Count);
-                    foreach(var spkId in Enumerable.Range(0, dsConfig.speakers.Count)) {
-                        embeds[":", spkId] = loadSpeakerEmbed(dsConfig.speakers[spkId]);
+                }
+                try {
+                    var firstEmbed = loadSpeakerEmbed(dsConfig.speakers[0]);
+                    int actualDim = firstEmbed.Shape[0];
+                    var embeds = np.zeros<float>(actualDim, dsConfig.speakers.Count);
+                    embeds[":", 0] = firstEmbed;
+                    foreach(var spkId in Enumerable.Range(1, dsConfig.speakers.Count - 1)) {
+                        var embed = loadSpeakerEmbed(dsConfig.speakers[spkId]);
+                        if (embed.Shape[0] != actualDim) {
+                            Log.Warning("Speaker \"{0}\" has dimension {1}, expected {2}. Padding with zeros.",
+                                dsConfig.speakers[spkId], embed.Shape[0], actualDim);
+                            for (int j = 0; j < Math.Min(embed.Shape[0], actualDim); j++) {
+                                embeds[j, spkId] = embed[j];
+                            }
+                        } else {
+                            embeds[":", spkId] = embed;
+                        }
                     }
                     speakerEmbeds = embeds;
+                } catch (Exception e) {
+                    Log.Error(e, "Failed to load speaker embeddings for singer.");
+                    return null;
                 }
             }
             return speakerEmbeds;
@@ -84,8 +110,11 @@ namespace OpenUtau.Core.DiffSinger
 
         //used by phonemizer (duration model)
         public Tensor<float> PhraseSpeakerEmbedByPhone(string[] speakerByPhone){
-            var hiddenSize = dsConfig.hiddenSize;
             var speakerEmbeds = getSpeakerEmbeds();
+            if (speakerEmbeds == null) {
+                return new DenseTensor<float>(new float[0], new int[] { 1, speakerByPhone.Length, 0 });
+            }
+            var actualDim = speakerEmbeds.Shape[0];
             var totalPhones = speakerByPhone.Length;
             NDArray spkCurves = np.zeros<float>(totalPhones, dsConfig.speakers.Count);
             foreach(int phoneId in Enumerable.Range(0,totalPhones)) {
@@ -94,24 +123,25 @@ namespace OpenUtau.Core.DiffSinger
             }
             var spkEmbedResult = np.dot(spkCurves, speakerEmbeds.T);
             var spkEmbedTensor = new DenseTensor<float>(spkEmbedResult.ToArray<float>(), 
-                new int[] { totalPhones, hiddenSize })
-                .Reshape(new int[] { 1, totalPhones, hiddenSize });
+                new int[] { totalPhones, actualDim })
+                .Reshape(new int[] { 1, totalPhones, actualDim });
             return spkEmbedTensor;
         }
 
         //used by variance, pitch and acoustic
         public Tensor<float> PhraseSpeakerEmbedByFrame(RenderPhrase phrase, IList<int> durations, float frameMs, int totalFrames, int headFrames, int tailFrames){
             var singer = phrase.singer;
-            var hiddenSize = dsConfig.hiddenSize;
             var speakerEmbeds = getSpeakerEmbeds();
-            //get default speaker for each phoneme
+            if (speakerEmbeds == null) {
+                return new DenseTensor<float>(new float[0], new int[] { 1, totalFrames, 0 });
+            }
+            var actualDim = speakerEmbeds.Shape[0];
             var headDefaultSpk = getSpeakerIndexBySuffix(phrase.phones[0].suffix);
             var tailDefaultSpk = getSpeakerIndexBySuffix(phrase.phones[^1].suffix);
             var defaultSpkByFrame = Enumerable.Repeat(headDefaultSpk, headFrames).ToList();
             defaultSpkByFrame.AddRange(Enumerable.Range(0, phrase.phones.Length)
                 .SelectMany(phIndex => Enumerable.Repeat(getSpeakerIndexBySuffix(phrase.phones[phIndex].suffix), durations[phIndex+1])));
             defaultSpkByFrame.AddRange(Enumerable.Repeat(tailDefaultSpk, tailFrames));
-            //get speaker curves
             NDArray spkCurves = np.zeros<float>(totalFrames, dsConfig.speakers.Count);
             foreach(var curve in phrase.curves) {
                 if(singer.Subbanks != null && IsVoiceColorCurve(curve.Item1,out int subBankId) && subBankId < singer.Subbanks.Count) {
@@ -122,7 +152,6 @@ namespace OpenUtau.Core.DiffSinger
                 }
             }
             foreach(int frameId in Enumerable.Range(0,totalFrames)) {
-                //standarization
                 var spkSum = spkCurves[frameId, ":"].ToArray<float>().Sum();
                 if (spkSum > 1) {
                     spkCurves[frameId, ":"] /= spkSum;
@@ -132,8 +161,8 @@ namespace OpenUtau.Core.DiffSinger
             }
             var spkEmbedResult = np.dot(spkCurves, speakerEmbeds.T);
             var spkEmbedTensor = new DenseTensor<float>(spkEmbedResult.ToArray<float>(), 
-                new int[] { totalFrames, hiddenSize })
-                .Reshape(new int[] { 1, totalFrames, hiddenSize });
+                new int[] { totalFrames, actualDim })
+                .Reshape(new int[] { 1, totalFrames, actualDim });
             return spkEmbedTensor;
         }
     }

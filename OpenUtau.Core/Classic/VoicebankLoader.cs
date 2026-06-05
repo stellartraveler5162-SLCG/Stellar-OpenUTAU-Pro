@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -178,7 +178,7 @@ namespace OpenUtau.Classic {
                 bank.Image = bankConfig.Image;
             }
             if (!string.IsNullOrWhiteSpace(bankConfig.Portrait)) {
-                bank.Portrait = bankConfig.Portrait;
+                bank.Portrait = bankConfig.Portrait.Replace('\\', '/');
                 bank.PortraitOpacity = bankConfig.PortraitOpacity;
                 bank.PortraitHeight = bankConfig.PortraitHeight;
             }
