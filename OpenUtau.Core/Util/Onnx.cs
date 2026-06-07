@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.ML.OnnxRuntime;
 using OpenUtau.Core.Util;
 using Serilog;
@@ -26,6 +27,8 @@ namespace OpenUtau.Core {
         private static readonly ConcurrentDictionary<int, OrtEpDevice> devices = new();
         private static volatile bool dmlDisabled;
         private static volatile bool dmlEnumerated;
+        private static int dmlSessionCount;
+        private const int MaxDmlSessions = 2;
 
         private static void ensureDmlEnumerated() {
             if (dmlEnumerated || dmlDisabled) return;
@@ -139,6 +142,12 @@ namespace OpenUtau.Core {
                         Log.Information("DirectML unavailable, using CPU.");
                         break;
                     }
+                    if (Interlocked.Increment(ref dmlSessionCount) > MaxDmlSessions) {
+                        Interlocked.Decrement(ref dmlSessionCount);
+                        Log.Information("DirectML: max {0} GPU sessions active, using CPU for this model to save VRAM.",
+                            MaxDmlSessions);
+                        break;
+                    }
                     if (devices.TryGetValue(Preferences.Default.OnnxGpu, out var d)) {
                         options.AppendExecutionProvider(
                             OrtEnv.Instance(),
@@ -146,6 +155,7 @@ namespace OpenUtau.Core {
                             new Dictionary<string, string> { }
                         );
                     } else {
+                        Interlocked.Decrement(ref dmlSessionCount);
                         Log.Warning("DirectML device {0} not found in {1} available devices, using CPU",
                             Preferences.Default.OnnxGpu, devices.Count);
                     }
@@ -196,6 +206,7 @@ namespace OpenUtau.Core {
             } catch (Exception e) {
                 Log.Warning(e, "Failed to create session with {0}, falling back to CPU", Preferences.Default.OnnxRunner);
                 if (Preferences.Default.OnnxRunner == "DirectML") {
+                    Interlocked.Decrement(ref dmlSessionCount);
                     dmlDisabled = true;
                     Log.Warning("Disabling DirectML for the rest of this session. Restart to retry.");
                 }
@@ -222,6 +233,7 @@ namespace OpenUtau.Core {
             } catch (Exception e) {
                 Log.Warning(e, "Failed to create session with {0}, falling back to CPU", Preferences.Default.OnnxRunner);
                 if (Preferences.Default.OnnxRunner == "DirectML") {
+                    Interlocked.Decrement(ref dmlSessionCount);
                     dmlDisabled = true;
                     Log.Warning("Disabling DirectML for the rest of this session. Restart to retry.");
                 }
