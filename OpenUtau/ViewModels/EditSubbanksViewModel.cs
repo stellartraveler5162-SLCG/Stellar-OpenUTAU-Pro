@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -8,6 +8,7 @@ using OpenUtau.Classic;
 using OpenUtau.Core;
 using OpenUtau.Core.Ustx;
 using ReactiveUI;
+using Serilog;
 using ReactiveUI.Fody.Helpers;
 
 namespace OpenUtau.App.ViewModels {
@@ -174,7 +175,8 @@ namespace OpenUtau.App.ViewModels {
                         bankConfig = VoicebankConfig.Load(stream);
                     }
                 }
-            } catch {
+            } catch (Exception e) {
+                Log.Warning(e, "Failed to load character.yaml for subbank editing, using defaults");
             }
             if (bankConfig == null) {
                 bankConfig = new VoicebankConfig();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
@@ -178,7 +178,9 @@ namespace OpenUtau.Core.DiffSinger {
                 new DenseTensor<bool>(is_slur.ToArray(), new int[] { is_slur.Count }, false)
                 .Reshape(new int[] { 1, is_slur.Count })));
             var outputs = rhythmizer.session.Run(inputs);
-            ph_dur = outputs.First().AsTensor<float>().Select(x => (double)x).ToList();
+            ph_dur = (outputs.FirstOrDefault()
+                ?? throw new Exception("Rhythmizer model produced no output"))
+                .AsTensor<float>().Select(x => (double)x).ToList();
             //Align the starting time of vowels to the position of each note, unit: s
             var positions = new List<double>();
             List<double> alignGroup = ph_dur.GetRange(0, phAlignPoints[0].Item1);

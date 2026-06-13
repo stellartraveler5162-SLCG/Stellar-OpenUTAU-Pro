@@ -64,7 +64,9 @@ namespace OpenUtau.Core {
                     if (item.Key.ToLower() == "description")
                         return item.Value;
                 }
-            } catch { }
+            } catch (Exception e) {
+                Log.Debug(e, "Failed to get GPU description from metadata");
+            }
             return $"{device.HardwareDevice.Vendor} ({device.HardwareDevice.Type})";
         }
 

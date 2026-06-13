@@ -316,7 +316,9 @@ namespace OpenUtau.Core.DiffSinger
 
             Onnx.VerifyInputNames(pitchModel, pitchInputs);
             var pitchOutputs = pitchModel.Run(pitchInputs);
-            var pitch_out = pitchOutputs.First().AsTensor<float>().ToArray();
+            var pitch_out = (pitchOutputs.FirstOrDefault()
+                ?? throw new Exception("Pitch model produced no output"))
+                .AsTensor<float>().ToArray();
             var pitchEnd = phrase.timeAxis.MsPosToTickPos(startMs + (totalFrames - 1) * frameMs) - phrase.position;
             if(pitchEnd<=phrase.duration){
                 return new RenderPitchResult{

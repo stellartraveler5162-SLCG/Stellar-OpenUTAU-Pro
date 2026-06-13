@@ -113,7 +113,7 @@ namespace OpenUtau.Core.Render {
                 }
             }, CancellationToken.None, TaskContinuationOptions.OnlyOnFaulted, uiScheduler);
             if (wait) {
-                task.Wait();
+                task.GetAwaiter().GetResult();
             }
             return Tuple.Create(new WaveMix(faders), faders);
         }
@@ -240,7 +240,7 @@ namespace OpenUtau.Core.Render {
                 var source = tuple.Item2;
                 var request = tuple.Item3;
                 var task = phrase.renderer.Render(phrase, progress, request.trackNo, cancellation, true);
-                task.Wait();
+                task.GetAwaiter().GetResult();
                 if (cancellation.IsCancellationRequested) {
                     break;
                 }
