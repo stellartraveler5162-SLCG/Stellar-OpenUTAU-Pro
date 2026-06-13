@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -98,7 +98,7 @@ namespace OpenUtau.Classic {
         }
 
         public void ReleaseSourceTemp() {
-            var expire = DateTime.Now - TimeSpan.FromDays(7);
+            var expire = DateTime.UtcNow - TimeSpan.FromDays(7);
             string path = PathManager.Inst.CachePath;
             Log.Information($"ReleaseSourceTemp {path}");
             Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly)

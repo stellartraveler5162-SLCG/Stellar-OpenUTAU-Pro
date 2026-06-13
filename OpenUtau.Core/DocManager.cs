@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -242,7 +242,7 @@ namespace OpenUtau.Core {
                 return;
             }
             undoGroup.Commands.Add(cmd);
-            lock (Project) {
+            lock (executeLock) {
                 cmd.Execute();
             }
             if (!cmd.Silent) {
@@ -358,6 +358,7 @@ namespace OpenUtau.Core {
         # region Command Subscribers
 
         private readonly object lockObj = new object();
+        private readonly object executeLock = new object();
         private readonly List<ICmdSubscriber> subscribers = new List<ICmdSubscriber>();
 
         public void AddSubscriber(ICmdSubscriber sub) {

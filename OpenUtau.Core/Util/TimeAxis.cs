@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -41,7 +41,7 @@ namespace OpenUtau.Core {
         public long Timestamp { get; private set; }
 
         public void BuildSegments(UProject project) {
-            Timestamp = DateTime.Now.ToFileTimeUtc();
+            Timestamp = DateTime.UtcNow.ToFileTimeUtc();
             timeSigSegments.Clear();
             for (var i = 0; i < project.timeSignatures.Count; ++i) {
                 var timesig = project.timeSignatures[i];

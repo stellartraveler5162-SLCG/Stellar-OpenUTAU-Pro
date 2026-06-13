@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -50,6 +50,7 @@ namespace OpenUtau.Core.Ustx {
         [YamlIgnore] public List<RenderPhrase> renderPhrases = new List<RenderPhrase>();
 
         [YamlIgnore] private PhonemizerResponse phonemizerResponse;
+        [YamlIgnore] private readonly object phonemizerLock = new object();
         [YamlIgnore] private Dictionary<string, Phonemizer> overridePhonemizers = new Dictionary<string, Phonemizer>();
         [YamlIgnore] private long notesTimestamp;
         [YamlIgnore] private long phonemesTimestamp;
@@ -163,7 +164,7 @@ namespace OpenUtau.Core.Ustx {
                 var request = new PhonemizerRequest() {
                     singer = track.Singer,
                     part = this,
-                    timestamp = DateTime.Now.ToFileTimeUtc(),
+                    timestamp = DateTime.UtcNow.ToFileTimeUtc(),
                     noteIndexes = noteIndexes.ToArray(),
                     notes = groups.ToArray(),
                     
@@ -176,7 +177,7 @@ namespace OpenUtau.Core.Ustx {
                 notesTimestamp = request.timestamp;
                 DocManager.Inst.PhonemizerRunner?.Push(request);
             }
-            lock (this) {
+            lock (phonemizerLock) {
                 if (phonemizerResponse != null) {
                     var resp = phonemizerResponse;
                     if (resp.timestamp == notesTimestamp) {
@@ -281,13 +282,13 @@ namespace OpenUtau.Core.Ustx {
         }
 
         internal void SetPhonemizerResponse(PhonemizerResponse response) {
-            lock (this) {
+            lock (phonemizerLock) {
                 phonemizerResponse = response;
             }
         }
 
         internal RenderPartRequest GetRenderRequest() {
-            lock (this) {
+            lock (phonemizerLock) {
                 return new RenderPartRequest() {
                     part = this,
                     timestamp = notesTimestamp,
@@ -298,7 +299,7 @@ namespace OpenUtau.Core.Ustx {
         }
 
         internal void SetMix(ISignalSource mix) {
-            lock (this) {
+            lock (phonemizerLock) {
                 this.mix = mix;
             }
         }
