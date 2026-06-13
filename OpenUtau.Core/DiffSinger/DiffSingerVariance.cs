@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -184,8 +184,9 @@ namespace OpenUtau.Core.DiffSinger{
             }
             Tensor<float> encoder_out = linguisticOutputs
                 .Where(o => o.Name == "encoder_out")
-                .First()
-                .AsTensor<float>();
+                .FirstOrDefault()
+                ?.AsTensor<float>()
+                ?? throw new Exception("ONNX output 'encoder_out' not found in linguistic model");
 
             //Variance Predictor
             var pitch = DiffSingerUtils.SampleCurve(phrase, phrase.pitches, 0, frameMs, totalFrames, headFrames, tailFrames, 
@@ -269,26 +270,26 @@ namespace OpenUtau.Core.DiffSinger{
             Tensor<float>? energy_pred = dsConfig.predict_energy
                 ? varianceOutputs
                     .Where(o => o.Name == "energy_pred")
-                    .First()
-                    .AsTensor<float>()
+                    .FirstOrDefault()
+                    ?.AsTensor<float>()
                 : null;
             Tensor<float>? breathiness_pred = dsConfig.predict_breathiness
                 ? varianceOutputs
                     .Where(o => o.Name == "breathiness_pred")
-                    .First()
-                    .AsTensor<float>()
+                    .FirstOrDefault()
+                    ?.AsTensor<float>()
                 : null;
             Tensor<float>? voicing_pred = dsConfig.predict_voicing
                 ? varianceOutputs
                     .Where(o => o.Name == "voicing_pred")
-                    .First()
-                    .AsTensor<float>()
+                    .FirstOrDefault()
+                    ?.AsTensor<float>()
                 : null;
             Tensor<float>? tension_pred = dsConfig.predict_tension
                 ? varianceOutputs
                     .Where(o => o.Name == "tension_pred")
-                    .First()
-                    .AsTensor<float>()
+                    .FirstOrDefault()
+                    ?.AsTensor<float>()
                 : null;
             return new VarianceResult{
                 energy = energy_pred?.ToArray(),

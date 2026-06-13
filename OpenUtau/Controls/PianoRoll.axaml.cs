@@ -823,7 +823,7 @@ namespace OpenUtau.App.Controls {
                         });
                         ViewModel.NotesContextMenuItems.Add(new MenuItemViewModel() {
                             Header = ThemeManager.GetString("context.note.pasteparameters"),
-                            Command = ReactiveCommand.Create(() => ViewModel.NotesViewModel.PasteSelectedParams(RootWindow)),
+                            Command = ReactiveCommand.Create(() => _ = ViewModel.NotesViewModel.PasteSelectedParamsAsync(RootWindow)),
                             InputGesture = new KeyGesture(Key.V, KeyModifiers.Alt),
                         });
                         ViewModel.NotesContextMenuItems.Add(new MenuItemViewModel() {
@@ -1710,7 +1710,7 @@ namespace OpenUtau.App.Controls {
                         return true;
                     }
                     if (isAlt) {
-                        notesVm.PasteSelectedParams(RootWindow);
+                        _ = notesVm.PasteSelectedParamsAsync(RootWindow);
                         return true;
                     }
                     break;

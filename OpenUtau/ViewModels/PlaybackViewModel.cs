@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenUtau.Core;
 using OpenUtau.Core.Ustx;
 using OpenUtau.Core.Util;
@@ -8,9 +8,9 @@ namespace OpenUtau.App.ViewModels {
     public class TimeAxisChangedEvent { }
     public class PlaybackViewModel : ViewModelBase, ICmdSubscriber {
         UProject Project => DocManager.Inst.Project;
-        public int BeatPerBar => Project.timeSignatures[0].beatPerBar;
-        public int BeatUnit => Project.timeSignatures[0].beatUnit;
-        public double Bpm => Project.tempos[0].bpm;
+        public int BeatPerBar => Project.timeSignatures.Count > 0 ? Project.timeSignatures[0].beatPerBar : 4;
+        public int BeatUnit => Project.timeSignatures.Count > 0 ? Project.timeSignatures[0].beatUnit : 4;
+        public double Bpm => Project.tempos.Count > 0 ? Project.tempos[0].bpm : 120;
         public int Key => Project.key;
         public string KeyName => MusicMath.KeysInOctave[Key].Item1;
         public int Resolution => Project.resolution;
@@ -55,7 +55,7 @@ namespace OpenUtau.App.ViewModels {
         }
 
         public void SetBpm(double bpm) {
-            if (bpm == DocManager.Inst.Project.tempos[0].bpm) {
+            if (DocManager.Inst.Project.tempos.Count == 0 || bpm == DocManager.Inst.Project.tempos[0].bpm) {
                 return;
             }
             DocManager.Inst.StartUndoGroup("command.project.tempo");

@@ -46,7 +46,7 @@ namespace OpenUtau.App.ViewModels {
             UpdaterStatus = string.Empty;
             UpdateAvailable = false;
             UpdateButtonFontWeight = FontWeight.Normal;
-            Init();
+            _ = InitAsync();
         }
 
         public static async Task<SparkleUpdater?> NewUpdaterAsync() {
@@ -85,7 +85,7 @@ namespace OpenUtau.App.ViewModels {
             return JsonConvert.DeserializeObject<StellarRelease>(respBody);
         }
 
-        async void Init() {
+        async Task InitAsync() {
             try {
                 UpdaterStatus = ThemeManager.GetString("updater.status.checking");
                 sparkle = await NewUpdaterAsync();

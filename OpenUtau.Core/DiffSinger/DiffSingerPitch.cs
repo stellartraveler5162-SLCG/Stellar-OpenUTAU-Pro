@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -172,12 +172,14 @@ namespace OpenUtau.Core.DiffSinger
             }
             Tensor<float> encoder_out = linguisticOutputs
                 .Where(o => o.Name == "encoder_out")
-                .First()
-                .AsTensor<float>();
+                .FirstOrDefault()
+                ?.AsTensor<float>()
+                ?? throw new Exception("ONNX output 'encoder_out' not found in linguistic model");
             Tensor<bool> x_masks = linguisticOutputs
                 .Where(o => o.Name == "x_masks")
-                .First()
-                .AsTensor<bool>();
+                .FirstOrDefault()
+                ?.AsTensor<bool>()
+                ?? throw new Exception("ONNX output 'x_masks' not found in linguistic model");
             
             //Build note durations, inserting rest notes for gaps between notes
             //that are bridged by ahead-of-time consonants in the same phrase

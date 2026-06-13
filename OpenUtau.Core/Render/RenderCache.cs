@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace OpenUtau.Core.Render {
     class RenderCache {
@@ -62,10 +62,12 @@ namespace OpenUtau.Core.Render {
         }
 
         public void Clear() {
-            size = 0;
-            dummyHead.next = dummyTail;
-            dummyTail.prev = dummyHead;
-            dict.Clear();
+            lock (lockObj) {
+                size = 0;
+                dummyHead.next = dummyTail;
+                dummyTail.prev = dummyHead;
+                dict.Clear();
+            }
         }
 
         private void Remove(Node node) {

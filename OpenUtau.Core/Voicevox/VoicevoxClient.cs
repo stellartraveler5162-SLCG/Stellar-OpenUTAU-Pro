@@ -1,13 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading.Tasks;
 using Serilog;
 
 namespace OpenUtau.Core.Voicevox {
     class VoicevoxClient : Util.SingletonBase<VoicevoxClient> {
         internal Tuple<string, byte[]> SendRequest(VoicevoxURL voicevoxURL) {
+            return SendRequestAsync(voicevoxURL).GetAwaiter().GetResult();
+        }
+
+        internal async Task<Tuple<string, byte[]>> SendRequestAsync(VoicevoxURL voicevoxURL) {
             try {
                 using (var client = new HttpClient()) {
                     using (var request = new HttpRequestMessage(new HttpMethod(voicevoxURL.method.ToUpper()), this.RequestURL(voicevoxURL))) {
@@ -17,15 +22,15 @@ namespace OpenUtau.Core.Voicevox {
                         request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
                         Log.Information($"VoicevoxProcess sending {request}");
-                        var response = client.SendAsync(request);
+                        var response = await client.SendAsync(request);
                         Log.Information($"VoicevoxProcess received");
-                        string str = response.Result.Content.ReadAsStringAsync().Result;
+                        string str = await response.Content.ReadAsStringAsync();
                         //May not fit json format
                         if (!str.StartsWith("{") || !str.EndsWith("}")) {
                             str = "{ \"json\":" + str + "}";
                         }
-                        Log.Information($"VoicevoxResponse StatusCode :{response.Result.StatusCode}");
-                        return new Tuple<string, byte[]>(str, response.Result.Content.ReadAsByteArrayAsync().Result);
+                        Log.Information($"VoicevoxResponse StatusCode :{response.StatusCode}");
+                        return new Tuple<string, byte[]>(str, await response.Content.ReadAsByteArrayAsync());
                     }
                 }
             } catch (Exception ex) {

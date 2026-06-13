@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenUtau.Api;
@@ -61,14 +61,14 @@ namespace OpenUtau.Core.Util {
     public class PinyinLyricsHelper : ILyricsHelper {
         public string Source => "汉->han";
         public string Convert(string lyric) {
-            return Pinyin.Pinyin.Instance.GetDefaultPinyin(lyric, ManTone.Style.NORMAL, false, false).ToArray()[0];
+            return Pinyin.Pinyin.Instance.GetDefaultPinyin(lyric, ManTone.Style.NORMAL, false, false).ToArray().FirstOrDefault() ?? lyric;
         }
     }
 
     public class JyutpingLyricsHelper : ILyricsHelper {
         public string Source => "粤->jyut";
         public string Convert(string lyric) {
-            return Pinyin.Jyutping.Instance.GetDefaultPinyin(lyric, CanTone.Style.NORMAL).ToArray()[0];
+            return Pinyin.Jyutping.Instance.GetDefaultPinyin(lyric, CanTone.Style.NORMAL).ToArray().FirstOrDefault() ?? lyric;
         }
     }
 

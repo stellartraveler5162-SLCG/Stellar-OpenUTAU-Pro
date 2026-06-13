@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -63,8 +63,8 @@ namespace OpenUtau.Core {
                 oldCancellation.Cancel();
                 oldCancellation.Dispose();
             }
-            Task.Run(() => {
-                Thread.Sleep(200);
+            Task.Run(async () => {
+                await Task.Delay(200, newCancellation.Token);
                 if (newCancellation.IsCancellationRequested) {
                     return;
                 }
@@ -123,6 +123,14 @@ namespace OpenUtau.Core {
             }
             //Update singers used
             singersUsed = singersInUse;
+        }
+
+        public void Dispose() {
+            var cts = Interlocked.Exchange(ref reloadCancellation, null);
+            if (cts != null) {
+                cts.Cancel();
+                cts.Dispose();
+            }
         }
     }
 }

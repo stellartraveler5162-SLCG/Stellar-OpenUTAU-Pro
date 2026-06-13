@@ -399,12 +399,14 @@ namespace OpenUtau.Core.DiffSinger
             }
             Tensor<float> encoder_out = linguisticOutputs
                 .Where(o => o.Name == "encoder_out")
-                .First()
-                .AsTensor<float>();
+                .FirstOrDefault()
+                ?.AsTensor<float>()
+                ?? throw new Exception("ONNX output 'encoder_out' not found in linguistic model");
             Tensor<bool> x_masks = linguisticOutputs
                 .Where(o => o.Name == "x_masks")
-                .First()
-                .AsTensor<bool>();
+                .FirstOrDefault()
+                ?.AsTensor<bool>()
+                ?? throw new Exception("ONNX output 'x_masks' not found in linguistic model");
             //Duration Predictor
             var ph_midi = phrasePhonemes
                 .SelectMany(n=>Enumerable.Repeat((Int64)n.Tone, n.Phonemes.Count))
@@ -435,7 +437,9 @@ namespace OpenUtau.Core.DiffSinger
                 durationOutputs = durationModel.Run(durationInputs).Cast<NamedOnnxValue>().ToList();
                 durationCache?.Save(durationOutputs);
             }
-            List<double> durationFrames = durationOutputs.First().AsTensor<float>().Select(x=>(double)x).ToList();
+            List<double> durationFrames = (durationOutputs.FirstOrDefault()
+                ?? throw new Exception("Duration model produced no output"))
+                .AsTensor<float>().Select(x=>(double)x).ToList();
             
             //Alignment
             //(the index of the phoneme to be aligned, the Ms position of the phoneme)
@@ -445,6 +449,9 @@ namespace OpenUtau.Core.DiffSinger
                     (a, b) => new Tuple<int, double>(a, timeAxis.TickPosToMsPos(b.Position)))
                 .ToList();
             var positions = new List<double>();
+            if (phAlignPoints.Count == 0) {
+                throw new Exception("Phoneme alignment produced no alignment points");
+            }
             List<double> alignGroup = durationFrames.GetRange(1, phAlignPoints[0].Item1 - 1);
             
             var phs = phrasePhonemes.SelectMany(n => n.Phonemes).ToList();

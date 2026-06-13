@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenUtau.Core.Ustx;
@@ -211,20 +211,22 @@ namespace OpenUtau.Core {
         readonly float X, Y;
         public SnapPitchPointCommand(UVoicePart part, UNote note) : base(part) {
             Note = note;
-            X = Note.pitch.data.First().X;
-            Y = Note.pitch.data.First().Y;
+            if (Note.pitch.data.Count > 0) {
+                X = Note.pitch.data.First().X;
+                Y = Note.pitch.data.First().Y;
+            }
         }
         public override string ToString() { return "Toggle pitch snap"; }
         public override void Execute() {
             Note.pitch.snapFirst = !Note.pitch.snapFirst;
-            if (!Note.pitch.snapFirst) {
+            if (!Note.pitch.snapFirst && Note.pitch.data.Count > 0) {
                 Note.pitch.data.First().X = X;
                 Note.pitch.data.First().Y = Y;
             }
         }
         public override void Unexecute() {
             Note.pitch.snapFirst = !Note.pitch.snapFirst;
-            if (!Note.pitch.snapFirst) {
+            if (!Note.pitch.snapFirst && Note.pitch.data.Count > 0) {
                 Note.pitch.data.First().X = X;
                 Note.pitch.data.First().Y = Y;
             }

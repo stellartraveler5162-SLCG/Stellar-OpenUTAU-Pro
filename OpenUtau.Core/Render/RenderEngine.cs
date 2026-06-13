@@ -163,13 +163,14 @@ namespace OpenUtau.Core.Render {
                 oldCancellation.Cancel();
                 oldCancellation.Dispose();
             }
-            Task.Run(() => {
+            Task.Run(async () => {
                 try {
-                    Thread.Sleep(200);
+                    await Task.Delay(200, newCancellation.Token);
                     if (newCancellation.Token.IsCancellationRequested) {
                         return;
                     }
                     RenderRequests(PrepareRequests(), newCancellation);
+                } catch (OperationCanceledException) {
                 } catch (Exception e) {
                     if (!newCancellation.IsCancellationRequested) {
                         Log.Error(e, "Failed to pre-render.");
