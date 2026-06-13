@@ -361,7 +361,8 @@ public class RmvpeTranscriber : IDisposable {
     static string ResolveWaveformInputName(InferenceSession session) {
         return session.InputNames.FirstOrDefault(name =>
                 string.Equals(name, "waveform", StringComparison.OrdinalIgnoreCase))
-            ?? session.InputNames.First();
+            ?? session.InputNames.FirstOrDefault()
+            ?? throw new Exception("RMVPE model has no input names");
     }
 
     static string ResolveThresholdInputName(InferenceSession session) {
@@ -374,7 +375,8 @@ public class RmvpeTranscriber : IDisposable {
     static string ResolveF0OutputName(InferenceSession session) {
         return session.OutputNames.FirstOrDefault(name =>
                 string.Equals(name, "f0", StringComparison.OrdinalIgnoreCase))
-            ?? session.OutputNames.First();
+            ?? session.OutputNames.FirstOrDefault()
+            ?? throw new Exception("RMVPE model has no output names");
     }
 
     static string ResolveUvOutputName(InferenceSession session) {

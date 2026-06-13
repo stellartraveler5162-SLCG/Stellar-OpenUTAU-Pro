@@ -183,6 +183,9 @@ namespace OpenUtau.Core.DiffSinger {
                 .AsTensor<float>().Select(x => (double)x).ToList();
             //Align the starting time of vowels to the position of each note, unit: s
             var positions = new List<double>();
+            if (phAlignPoints.Count == 0) {
+                throw new Exception("Rhythmizer phoneme alignment produced no alignment points");
+            }
             List<double> alignGroup = ph_dur.GetRange(0, phAlignPoints[0].Item1);
             //Starting consonants are not scaled
             positions.AddRange(stretch(alignGroup, 1, phAlignPoints[0].Item2));

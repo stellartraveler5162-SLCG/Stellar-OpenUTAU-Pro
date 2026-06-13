@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -103,7 +103,9 @@ namespace OpenUtau.Core.Voicevox {
                                 }
 
                                 if (vsParams.phonemes.Count() > 0) {
-                                    result.positionMs = phrase.positionMs - phrase.timeAxis.TickPosToMsPos((vsParams.phonemes.First().frame_length / VoicevoxUtils.fps) * 1000d);
+                                    var firstPhone = vsParams.phonemes.FirstOrDefault()
+                                        ?? throw new Exception("Voicevox phoneme list is empty");
+                                    result.positionMs = phrase.positionMs - phrase.timeAxis.TickPosToMsPos((firstPhone.frame_length / VoicevoxUtils.fps) * 1000d);
                                 }
 
                                 int speaker = 0;

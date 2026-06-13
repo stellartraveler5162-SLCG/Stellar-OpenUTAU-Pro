@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -59,19 +59,22 @@ public class Some : MidiExtractor<SomeOptions> {
             using var outputs = session.Run(inputs, session.OutputNames, runOptions);
             float[] note_midi = outputs
                 .Where(o => o.Name == "note_midi")
-                .First()
-                .AsTensor<float>()
-                .ToArray();
+                .FirstOrDefault()
+                ?.AsTensor<float>()
+                ?.ToArray()
+                ?? throw new Exception("SOME model output 'note_midi' not found");
             bool[] note_rest = outputs
                 .Where(o => o.Name == "note_rest")
-                .First()
-                .AsTensor<bool>()
-                .ToArray();
+                .FirstOrDefault()
+                ?.AsTensor<bool>()
+                ?.ToArray()
+                ?? throw new Exception("SOME model output 'note_rest' not found");
             float[] note_dur = outputs
                 .Where(o => o.Name == "note_dur")
-                .First()
-                .AsTensor<float>()
-                .ToArray();
+                .FirstOrDefault()
+                ?.AsTensor<float>()
+                ?.ToArray()
+                ?? throw new Exception("SOME model output 'note_dur' not found");
             var notes = new List<TranscribedNote>(note_midi.Length);
             for (int i = 0; i < note_midi.Length; i++) {
                 notes.Add(new TranscribedNote(note_dur[i], note_midi[i], !note_rest[i]));

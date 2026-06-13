@@ -220,10 +220,9 @@ namespace OpenUtau.Api {
                 return;
             }
             shutdown.Cancel();
+            shutdown.Dispose();
             if (thread != null) {
-                while (thread.IsAlive) {
-                    Thread.Sleep(100);
-                }
+                thread.Join(TimeSpan.FromSeconds(5));
                 thread = null;
             }
             requests.Dispose();

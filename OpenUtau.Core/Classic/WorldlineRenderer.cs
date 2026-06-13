@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -161,7 +161,9 @@ namespace OpenUtau.Classic {
                             NamedOnnxValue.CreateFromTensor("f0", f0Tensor),
                         };
                         using var vocoderResults = vocoderSession.Run(vocoderInputs);
-                        var audioOutput = vocoderResults.First().AsTensor<float>();
+                        var audioOutput = (vocoderResults.FirstOrDefault()
+                            ?? throw new Exception("Worldline vocoder model produced no output"))
+                            .AsTensor<float>();
                         result.samples = audioOutput.ToArray();
                         result.samples = result.samples.Skip(leftPadding * 512).Take(totalFrames * 512).ToArray();
                         int easeInSamples = Math.Min(result.samples.Length, 512);

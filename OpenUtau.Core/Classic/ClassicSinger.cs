@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -144,7 +144,9 @@ namespace OpenUtau.Classic {
                         oto.SearchTerms.Add(oto.Alias.ToLowerInvariant().Replace(" ", ""));
                         try {
                             oto.SearchTerms.Add(WanaKana.ToRomaji(oto.Alias).ToLowerInvariant().Replace(" ", ""));
-                        } catch { }
+                        } catch (Exception e) {
+                            Log.Debug(e, $"WanaKana.ToRomaji failed for alias '{oto.Alias}'");
+                        }
                     });
             });
         }

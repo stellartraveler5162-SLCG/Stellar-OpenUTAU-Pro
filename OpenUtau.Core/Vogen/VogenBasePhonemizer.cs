@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML.OnnxRuntime;
@@ -72,7 +72,9 @@ namespace OpenUtau.Core.Vogen {
             var inputs = new List<NamedOnnxValue>();
             inputs.Add(NamedOnnxValue.CreateFromTensor("letters", x));
             var outputs = G2p.Run(inputs);
-            var phsTensor = outputs.First().AsTensor<string>();
+            var phsTensor = (outputs.FirstOrDefault()
+                ?? throw new Exception("Vogen G2P model produced no output"))
+                .AsTensor<string>();
             outputs.Dispose();
 
             var phs = new List<string>();
@@ -104,7 +106,8 @@ namespace OpenUtau.Core.Vogen {
             inputs.Add(NamedOnnxValue.CreateFromTensor("noteDursSec",
                 new DenseTensor<float>(noteDursSec.ToArray(), new int[] { noteDursSec.Count })));
             outputs = Prosody.Run(inputs);
-            var positions = outputs.First()
+            var positions = (outputs.FirstOrDefault()
+                ?? throw new Exception("Vogen Prosody model produced no output"))
                 .AsTensor<float>()
                 .Select(t => t - padding)
                 .ToArray();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -147,7 +147,9 @@ namespace OpenUtau.Core.Vogen {
                 new DenseTensor<long>(phDurs.ToArray(), new int[] { phonemes.Count })));
             using (var session = Onnx.getInferenceSession(Data.VogenRes.f0_man, OnnxRunnerChoice.CPU)) {
                 using var outputs = session.Run(inputs);
-                var f0Out = outputs.First().AsTensor<float>();
+                var f0Out = (outputs.FirstOrDefault()
+                    ?? throw new Exception("Vogen F0 model produced no output"))
+                    .AsTensor<float>();
                 var f0Path = Path.Join(PathManager.Inst.CachePath, $"vog-{phrase.hash:x16}-f0.npy");
                 var f0Array = new float[f0.Length];
                 for (int i = 0; i < f0.Length; ++i) {
@@ -171,7 +173,9 @@ namespace OpenUtau.Core.Vogen {
             double[,] ap;
             using (var session = Onnx.getInferenceSession(singer.model, OnnxRunnerChoice.CPU)) {
                 using var outputs = session.Run(inputs);
-                var mgc = outputs.First().AsTensor<float>().Select(f => (double)f).ToArray();
+                var mgc = (outputs.FirstOrDefault()
+                    ?? throw new Exception("Vogen synthesis model produced no output"))
+                    .AsTensor<float>().Select(f => (double)f).ToArray();
                 var bap = outputs.Last().AsTensor<float>().Select(f => (double)f).ToArray();
                 sp = Worldline.DecodeMgc(f0.Length, mgc, fftSize, fs);
                 ap = Worldline.DecodeBap(f0.Length, bap, fftSize, fs);

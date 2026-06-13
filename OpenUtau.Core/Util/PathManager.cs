@@ -26,7 +26,9 @@ namespace OpenUtau.Core {
                     if (Directory.Exists(oldCache)) {
                         Directory.Delete(oldCache, true);
                     }
-                } catch { }
+                } catch (Exception e) {
+                    Log.Debug(e, "Failed to delete old cache directory");
+                }
             } else if (OS.IsLinux()) {
                 string userHome = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 string dataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");

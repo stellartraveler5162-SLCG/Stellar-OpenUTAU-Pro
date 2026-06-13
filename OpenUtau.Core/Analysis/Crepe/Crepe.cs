@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.ML.OnnxRuntime;
@@ -33,7 +33,9 @@ namespace OpenUtau.Core.Analysis.Crepe {
             var inputs = new List<NamedOnnxValue>();
             inputs.Add(NamedOnnxValue.CreateFromTensor("input", input));
             var outputs = session.Run(inputs);
-            var activations = outputs.First().AsTensor<float>().ToArray();
+            var activations = (outputs.FirstOrDefault()
+                ?? throw new Exception("Crepe model produced no output"))
+                .AsTensor<float>().ToArray();
             int[] path = new int[length];
             GetPath(activations, path);
             float[] confidences = new float[length];
