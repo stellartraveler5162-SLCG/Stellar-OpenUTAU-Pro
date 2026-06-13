@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
@@ -350,7 +350,8 @@ namespace OpenUtau.App.ViewModels {
                 double leftBound = timeAxis.MsPosToTickPos(phoneme.PositionMs - phoneme.preutter) - viewModel.Part.position;
                 double rightBound = phoneme.End;
                 var note = phoneme.Parent;
-                if (leftBound >= rightTick || rightBound <= leftTick || note.Error || note.OverlapError) {
+                if (leftBound >= rightTick || rightBound <= leftTick || note.Error || note.OverlapError
+                    || phoneme.envelope == null || phoneme.envelope.data == null || phoneme.envelope.data.Count == 0) {
                     continue;
                 }
                 int p0Tick = timeAxis.MsPosToTickPos(phoneme.PositionMs + phoneme.envelope.data[0].X) - viewModel.Part.position;
