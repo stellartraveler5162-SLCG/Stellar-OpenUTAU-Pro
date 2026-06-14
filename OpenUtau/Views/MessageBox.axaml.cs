@@ -208,7 +208,7 @@ namespace OpenUtau.App.Views {
             };
             msgbox.Text.Text = text;
             var res = MessageBoxResult.Ok;
-            var tokenSource = new CancellationTokenSource();
+            using var tokenSource = new CancellationTokenSource();
 
             var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
             var task = Task.Run(() => {

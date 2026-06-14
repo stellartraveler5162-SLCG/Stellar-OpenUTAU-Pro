@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
@@ -57,28 +57,22 @@ namespace OpenUtau.App.Views {
         /// Returns a task that shows a loading popup for a task after a time delay (Default 250ms)
         /// </summary>
         public static async Task LoadForAsyncTask(Task loadingTask, Window parentWindow, int timeBeforeLoadingPopup = 250) {
-            CancellationTokenSource cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new CancellationTokenSource();
             Task loadingPopupTask = ShowLoadingAfterTime(cts.Token, parentWindow, 1);
 
             await loadingTask;
 
-            // Cancel loading box creation task early once window successfully created
             cts.Cancel();
-            // Close loading box if opened
             CloseLoadingWindow();
             isCurrentlyLoading = false;
         }
 
-        /// <summary>
-        /// Returns a task that shows a loading popup for a task after a time delay (Default 250ms)
-        /// </summary>
         public static async Task<T> LoadForAsyncTask<T>(Task<T> loadingTask, Window parentWindow, int timeBeforeLoadingPopup = 250) {
-            CancellationTokenSource cts = new CancellationTokenSource();
+            using CancellationTokenSource cts = new CancellationTokenSource();
             Task loadingPopupTask = ShowLoadingAfterTime(cts.Token, parentWindow, 1);
 
             await loadingTask;
 
-            // Cancel loading box creation task early once window successfully created
             cts.Cancel();
             // Close loading box if opened
             CloseLoadingWindow();
@@ -117,6 +111,8 @@ namespace OpenUtau.App.Views {
                 return;
             }
 
+            globalLoadingCancellationTokenSource?.Cancel();
+            globalLoadingCancellationTokenSource?.Dispose();
             globalLoadingCancellationTokenSource = new CancellationTokenSource();
             Task.Run(() => ShowLoadingAfterTime(globalLoadingCancellationTokenSource.Token, parentWindow, milisDelay), globalLoadingCancellationTokenSource.Token);
         }
@@ -128,6 +124,8 @@ namespace OpenUtau.App.Views {
             isCurrentlyLoading = false;
 
             globalLoadingCancellationTokenSource?.Cancel();
+            globalLoadingCancellationTokenSource?.Dispose();
+            globalLoadingCancellationTokenSource = null;
             CloseLoadingWindow();
         }
     }

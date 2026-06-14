@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -146,7 +146,7 @@ namespace OpenUtau.App.ViewModels {
             InstallToAdditionalSingersPath = Preferences.Default.InstallToAdditionalSingersPath;
             LoadDeepFolders = Preferences.Default.LoadDeepFolderSinger;
             ToolsManager.Inst.Initialize();
-            var pattern = new Regex(@"Strings\.([\w-]+)\.axaml");
+            var pattern = new Regex(@"Strings\.([\w-]+)\.axaml", RegexOptions.Compiled);
             Languages = App.GetLanguages().Keys
                 .Select(lang => CultureInfo.GetCultureInfo(lang))
                 .ToList();
