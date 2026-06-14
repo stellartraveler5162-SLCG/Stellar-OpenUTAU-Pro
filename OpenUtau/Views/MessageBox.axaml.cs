@@ -239,7 +239,7 @@ namespace OpenUtau.App.Views {
 
         private void SetTextWithLink(string text, StackPanel textPanel) {
             // @"http(s)?://([\w-]+\.)+[\w-]+(/[A-Z0-9-.,_/?%&=]*)?"
-            var regex = new Regex(@"http(s)?://[^(\r\n|\n| )]+", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            var regex = new Regex(@"http(s)?://[^(\r\n|\n| )]+", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
             var match = regex.Match(text);
             if (match.Success) {
                 textPanel.Children.Add(new TextBlock { Text = text.Substring(0, match.Index) });

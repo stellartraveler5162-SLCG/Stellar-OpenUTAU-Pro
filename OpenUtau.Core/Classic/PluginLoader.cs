@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,6 +8,7 @@ using Serilog;
 
 namespace OpenUtau.Classic {
     class PluginLoader {
+        static readonly Regex pluginNamePattern = new Regex("(.+)\\(&([A-Za-z0-9])\\)", RegexOptions.Compiled);
         public static Plugin[] LoadAll(string basePath) {
             Directory.CreateDirectory(basePath);
             var encoding = Encoding.GetEncoding("shift_jis");
@@ -31,8 +32,7 @@ namespace OpenUtau.Classic {
                         if (s.Length == 2) {
                             s[0] = s[0].ToLowerInvariant();
                             if (s[0] == "name") {
-                                Regex reg = new Regex("(.+)\\(&([A-Za-z0-9])\\)");
-                                var match = reg.Match(s[1]);
+                                var match = pluginNamePattern.Match(s[1]);
                                 if (match.Success) {
                                     plugin.Shortcut = match.Groups[2].Value;
                                     plugin.Name = match.Groups[1].Value + " (" + plugin.Shortcut + ")";
