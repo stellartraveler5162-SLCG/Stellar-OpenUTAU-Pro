@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -9,7 +9,7 @@ using YamlDotNet.Serialization;
 
 namespace OpenUtau.Core.Ustx {
     public class UNote : IComparable {
-        static readonly Regex phoneticHintPattern = new Regex(@"\[(.*)\]");
+        static readonly Regex phoneticHintPattern = new Regex(@"\[(.*)\]", RegexOptions.Compiled);
 
         /// <summary>
         /// Position of the note in ticks, relative to the beginning of the part.
