@@ -9,7 +9,7 @@ using OpenUtau.Core.Util;
 
 namespace OpenUtau.Api {
     public abstract class G2pPack : IG2p {
-        protected readonly static Regex kAllPunct = new Regex(@"^[\p{P}]$");
+        protected readonly static Regex kAllPunct = new Regex(@"^[\p{P}]$", RegexOptions.Compiled);
 
         protected Dictionary<string, int> GraphemeIndexes { get; set; }
         protected string[] Phonemes { get; set; }

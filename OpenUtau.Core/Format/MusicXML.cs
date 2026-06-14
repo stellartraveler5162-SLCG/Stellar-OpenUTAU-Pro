@@ -249,6 +249,7 @@ namespace OpenUtau.Core.Format
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.DtdProcessing = DtdProcessing.Parse;
             settings.MaxCharactersFromEntities = 1024;
+            settings.XmlResolver = null;
 
             using (var fs = new FileStream(xmlFile, FileMode.Open))
             using (var xmlReader = XmlReader.Create(fs, settings))

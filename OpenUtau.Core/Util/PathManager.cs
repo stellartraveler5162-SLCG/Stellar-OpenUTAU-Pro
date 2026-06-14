@@ -102,7 +102,7 @@ namespace OpenUtau.Core {
             }
         }
 
-        Regex invalid = new Regex("[\\x00-\\x1f<>:\"/\\\\|?*]|^(CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9]|CLOCK\\$)(\\.|$)|[\\.]$", RegexOptions.IgnoreCase);
+        static readonly Regex invalid = new Regex("[\\x00-\\x1f<>:\"/\\\\|?*]|^(CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9]|CLOCK\\$)(\\.|$)|[\\.]$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public string GetPartSavePath(string exportPath, string partName, int partNo) {
             var dir = Path.GetDirectoryName(exportPath);

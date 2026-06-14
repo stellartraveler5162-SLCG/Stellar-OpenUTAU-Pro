@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,7 +7,7 @@ using OpenUtau.Core.G2p;
 
 namespace OpenUtau.Core.G2p {
     public class RuleBasedFilipinoG2p : IG2p {
-        readonly static Regex kAllPunct = new Regex(@"^[\p{P}]$");
+        readonly static Regex kAllPunct = new Regex(@"^[\p{P}]$", RegexOptions.Compiled);
 
         private string[] validPhonemes =
             { "m", "n", "ng", "p", "t", "ty", "k", "q", "b", "d", "dy", "g", "s", "sy", "h", "l", "y", "w", "r", "vf", "a", "e", "i", "o", "u" };

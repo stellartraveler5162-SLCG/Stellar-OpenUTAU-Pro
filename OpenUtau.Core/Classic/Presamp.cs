@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -332,27 +332,27 @@ namespace Classic {
             Nums.ForEach(n => {
                 if (phoneme.Contains(n)) {
                     var split = phoneme.Split(n);
-                    suffix = new Regex(split[0]).Replace(phoneme, "", 1) + suffix;
+                    suffix = new Regex(Regex.Escape(split[0])).Replace(phoneme, "", 1) + suffix;
                     phoneme = split[0];
                 };
             });
             Appends.ForEach(a => {
                 if (phoneme.Contains(a)) {
                     var split = phoneme.Split(a);
-                    suffix = new Regex(split[0]).Replace(phoneme, "", 1) + suffix;
+                    suffix = new Regex(Regex.Escape(split[0])).Replace(phoneme, "", 1) + suffix;
                     phoneme = split[0];
                 };
             });
             Pitches.ForEach(p => {
                 if (phoneme.Contains(p)) {
                     var split = phoneme.Split(p);
-                    suffix = new Regex(split[0]).Replace(phoneme, "", 1) + suffix;
+                    suffix = new Regex(Regex.Escape(split[0])).Replace(phoneme, "", 1) + suffix;
                     phoneme = split[0];
                 };
             });
             if (phoneme.Contains("_")) {
                 var split = phoneme.Split("_");
-                suffix = new Regex(split[0]).Replace(phoneme, "", 1) + suffix;
+                suffix = new Regex(Regex.Escape(split[0])).Replace(phoneme, "", 1) + suffix;
                 phoneme = split[0];
             }
 

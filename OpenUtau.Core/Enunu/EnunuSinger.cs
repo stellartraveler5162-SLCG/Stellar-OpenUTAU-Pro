@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,6 +11,7 @@ using Serilog;
 
 namespace OpenUtau.Core.Enunu {
     public class EnunuSinger : USinger {
+        static readonly Regex hedPattern = new Regex("^\\s*QS\\s+\\\"(.*)\\\"\\s+\\{(.*)}", RegexOptions.Compiled);
         public override string Id => voicebank.Id;
         public override string Name => voicebank.Name;
         public override Dictionary<string, string> LocalizedNames => voicebank.LocalizedNames;
@@ -82,9 +83,8 @@ namespace OpenUtau.Core.Enunu {
             otos.Clear();
             try {
                 var hedPath = Path.Join(Location, enuconfig.questionPath);
-                var pattern = new Regex("^\\s*QS\\s+\\\"(.*)\\\"\\s+\\{(.*)}");
                 foreach (var line in File.ReadAllLines(hedPath)) {
-                    var m = pattern.Match(line);
+                    var m = hedPattern.Match(line);
                     if (!m.Success) {
                         continue;
                     }

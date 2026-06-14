@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -6,10 +6,10 @@ using System.Text.RegularExpressions;
 
 namespace OpenUtau.Core.Util {
     public static class SplitLyrics {
-        static Regex whitespace = new Regex(@"\s");
-        static Regex standalone = new Regex(
-            @"\p{IsCJKUnifiedIdeographs}|\p{IsHiragana}|\p{IsKatakana}|\p{IsHangulSyllables}");
-        static Regex contracted = new Regex(@"[ゃゅょぁぃぅぇぉャュョァィゥェォ]");
+        static readonly Regex whitespace = new Regex(@"\s", RegexOptions.Compiled);
+        static readonly Regex standalone = new Regex(
+            @"\p{IsCJKUnifiedIdeographs}|\p{IsHiragana}|\p{IsKatakana}|\p{IsHangulSyllables}", RegexOptions.Compiled);
+        static readonly Regex contracted = new Regex(@"[ゃゅょぁぃぅぇぉャュョァィゥェォ]", RegexOptions.Compiled);
 
         public static List<string> Split(string? text) {
             if(text == null){

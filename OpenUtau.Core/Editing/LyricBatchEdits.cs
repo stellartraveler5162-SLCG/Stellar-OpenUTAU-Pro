@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using OpenUtau.Core.Ustx;
@@ -148,7 +148,7 @@ namespace OpenUtau.Core.Editing {
     }
 
     public class RemovePhoneticHint : SingleNoteLyricEdit {
-        static readonly Regex phoneticHintPattern = new Regex(@"\[(.*)\]");
+        static readonly Regex phoneticHintPattern = new Regex(@"\[(.*)\]", RegexOptions.Compiled);
         public override string Name => "pianoroll.menu.lyrics.removephonetichint";
         protected override string Transform(string lyric) {
             var lrc = lyric;
