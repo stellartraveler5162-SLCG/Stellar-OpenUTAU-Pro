@@ -316,7 +316,7 @@ namespace OpenUtau.Core.Ustx {
                 return false;
             }
         }
-        public override int GetHashCode() => Id.GetHashCode();
+        public override int GetHashCode() => Id?.GetHashCode() ?? 0;
 
         public static USinger CreateMissing(string name) {
             return new USinger() {

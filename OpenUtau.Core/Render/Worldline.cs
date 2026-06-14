@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,10 +25,16 @@ namespace OpenUtau.Core.Render {
             try {
                 unsafe {
                     IntPtr buffer = IntPtr.Zero;
-                    int size = F0(samples, samples.Length, fs, framePeriod, method, ref buffer);
-                    var data = new double[size];
-                    Marshal.Copy(buffer, data, 0, size);
-                    return data;
+                    try {
+                        int size = F0(samples, samples.Length, fs, framePeriod, method, ref buffer);
+                        var data = new double[size];
+                        Marshal.Copy(buffer, data, 0, size);
+                        return data;
+                    } finally {
+                        if (buffer != IntPtr.Zero) {
+                            Marshal.FreeCoTaskMem(buffer);
+                        }
+                    }
                 }
             } catch (Exception e) {
                 Log.Error(e, "Failed to calculate f0.");
@@ -46,13 +52,18 @@ namespace OpenUtau.Core.Render {
                 int mgcSize = mgc.Length / f0Length;
                 unsafe {
                     IntPtr buffer = IntPtr.Zero;
-                    int size = DecodeMgc(f0Length, mgc, mgcSize, fftSize, fs, ref buffer);
-                    var data = new double[f0Length * size];
-                    Marshal.Copy(buffer, data, 0, data.Length);
-                    Marshal.FreeCoTaskMem(buffer);
-                    var output = new double[f0Length, size];
-                    Buffer.BlockCopy(data, 0, output, 0, data.Length * sizeof(double));
-                    return output;
+                    try {
+                        int size = DecodeMgc(f0Length, mgc, mgcSize, fftSize, fs, ref buffer);
+                        var data = new double[f0Length * size];
+                        Marshal.Copy(buffer, data, 0, data.Length);
+                        var output = new double[f0Length, size];
+                        Buffer.BlockCopy(data, 0, output, 0, data.Length * sizeof(double));
+                        return output;
+                    } finally {
+                        if (buffer != IntPtr.Zero) {
+                            Marshal.FreeCoTaskMem(buffer);
+                        }
+                    }
                 }
             } catch (Exception e) {
                 Log.Error(e, "Failed to decode.");
@@ -69,13 +80,18 @@ namespace OpenUtau.Core.Render {
             try {
                 unsafe {
                     IntPtr buffer = IntPtr.Zero;
-                    int size = DecodeBap(f0Length, bap, fftSize, fs, ref buffer);
-                    var data = new double[f0Length * size];
-                    Marshal.Copy(buffer, data, 0, data.Length);
-                    Marshal.FreeCoTaskMem(buffer);
-                    var output = new double[f0Length, size];
-                    Buffer.BlockCopy(data, 0, output, 0, data.Length * sizeof(double));
-                    return output;
+                    try {
+                        int size = DecodeBap(f0Length, bap, fftSize, fs, ref buffer);
+                        var data = new double[f0Length * size];
+                        Marshal.Copy(buffer, data, 0, data.Length);
+                        var output = new double[f0Length, size];
+                        Buffer.BlockCopy(data, 0, output, 0, data.Length * sizeof(double));
+                        return output;
+                    } finally {
+                        if (buffer != IntPtr.Zero) {
+                            Marshal.FreeCoTaskMem(buffer);
+                        }
+                    }
                 }
             } catch (Exception e) {
                 Log.Error(e, "Failed to decode.");
@@ -122,16 +138,18 @@ namespace OpenUtau.Core.Render {
             spEnv = np.ndarray(new Shape(num_frames, spSize), typeof(double));
             ap = np.ndarray(new Shape(num_frames, spSize), typeof(double));
 
-            Buffer.MemoryCopy(f0Ptr, f0Out.Data<double>().Address,
+            try {
+                Buffer.MemoryCopy(f0Ptr, f0Out.Data<double>().Address,
                 num_frames * sizeof(double), num_frames * sizeof(double));
             Buffer.MemoryCopy(spEnvPtr, spEnv.Data<double>().Address,
                 num_frames * spSize * sizeof(double), num_frames * spSize * sizeof(double));
             Buffer.MemoryCopy(apPtr, ap.Data<double>().Address,
                 num_frames * spSize * sizeof(double), num_frames * spSize * sizeof(double));
-
+        } finally {
             Marshal.FreeCoTaskMem(new IntPtr(f0Ptr));
             Marshal.FreeCoTaskMem(new IntPtr(spEnvPtr));
             Marshal.FreeCoTaskMem(new IntPtr(apPtr));
+        }
         }
 
         [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)]
@@ -166,16 +184,21 @@ namespace OpenUtau.Core.Render {
             double[] breathiness, double[] voicing) {
             unsafe {
                 IntPtr buffer = IntPtr.Zero;
-                int size = WorldSynthesis(
-                    f0, f0.Length,
-                    mgcOrSp, isMgc, mgcSize,
-                    bapOrAp, isBap, fftSize,
-                    framePeriod, fs, ref buffer,
-                    gender, tension, breathiness, voicing);
-                var data = new double[size];
-                Marshal.Copy(buffer, data, 0, size);
-                Marshal.FreeCoTaskMem(buffer);
-                return data;
+                try {
+                    int size = WorldSynthesis(
+                        f0, f0.Length,
+                        mgcOrSp, isMgc, mgcSize,
+                        bapOrAp, isBap, fftSize,
+                        framePeriod, fs, ref buffer,
+                        gender, tension, breathiness, voicing);
+                    var data = new double[size];
+                    Marshal.Copy(buffer, data, 0, size);
+                    return data;
+                } finally {
+                    if (buffer != IntPtr.Zero) {
+                        Marshal.FreeCoTaskMem(buffer);
+                    }
+                }
             }
         }
 
@@ -197,16 +220,21 @@ namespace OpenUtau.Core.Render {
             double[] breathiness, double[] voicing) {
             unsafe {
                 IntPtr buffer = IntPtr.Zero;
-                int size = WorldSynthesis(
-                    f0, f0.Length,
-                    mgcOrSp, isMgc, mgcSize,
-                    bapOrAp, isBap, fftSize,
-                    framePeriod, fs, ref buffer,
-                    gender, tension, breathiness, voicing);
-                var data = new double[size];
-                Marshal.Copy(buffer, data, 0, size);
-                Marshal.FreeCoTaskMem(buffer);
-                return data;
+                try {
+                    int size = WorldSynthesis(
+                        f0, f0.Length,
+                        mgcOrSp, isMgc, mgcSize,
+                        bapOrAp, isBap, fftSize,
+                        framePeriod, fs, ref buffer,
+                        gender, tension, breathiness, voicing);
+                    var data = new double[size];
+                    Marshal.Copy(buffer, data, 0, size);
+                    return data;
+                } finally {
+                    if (buffer != IntPtr.Zero) {
+                        Marshal.FreeCoTaskMem(buffer);
+                    }
+                }
             }
         }
 
@@ -362,11 +390,16 @@ namespace OpenUtau.Core.Render {
             try {
                 unsafe {
                     IntPtr buffer = IntPtr.Zero;
-                    int size = Resample(new IntPtr(&request), ref buffer);
-                    var data = new float[size];
-                    Marshal.Copy(buffer, data, 0, size);
-                    Marshal.FreeCoTaskMem(buffer);
-                    return data;
+                    try {
+                        int size = Resample(new IntPtr(&request), ref buffer);
+                        var data = new float[size];
+                        Marshal.Copy(buffer, data, 0, size);
+                        return data;
+                    } finally {
+                        if (buffer != IntPtr.Zero) {
+                            Marshal.FreeCoTaskMem(buffer);
+                        }
+                    }
                 }
             } finally {
                 requestWrapper.Dispose();
@@ -453,11 +486,16 @@ namespace OpenUtau.Core.Render {
 
             public float[] Synth() {
                 IntPtr buffer = IntPtr.Zero;
-                int size = PhraseSynthSynth(ptr, ref buffer, Log.Information);
-                var data = new float[size];
-                Marshal.Copy(buffer, data, 0, size);
-                Marshal.FreeCoTaskMem(buffer);
-                return data;
+                try {
+                    int size = PhraseSynthSynth(ptr, ref buffer, Log.Information);
+                    var data = new float[size];
+                    Marshal.Copy(buffer, data, 0, size);
+                    return data;
+                } finally {
+                    if (buffer != IntPtr.Zero) {
+                        Marshal.FreeCoTaskMem(buffer);
+                    }
+                }
             }
         }
 
