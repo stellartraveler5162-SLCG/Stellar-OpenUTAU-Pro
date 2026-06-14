@@ -240,11 +240,11 @@ namespace OpenUtau.Core.Render {
                 var source = tuple.Item2;
                 var request = tuple.Item3;
                 var task = phrase.renderer.Render(phrase, progress, request.trackNo, cancellation, true);
-                task.GetAwaiter().GetResult();
+                var result = task.GetAwaiter().GetResult();
                 if (cancellation.IsCancellationRequested) {
                     break;
                 }
-                source.SetSamples(task.Result.samples);
+                source.SetSamples(result.samples);
                 if (request.sources.All(s => s.HasSamples)) {
                     request.part.SetMix(request.mix);
                     DocManager.Inst.ExecuteCmd(new PartRenderedNotification(request.part));

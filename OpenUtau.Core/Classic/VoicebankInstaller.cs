@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -101,10 +101,10 @@ namespace OpenUtau.Classic {
                 .Where(e => !e.IsDirectory)
                 .Where(e => !e.Key.Contains('\\') && !e.Key.Contains('/') && e.Key != kInstallTxt)
                 .ToArray();
-            if (rootFiles.Count() > 0) {
+            if (rootFiles.Length > 0) {
                 // Need to create root folder.
                 basePath = Path.Combine(basePath, Path.GetFileNameWithoutExtension(archivePath).Trim());
-                if (rootFiles.Where(e => e.Key == kCharacterTxt).Count() == 0) {
+                if (!rootFiles.Any(e => e.Key == kCharacterTxt)) {
                     // Need to create character.txt.
                     touches.Add(Path.Combine(basePath, kCharacterTxt));
                 }
