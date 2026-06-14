@@ -1248,17 +1248,16 @@ namespace OpenUtau.Core {
             return group;
         }
 
-        public static void ModifyLyrics(Hashtable lyricSeparated,string lyric, Dictionary<string, string[]> firstConsonants, Dictionary<string, string[]> vowels, Dictionary<string, string[]> lastConsonants, string semivowelSeparator){
-            lyric += firstConsonants[(string)lyricSeparated[3]][0];
+        public static string ModifyLyrics(Hashtable lyricSeparated, Dictionary<string, string[]> firstConsonants, Dictionary<string, string[]> vowels, Dictionary<string, string[]> lastConsonants, string semivowelSeparator){
+            var result = firstConsonants[(string)lyricSeparated[3]][0];
                 if (vowels[(string)lyricSeparated[4]][1] != "") {
-                    // this vowel contains semivowel
-                    lyric += semivowelSeparator + vowels[(string)lyricSeparated[4]][1] + vowels[(string)lyricSeparated[4]][2];
+                    result += semivowelSeparator + vowels[(string)lyricSeparated[4]][1] + vowels[(string)lyricSeparated[4]][2];
                 }
                 else{
-                    lyric += " " + vowels[(string)lyricSeparated[4]][2];
+                    result += " " + vowels[(string)lyricSeparated[4]][2];
                 }
-                
-                lyric += lastConsonants[(string)lyricSeparated[5]][0];
+                result += lastConsonants[(string)lyricSeparated[5]][0];
+            return result;
         }
         
         public static void RomanizeNotes(Note[][] groups, bool _modifyLyrics = false, Dictionary<string, string[]> firstConsonants = null, Dictionary<string, string[]> vowels = null, Dictionary<string, string[]> lastConsonants = null, string semivowelSeparator = " ") {
@@ -1319,7 +1318,7 @@ namespace OpenUtau.Core {
             Hashtable lyricSeparated = Variate(prevNote_, currentNote[0], nextNote_);
 
             if (modifyLyrics) {
-                ModifyLyrics(lyricSeparated, lyric, firstConsonants, vowels, lastConsonants, semivowelSeparator);    
+                lyric = ModifyLyrics(lyricSeparated, firstConsonants, vowels, lastConsonants, semivowelSeparator);    
             }
             else {
                 lyric = Merge(lyricSeparated, 3);
@@ -1332,7 +1331,7 @@ namespace OpenUtau.Core {
             noteIdx++;
 
             }
-            Enumerable.Zip(groups, ResultLyrics.ToArray(), ChangeLyric).Last();
+            Enumerable.Zip(groups, ResultLyrics, ChangeLyric).Last();
         }
 
 
