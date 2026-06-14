@@ -343,7 +343,7 @@ namespace OpenUtau.App.Views {
             } else {
                 viewModel.SaveProject();
                 string message = ThemeManager.GetString("progress.saved");
-                message = string.Format(message, DateTime.Now);
+                message = string.Format(message, DateTime.UtcNow);
                 DocManager.Inst.ExecuteCmd(new ProgressBarNotification(0, message));
             }
         }

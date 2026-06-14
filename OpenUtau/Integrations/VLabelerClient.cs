@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -76,7 +76,7 @@ namespace OpenUtau.Integrations {
         }
 
         private static long Epoch() {
-            return (long)(DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMilliseconds;
+            return DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         }
 
         private static string HashHex(string s) {

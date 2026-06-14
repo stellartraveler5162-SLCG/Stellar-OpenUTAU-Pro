@@ -322,7 +322,9 @@ namespace OpenUtau.App.Controls {
                     }
                 }
                 DocManager.Inst.ExecuteCmd(new GotoOtoNotification(singer, oto));
-            } catch { }
+            } catch (Exception ex) {
+                Log.Warning(ex, "Failed to navigate to Oto");
+            }
         }
 
         void OnMenuSearchNote(object sender, RoutedEventArgs args) {

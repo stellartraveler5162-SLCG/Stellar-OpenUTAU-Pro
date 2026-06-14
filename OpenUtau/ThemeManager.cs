@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
@@ -7,6 +8,7 @@ using Avalonia.Styling;
 using OpenUtau.App.Controls;
 using OpenUtau.Core.Util;
 using ReactiveUI;
+using Serilog;
 
 namespace OpenUtau.App {
     class ThemeChangedEvent { }
@@ -171,7 +173,9 @@ namespace OpenUtau.App {
                 resDict["SelectedTrackCenterKeyBrush"] = tcolor.AccentColorCenterKey;
 
                 SetKeyboardBrush();
-            } catch { }
+            } catch (Exception ex) {
+                Log.Warning(ex, "Failed to apply theme");
+            }
             MessageBus.Current.SendMessage(new ThemeChangedEvent());
         }
         private static void SetKeyboardBrush() {

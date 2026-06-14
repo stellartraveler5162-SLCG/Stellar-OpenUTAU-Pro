@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -162,6 +162,9 @@ namespace OpenUtau.Classic {
 
         public void ApplyEnvelope(float[] samples) {
             var envelope = EnvelopeMsToSamples();
+            if (envelope.Count == 0) {
+                return;
+            }
             int nextPoint = 0;
             for (int i = 0; i < samples.Length; ++i) {
                 while (nextPoint < envelope.Count && i > envelope[nextPoint].X) {

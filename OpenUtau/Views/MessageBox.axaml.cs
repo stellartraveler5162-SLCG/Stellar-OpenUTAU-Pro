@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -158,7 +158,9 @@ namespace OpenUtau.App.Views {
                 btn.Click += (_, __) => {
                     try {
                         GetTopLevel(parent)?.Clipboard?.SetTextAsync(text + "\n" + stackTrace);
-                    } catch { }
+                    } catch (Exception ex) {
+                        Log.Warning(ex, "Failed to copy to clipboard");
+                    }
                 };
                 msgbox.Buttons.Children.Add(btn);
             }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -98,7 +98,9 @@ namespace OpenUtau.Api {
                 inputs.Add(NamedOnnxValue.CreateFromTensor("tgt", tgt));
                 inputs.Add(NamedOnnxValue.CreateFromTensor("t", t));
                 var outputs = Session.Run(inputs);
-                var pred = outputs.First().AsTensor<int>()[0];
+                var pred = (outputs.FirstOrDefault()
+                    ?? throw new Exception("G2p model produced no output"))
+                    .AsTensor<int>()[0];
                 if (pred != 2) {
                     var newTgt = new DenseTensor<int>(new int[] { 1, tgt.Dimensions[1] + 1 });
                     for (int i = 0; i < tgt.Dimensions[1]; ++i) {

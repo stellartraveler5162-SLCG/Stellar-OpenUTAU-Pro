@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -9,6 +9,7 @@ using OpenUtau.Classic;
 using OpenUtau.Core;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Serilog;
 using SharpCompress.Archives;
 using SharpCompress.Common;
 using SharpCompress.Readers;
@@ -58,7 +59,9 @@ namespace OpenUtau.App.ViewModels {
                         if (!string.IsNullOrEmpty(config?.TextFileEncoding)) {
                             try {
                                 TextEncoding = Encoding.GetEncoding(config.TextFileEncoding);
-                            } catch { }
+                            } catch (Exception ex) {
+                                Log.Warning(ex, $"Invalid text encoding: {config.TextFileEncoding}");
+                            }
                         }
                     }
                 });
