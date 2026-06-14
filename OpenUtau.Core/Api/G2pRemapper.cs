@@ -35,7 +35,7 @@ namespace OpenUtau.Api {
             if (phonemes == null) {
                 return null;
             }
-            phonemes = phonemes.Clone() as string[];
+            phonemes = (string[])phonemes.Clone();
             for (int i = 0; i < phonemes.Length; ++i) {
                 if (replacements.TryGetValue(phonemes[i], out var replacement)) {
                     phonemes[i] = replacement;

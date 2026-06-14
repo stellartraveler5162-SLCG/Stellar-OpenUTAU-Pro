@@ -1419,13 +1419,16 @@ namespace OpenUtau.Core {
        /// 섹션과 키 이름을 입력받고, bool 값이 존재하면 넘어가고 존재하지 않으면 defaultValue 값으로 덮어씌운다 
        /// /// </summary>
         protected void SetOrReadThisValue(string sectionName, string keyName, bool defaultValue, out bool resultValue) {
-            List<IniLine> iniLines = blocks.Find(block => block.header == $"[{sectionName}]").lines;
+            var block = blocks.Find(block => block.header == $"[{sectionName}]");
+            var iniLines = block?.lines;
             if (! iniSetting.ContainsKey(sectionName)){
                     iniSetting.Add(sectionName, new Hashtable());
                 }
             if (iniLines != null) {
-                string result = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName).line.Trim().Split("=")[1];
-                if (result != null) {
+                var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
+                var parts = foundLine?.line?.Trim().Split("=");
+                 var result = (parts != null && parts.Length > 1) ? parts[1] : null;
+                 if (result != null) {
                     try{
                         ((Hashtable)iniSetting[sectionName]).Add(keyName, result);
                     }
@@ -1470,12 +1473,15 @@ namespace OpenUtau.Core {
        /// </summary>
         protected string SetOrReadThisValue(string sectionName, string keyName, string defaultValue) {
             string resultValue;
-            List<IniLine> iniLines = blocks.Find(block => block.header == $"[{sectionName}]").lines;
+            var foundBlock = blocks.Find(block => block.header == $"[{sectionName}]");
+             var iniLines = foundBlock?.lines;
             if (! iniSetting.ContainsKey(sectionName)){
                     iniSetting.Add(sectionName, new Hashtable());
                 }
             if (iniLines != null) {
-                string result = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName).line.Trim().Split("=")[1];
+                 var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
+                var parts = foundLine?.line?.Trim().Split("=");
+                var result = (parts != null && parts.Length > 1) ? parts[1] : null;
                 if (result != null) {
                     try{
                         ((Hashtable)iniSetting[sectionName]).Add(keyName, result);
@@ -1520,12 +1526,15 @@ namespace OpenUtau.Core {
        /// 섹션과 키 이름을 입력받고, int 값이 존재하면 넘어가고 존재하지 않으면 defaultValue 값으로 덮어씌운다 
        /// </summary>
        protected void SetOrReadThisValue(string sectionName, string keyName, int defaultValue, out int resultValue) {
-           List<IniLine> iniLines = blocks.Find(block => block.header == $"[{sectionName}]").lines;
+           var block = blocks.Find(block => block.header == $"[{sectionName}]");
+            var iniLines = block?.lines;
             if (! iniSetting.ContainsKey(sectionName)){
                     iniSetting.Add(sectionName, new Hashtable());
                 }
             if (iniLines != null) {
-                string result = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName).line.Trim().Split("=")[1];
+                var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
+                var parts = foundLine?.line?.Trim().Split("=");
+                var result = (parts != null && parts.Length > 1) ? parts[1] : null;
                 if (result != null && int.TryParse(result, out var resultInt)) {
                     try{
                         ((Hashtable)iniSetting[sectionName]).Add(keyName, result);

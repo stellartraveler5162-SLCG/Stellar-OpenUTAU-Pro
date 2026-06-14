@@ -256,7 +256,7 @@ namespace OpenUtau.Core.Format
             {
                 XmlSerializer s = new XmlSerializer(typeof(MusicXMLSchema.ScorePartwise));
 
-                var score = s.Deserialize(xmlReader) as MusicXMLSchema.ScorePartwise;
+                var score = (MusicXMLSchema.ScorePartwise)s.Deserialize(xmlReader);
                 return score;
             }
         }
