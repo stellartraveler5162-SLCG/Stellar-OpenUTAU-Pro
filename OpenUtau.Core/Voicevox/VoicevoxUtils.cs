@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -177,8 +177,8 @@ namespace OpenUtau.Core.Voicevox {
         public const double fps = 93.75;
         public const string defaultID = "6000";
         // Phonemes and dictionaries
-        public static Dictionary_list dic = new Dictionary_list();
-        public static Phoneme_list phoneme_List = new Phoneme_list();
+        public static readonly Dictionary_list dic = new Dictionary_list();
+        public static readonly Phoneme_list phoneme_List = new Phoneme_list();
 
         public static VoicevoxSynthParams VoicevoxVoiceBase(VoicevoxQueryMain qNotes, string id) {
             var queryurl = new VoicevoxURL() { method = "POST", path = "/sing_frame_audio_query", query = new Dictionary<string, string> { { "speaker", id } }, body = JsonConvert.SerializeObject(qNotes) };
