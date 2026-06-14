@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -14,7 +14,7 @@ namespace OpenUtau {
 
         public static void OpenFolder(string path) {
             if (Directory.Exists(path)) {
-                Process.Start(new ProcessStartInfo {
+                using var process = Process.Start(new ProcessStartInfo {
                     FileName = GetOpener(),
                     Arguments = GetWrappedPath(path),
                 });
@@ -25,12 +25,12 @@ namespace OpenUtau {
             if (File.Exists(path)) {
                 var wrappedPath = GetWrappedPath(path);
                 if (IsWindows()) {
-                    Process.Start(new ProcessStartInfo {
+                    using var process = Process.Start(new ProcessStartInfo {
                         FileName = GetOpener(),
                         Arguments = $"/select, {wrappedPath}",
                     });
                 } else if (IsMacOS()) {
-                    Process.Start(new ProcessStartInfo {
+                    using var process = Process.Start(new ProcessStartInfo {
                         FileName = GetOpener(),
                         Arguments = $" -R {wrappedPath}",
                     });
@@ -41,7 +41,7 @@ namespace OpenUtau {
         }
 
         public static void OpenWeb(string url) {
-            Process.Start(new ProcessStartInfo {
+            using var process = Process.Start(new ProcessStartInfo {
                 FileName = GetOpener(),
                 Arguments = url,
             });

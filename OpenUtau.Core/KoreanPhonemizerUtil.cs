@@ -1546,15 +1546,15 @@ namespace OpenUtau.Core {
                 }
             }
             else{
-                StreamWriter writer = new StreamWriter(filePath);
+                using (var writer = new StreamWriter(filePath)) {
                 ((Hashtable)iniSetting[sectionName]).Add(keyName, defaultValue);
                 resultValue = defaultValue;
                 try{
                     writer.Write(ConvertSettingsToString());
-                    writer.Close();
                 }
                 catch (IOException e){
                     Log.Error(e, $"[{iniFileName}] Failed to Write new {iniFileName}.");
+                }
                 }
                 Log.Information($"[{iniFileName}] failed to parse setting '{keyName}', modified {defaultValue} as default value.");
             }
