@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
@@ -58,15 +58,15 @@ namespace OpenUtau.App.ViewModels {
         public bool ShowIcon { get => Preferences.Default.ShowIcon; }
         public bool ShowGhostNotes { get => Preferences.Default.ShowGhostNotes; }
         public bool UseTrackColor { get => Preferences.Default.UseTrackColor; }
-        public bool DegreeStyle0 { get => Preferences.Default.DegreeStyle == 0 ? true : false; }
-        public bool DegreeStyle1 { get => Preferences.Default.DegreeStyle == 1 ? true : false; }
-        public bool DegreeStyle2 { get => Preferences.Default.DegreeStyle == 2 ? true : false; }
-        public bool LockStartTime0 { get => Preferences.Default.LockStartTime == 0 ? true : false; }
-        public bool LockStartTime1 { get => Preferences.Default.LockStartTime == 1 ? true : false; }
-        public bool LockStartTime2 { get => Preferences.Default.LockStartTime == 2 ? true : false; }
-        public bool PlaybackAutoScroll0 { get => Preferences.Default.PlaybackAutoScroll == 0 ? true : false; }
-        public bool PlaybackAutoScroll1 { get => Preferences.Default.PlaybackAutoScroll == 1 ? true : false; }
-        public bool PlaybackAutoScroll2 { get => Preferences.Default.PlaybackAutoScroll == 2 ? true : false; }
+        public bool DegreeStyle0 { get => Preferences.Default.DegreeStyle == 0; }
+        public bool DegreeStyle1 { get => Preferences.Default.DegreeStyle == 1; }
+        public bool DegreeStyle2 { get => Preferences.Default.DegreeStyle == 2; }
+        public bool LockStartTime0 { get => Preferences.Default.LockStartTime == 0; }
+        public bool LockStartTime1 { get => Preferences.Default.LockStartTime == 1; }
+        public bool LockStartTime2 { get => Preferences.Default.LockStartTime == 2; }
+        public bool PlaybackAutoScroll0 { get => Preferences.Default.PlaybackAutoScroll == 0; }
+        public bool PlaybackAutoScroll1 { get => Preferences.Default.PlaybackAutoScroll == 1; }
+        public bool PlaybackAutoScroll2 { get => Preferences.Default.PlaybackAutoScroll == 2; }
         public bool PianoRollDetached { get => Preferences.Default.DetachPianoRoll; }
         public bool ShowPhonemizerTags {
             get => Preferences.Default.ShowPhonemizerTags;

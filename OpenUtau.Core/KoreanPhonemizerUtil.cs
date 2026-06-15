@@ -1262,7 +1262,7 @@ namespace OpenUtau.Core {
 
             int noteIdx = 0;
             string lyric;
-            bool modifyLyrics = (!_modifyLyrics || firstConsonants == null || vowels == null || lastConsonants == null) ? false : true;
+            bool modifyLyrics = _modifyLyrics && firstConsonants != null && vowels != null && lastConsonants != null;
             
             Note[] currentNote;
             Note[]? prevNote = null;

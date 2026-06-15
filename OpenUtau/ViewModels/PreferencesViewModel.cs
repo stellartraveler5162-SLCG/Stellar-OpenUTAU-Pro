@@ -329,7 +329,7 @@ namespace OpenUtau.App.ViewModels {
             this.WhenAnyValue(vm => vm.NumRenderThreads)
                 .Subscribe(index => {
                     Preferences.Default.NumRenderThreads = index;
-                    HighThreads = index > SafeMaxThreadCount ? true : false;
+                    HighThreads = index > SafeMaxThreadCount;
                     Preferences.Save();
                 });
             this.WhenAnyValue(vm => vm.DefaultRenderer)

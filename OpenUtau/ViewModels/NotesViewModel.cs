@@ -248,7 +248,7 @@ namespace OpenUtau.App.ViewModels {
                     CursorTool = true;
                     DrawPitchTool = false; OverwritePitchTool = false;
                     DrawLinePitchTool = false; OverwriteLinePitchTool = false;
-                    PenTool = Preferences.Default.PenPlusDefault ? false : true;
+                    PenTool = !Preferences.Default.PenPlusDefault;
                     PenPlusTool = Preferences.Default.PenPlusDefault;
                     EraserTool = false;
                     KnifeTool = false;

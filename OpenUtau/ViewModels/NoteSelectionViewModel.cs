@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -144,7 +144,7 @@ namespace OpenUtau.App.ViewModels {
             }
         }
         public bool SelectNone() {
-            var ret = IsEmpty ? false : true;
+            var ret = !IsEmpty;
             TempSelectedNotes.Clear();
             _notes.Clear();
             IsReversed = false;

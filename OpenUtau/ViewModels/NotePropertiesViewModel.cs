@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -189,7 +189,7 @@ namespace OpenUtau.App.ViewModels {
                     PortamentoLength = NotePresets.Default.DefaultPortamento.PortamentoLength;
                     PortamentoStart = NotePresets.Default.DefaultPortamento.PortamentoStart;
                 }
-                VibratoEnable = note.vibrato.length == 0 ? false : true;
+                VibratoEnable = note.vibrato.length != 0;
                 VibratoLength = note.vibrato.length;
                 VibratoPeriod = note.vibrato.period;
                 VibratoDepth = note.vibrato.depth;
