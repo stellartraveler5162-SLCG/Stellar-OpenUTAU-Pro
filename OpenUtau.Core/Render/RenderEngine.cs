@@ -230,6 +230,7 @@ namespace OpenUtau.Core.Render {
                 var orderedTuples = tuples
                     .Where(tuple => tuple.Item1.end > startTick)
                     .OrderBy(tuple => tuple.Item1.end)
+                    .ThenBy(tuple => tuple.Item1.position)
                     .Concat(tuples.Where(tuple => tuple.Item1.end <= startTick))
                     .ToArray();
                 tuples = orderedTuples;

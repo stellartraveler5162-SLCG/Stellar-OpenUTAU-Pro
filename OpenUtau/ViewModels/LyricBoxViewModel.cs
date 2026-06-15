@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
@@ -80,25 +80,26 @@ namespace OpenUtau.App.ViewModels {
                 return;
             }
             if (!IsAliasBox) {
-                var note = NoteOrPhoneme as LyricBoxNote;
-                if (Text == note!.Unwrap().lyric) {
+                if (NoteOrPhoneme is LyricBoxNote note && Text == note.Unwrap().lyric) {
                     return;
                 }
             } else {
-                var phoneme = NoteOrPhoneme as LyricBoxPhoneme;
-                if (Text == phoneme!.Unwrap().phoneme) {
+                if (NoteOrPhoneme is LyricBoxPhoneme phoneme && Text == phoneme.Unwrap().phoneme) {
                     return;
                 }
             }
             if (IsAliasBox) {
                 DocManager.Inst.StartUndoGroup("command.phoneme.edit");
-                var phoneme = (NoteOrPhoneme as LyricBoxPhoneme)!.Unwrap();
+                if (NoteOrPhoneme is not LyricBoxPhoneme lbp) return;
+                var phoneme = lbp.Unwrap();
                 var note = phoneme.Parent;
                 int index = phoneme.index;
                 DocManager.Inst.ExecuteCmd(new ChangePhonemeAliasCommand(Part, note.Extends ?? note, index, Text));
             } else {
                 DocManager.Inst.StartUndoGroup("command.note.lyric");
-                DocManager.Inst.ExecuteCmd(new ChangeNoteLyricCommand(Part, (NoteOrPhoneme as LyricBoxNote)!.Unwrap(), Text));
+                if (NoteOrPhoneme is LyricBoxNote lbn) {
+                    DocManager.Inst.ExecuteCmd(new ChangeNoteLyricCommand(Part, lbn.Unwrap(), Text));
+                }
             }
             DocManager.Inst.EndUndoGroup();
         }

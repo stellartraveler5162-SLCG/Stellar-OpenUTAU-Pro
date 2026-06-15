@@ -108,6 +108,7 @@ public class RmvpeResult {
     static List<NoteSegment> BuildSegments(UProject project, UVoicePart part) {
         return part.notes
             .OrderBy(note => note.position)
+            .ThenBy(note => note.duration)
             .Select(note => {
                 var onsetTick = part.position + note.position;
                 var endTick = part.position + note.End;

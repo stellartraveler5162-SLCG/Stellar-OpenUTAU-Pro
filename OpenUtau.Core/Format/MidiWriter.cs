@@ -1,4 +1,4 @@
-﻿using Melanchall.DryWetMidi.Common;
+using Melanchall.DryWetMidi.Common;
 using System.Collections.Generic;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
@@ -56,7 +56,9 @@ namespace OpenUtau.Core.Format {
             var ReadingSettings = BaseReadingSettings();
             ReadingSettings.TextEncoding = lyricEncoding;
             var midi = MidiFile.Read(file, ReadingSettings);
-            TicksPerQuarterNoteTimeDivision timeDivision = midi.TimeDivision as TicksPerQuarterNoteTimeDivision;
+            if (midi.TimeDivision is not TicksPerQuarterNoteTimeDivision timeDivision) {
+                throw new InvalidDataException("MIDI file uses unsupported time division format (SMPTE).");
+            }
             var PPQ = timeDivision.TicksPerQuarterNote;
             //Parse tempo
             var tempoMap = midi.GetTempoMap();

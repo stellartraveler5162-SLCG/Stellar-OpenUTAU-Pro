@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -118,7 +118,9 @@ namespace OpenUtau.App.Views {
         }
 
         async void OnMerge(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) {
+                return;
+            }
             if (viewModel.Singer == null) {
                 return;
             }

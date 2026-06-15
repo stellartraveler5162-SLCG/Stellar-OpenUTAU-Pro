@@ -12,7 +12,7 @@ namespace OpenUtau.Api {
         public string language;
 
         public Phonemizer Create() {
-            var phonemizer = Activator.CreateInstance(type) as Phonemizer;
+            var phonemizer = (Phonemizer)Activator.CreateInstance(type);
             phonemizer.Name = name;
             phonemizer.Tag = tag;
             phonemizer.Language = language;

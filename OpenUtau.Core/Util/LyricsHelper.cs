@@ -23,7 +23,7 @@ namespace OpenUtau.Core.Util {
                 Current = null;
                 return;
             }
-            Current = Activator.CreateInstance(t) as ILyricsHelper;
+            Current = (ILyricsHelper)Activator.CreateInstance(t);
         }
 
         public Type GetPreferred() {
