@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace VocalShaper
@@ -202,10 +202,9 @@ namespace VocalShaper
         internal static double[] Noise(double g, int length)
         {
             double[] noise = new double[length];
-            Random random = new Random();
             for (int i = 0; i < length; i++)
             {
-                noise[i]=(float)(random.NextDouble() - 0.5) * 2 * g;
+                noise[i]=(float)(Random.Shared.NextDouble() - 0.5) * 2 * g;
             }
             return noise;
         }

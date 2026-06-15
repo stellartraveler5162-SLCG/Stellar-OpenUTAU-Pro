@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -354,17 +354,16 @@ namespace OpenUtau.Core.Editing {
             docManager.StartUndoGroup("command.batch.note", true);
             const int maxTick = 20;
             int delta;
-            Random random = new Random();
             foreach (var note in notes) {
-                if (random.Next(2) == 0) { // +
+                if (Random.Shared.Next(2) == 0) { // +
                     var max = Math.Min(maxTick, (int)Math.Round(note.duration / 4f));
-                    delta = random.Next(max / 4, max + 1);
+                    delta = Random.Shared.Next(max / 4, max + 1);
                 } else { // -
                     var max = maxTick;
                     if (note.Prev != null && note.Prev.End == note.position) {
                         max = Math.Min(maxTick, (int)Math.Round(note.Prev.duration / 4f));
                     }
-                    delta = - random.Next(max / 4, max + 1);
+                    delta = - Random.Shared.Next(max / 4, max + 1);
                 }
                 
                 if (note.Prev != null && note.Prev.End == note.position) {
@@ -392,22 +391,21 @@ namespace OpenUtau.Core.Editing {
             }
             docManager.StartUndoGroup("command.batch.note", true);
             const int maxTick = 20 ;
-            Random random = new Random();
             foreach (var note in notes) {
                 for (int i = 0; i < part.phonemes.Count; i++) {
                     UPhoneme phoneme = part.phonemes[i];
                     if (phoneme.Parent == note) {
-                        if (random.Next(2) == 0) { // +
+                        if (Random.Shared.Next(2) == 0) { // +
                             var tempo = project.timeAxis.GetBpmAtTick(phoneme.position);
                             var max = Math.Min(maxTick, (int)Math.Round(MusicMath.TempoTickToMs(tempo, phoneme.Duration) / 4));
-                            docManager.ExecuteCmd(new PhonemeOffsetCommand(part, note, phoneme.index, random.Next(max / 4, max + 1)));
+                            docManager.ExecuteCmd(new PhonemeOffsetCommand(part, note, phoneme.index, Random.Shared.Next(max / 4, max + 1)));
                         } else { // -
                             var max = maxTick;
                             if (phoneme.Prev != null && phoneme.Prev.End == phoneme.position) {
                                 var tempo = project.timeAxis.GetBpmAtTick(part.phonemes[i - 1].position);
                                 max = Math.Min(maxTick, (int)Math.Round(MusicMath.TempoTickToMs(tempo, part.phonemes[i - 1].Duration) / 4));
                             }
-                            var delta = random.Next(max / 4, max + 1);
+                            var delta = Random.Shared.Next(max / 4, max + 1);
                             docManager.ExecuteCmd(new PhonemeOffsetCommand(part, note, phoneme.index, -delta));
                         }
                     }
@@ -433,12 +431,11 @@ namespace OpenUtau.Core.Editing {
                 return;
             }
             docManager.StartUndoGroup("command.batch.note", true);
-            Random random = new Random();
             foreach (var note in notes) {
-                if (random.Next(2) == 0) { // +
-                    docManager.ExecuteCmd(new ChangeNoteTuningCommand(part, note, random.Next(max / 4, max + 1)));
+                if (Random.Shared.Next(2) == 0) { // +
+                    docManager.ExecuteCmd(new ChangeNoteTuningCommand(part, note, Random.Shared.Next(max / 4, max + 1)));
                 } else { // -
-                    var delta = random.Next(max / 4, max + 1);
+                    var delta = Random.Shared.Next(max / 4, max + 1);
                     docManager.ExecuteCmd(new ChangeNoteTuningCommand(part, note, -delta));
                 }
             }
