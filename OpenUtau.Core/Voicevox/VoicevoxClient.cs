@@ -8,35 +8,33 @@ using Serilog;
 
 namespace OpenUtau.Core.Voicevox {
     class VoicevoxClient : Util.SingletonBase<VoicevoxClient> {
+        static readonly HttpClient httpClient = new HttpClient();
+
         internal Tuple<string, byte[]> SendRequest(VoicevoxURL voicevoxURL) {
             return Task.Run(() => SendRequestAsync(voicevoxURL)).GetAwaiter().GetResult();
         }
 
         internal async Task<Tuple<string, byte[]>> SendRequestAsync(VoicevoxURL voicevoxURL) {
             try {
-                using (var client = new HttpClient()) {
-                    using (var request = new HttpRequestMessage(new HttpMethod(voicevoxURL.method.ToUpperInvariant()), this.RequestURL(voicevoxURL))) {
-                        request.Headers.TryAddWithoutValidation("accept", voicevoxURL.accept);
+                using (var request = new HttpRequestMessage(new HttpMethod(voicevoxURL.method.ToUpperInvariant()), RequestURL(voicevoxURL))) {
+                    request.Headers.TryAddWithoutValidation("accept", voicevoxURL.accept);
+                    request.Content = new StringContent(voicevoxURL.body);
+                    request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
-                        request.Content = new StringContent(voicevoxURL.body);
-                        request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
-
-                        Log.Information($"VoicevoxProcess sending {request}");
-                        var response = await client.SendAsync(request);
-                        Log.Information($"VoicevoxProcess received");
-                        string str = await response.Content.ReadAsStringAsync();
-                        //May not fit json format
-                        if (!str.StartsWith("{") || !str.EndsWith("}")) {
-                            str = "{ \"json\":" + str + "}";
-                        }
-                        Log.Information($"VoicevoxResponse StatusCode :{response.StatusCode}");
-                        return new Tuple<string, byte[]>(str, await response.Content.ReadAsByteArrayAsync());
+                    Log.Information($"VoicevoxProcess sending {request}");
+                    var response = await httpClient.SendAsync(request);
+                    Log.Information($"VoicevoxProcess received");
+                    string str = await response.Content.ReadAsStringAsync();
+                    if (!str.StartsWith("{") || !str.EndsWith("}")) {
+                        str = "{ \"json\":" + str + "}";
                     }
+                    Log.Information($"VoicevoxResponse StatusCode :{response.StatusCode}");
+                    return new Tuple<string, byte[]>(str, await response.Content.ReadAsByteArrayAsync());
                 }
             } catch (Exception ex) {
-                Log.Error($"{ex}");
+                Log.Error(ex, "VoicevoxClient request failed");
+                throw;
             }
-            return new Tuple<string, byte[]>("", new byte[0]);
         }
 
         public string RequestURL(VoicevoxURL voicevoxURL) {

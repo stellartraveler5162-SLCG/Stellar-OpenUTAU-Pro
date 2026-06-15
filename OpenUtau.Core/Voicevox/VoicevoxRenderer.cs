@@ -122,7 +122,7 @@ namespace OpenUtau.Core.Voicevox {
                                 var queryurl = new VoicevoxURL() { method = "POST", path = "/frame_synthesis", query = new Dictionary<string, string> { { "speaker", speaker.ToString() } }, body = JsonConvert.SerializeObject(vsParams), accept = "audio/wav" };
                                 var response = VoicevoxClient.Inst.SendRequest(queryurl);
                                 byte[] bytes = null;
-                                if (!response.Item2.Equals(null)) {
+                                if (response.Item2 != null) {
                                     bytes = response.Item2;
                                 } else if (!string.IsNullOrEmpty(response.Item1)) {
                                     var jObj = JObject.Parse(response.Item1);
