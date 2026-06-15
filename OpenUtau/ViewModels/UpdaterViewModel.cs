@@ -136,34 +136,37 @@ namespace OpenUtau.App.ViewModels {
             UpdateAvailable = false;
             updateAccepted = true;
 
-            AppCastItem? downloadedItem = null;
-            sparkle.CloseApplication += () => {
-                Log.Information($"shutting down for update");
-                CloseApplication?.Invoke();
-                Log.Information($"shut down for update");
-            };
-            sparkle.DownloadStarted += (item, path) => {
-                Log.Information($"download started {path}");
-                downloadedItem = item;
-            };
-            sparkle.DownloadFinished += (item, path) => {
-                Log.Information($"download finished {path}");
-                // `item` is somehow null in this callback, likely a NetSparkle bug.
-                item = item ?? downloadedItem;
-                if (item == null) {
-                    Log.Error("DownloadFinished unexpected null item.");
-                } else {
-                    sparkle.InstallUpdate(downloadedItem, path);
-                }
-            };
-            sparkle.DownloadHadError += (item, path, e) => {
-                Log.Error(e, $"download error {path}");
-            };
-            sparkle.DownloadMadeProgress += (sender, item, e) => {
-                UpdaterStatus = $"{e.ProgressPercentage}%";
-            };
+            try {
+                AppCastItem? downloadedItem = null;
+                sparkle.CloseApplication += () => {
+                    Log.Information($"shutting down for update");
+                    CloseApplication?.Invoke();
+                    Log.Information($"shut down for update");
+                };
+                sparkle.DownloadStarted += (item, path) => {
+                    Log.Information($"download started {path}");
+                    downloadedItem = item;
+                };
+                sparkle.DownloadFinished += (item, path) => {
+                    Log.Information($"download finished {path}");
+                    item = item ?? downloadedItem;
+                    if (item == null) {
+                        Log.Error("DownloadFinished unexpected null item.");
+                    } else {
+                        sparkle.InstallUpdate(downloadedItem, path);
+                    }
+                };
+                sparkle.DownloadHadError += (item, path, e) => {
+                    Log.Error(e, $"download error {path}");
+                };
+                sparkle.DownloadMadeProgress += (sender, item, e) => {
+                    UpdaterStatus = $"{e.ProgressPercentage}%";
+                };
 
-            await sparkle.InitAndBeginDownload(updateInfo.Updates.First());
+                await sparkle.InitAndBeginDownload(updateInfo.Updates.First());
+            } catch (Exception e) {
+                Log.Error(e, "Failed to start update download");
+            }
         }
 
         public void OnClosing() {
