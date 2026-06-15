@@ -164,7 +164,7 @@ namespace OpenUtau.Integrations {
                     OpenOrCreate(singer, oto);
                 } else if (task.IsFaulted) {
                     if (task.Exception != null) {
-                        throw task.Exception;
+                        throw task.Exception.Flatten();
                     }
                 } else {
                     throw new Exception("Failed to start vLabeler");
@@ -172,7 +172,7 @@ namespace OpenUtau.Integrations {
             }).ContinueWith(task => {
                 if (task.IsFaulted) {
                     if (task.Exception != null) {
-                        DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(task.Exception));
+                        DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(task.Exception.Flatten()));
                     } else {
                         DocManager.Inst.ExecuteCmd(new ErrorMessageNotification("Failed to start vLabeler"));
                     }
