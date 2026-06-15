@@ -93,7 +93,7 @@ namespace OpenUtau.App.ViewModels {
             using (var archive = ArchiveFactory.OpenArchive(ArchiveFilePath, readerOptions)) {
                 textItems.Clear();
                 textItems.AddRange(archive.Entries
-                    .Select(entry => entry.Key!.Replace("\\", "/"))
+                    .Select(entry => (entry.Key ?? "").Replace("\\", "/"))
                     .ToArray());
             }
         }
@@ -130,10 +130,10 @@ namespace OpenUtau.App.ViewModels {
             using (var archive = ArchiveFactory.OpenArchive(ArchiveFilePath, readerOptions)) {
                 try {
                     textItems.Clear();
-                    foreach (var entry in archive.Entries.Where(entry => entry.Key!.EndsWith("character.txt") || entry.Key.EndsWith("oto.ini"))) {
+                    foreach (var entry in archive.Entries.Where(entry => entry.Key?.EndsWith("character.txt") == true || entry.Key?.EndsWith("oto.ini") == true)) {
                         using (var stream = entry.OpenEntryStream()) {
                             using var reader = new StreamReader(stream, TextEncoding);
-                            textItems.Add($"------ {entry.Key!.Replace("\\", "/")} ------");
+                            textItems.Add($"------ {(entry.Key ?? "").Replace("\\", "/")} ------");
                             int count = 0;
                             while (count < 256 && !reader.EndOfStream) {
                                 string? line = reader.ReadLine();

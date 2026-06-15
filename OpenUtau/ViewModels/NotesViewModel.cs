@@ -657,13 +657,15 @@ namespace OpenUtau.App.ViewModels {
         public void MoveSelection(int delta) {
             if (Selection.Move(delta)) {
                 MessageBus.Current.SendMessage(new NotesSelectionEvent(Selection));
-                ScrollIntoView(Selection.Head!);
+                if (Selection.Head is { } head)
+                    ScrollIntoView(head);
             };
         }
         public void ExtendSelection(int delta) {
             if (Selection.Resize(delta)) {
                 MessageBus.Current.SendMessage(new NotesSelectionEvent(Selection));
-                ScrollIntoView(Selection.Head!);
+                if (Selection.Head is { } head)
+                    ScrollIntoView(head);
             };
         }
         public void ExtendSelection(UNote note) {

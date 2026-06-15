@@ -45,9 +45,9 @@ namespace OpenUtau.Classic {
                 int count = 0;
                 bool hasCharacterYaml = archive.Entries.Any(e => Path.GetFileName(e.Key) == kCharacterYaml);
                 foreach (var entry in archive.Entries) {
-                    string fixedKey = entry.Key!.Replace("\\", "/");
+                    string fixedKey = (entry.Key ?? "").Replace("\\", "/");
                     progress.Invoke(100.0 * ++count / total, fixedKey);
-                    if (entry.Key.Contains("..")) {
+                    if (fixedKey.Contains("..")) {
                         // Prevent zipSlip attack
                         continue;
                     }

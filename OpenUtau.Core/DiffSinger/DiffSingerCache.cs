@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -188,7 +188,7 @@ namespace OpenUtau.Core.DiffSinger {
                 // string tensor
                 // data
                 foreach (var element in tensor.ToArray()) {
-                    writer.Write(element!.ToString());
+                    writer.Write(element?.ToString() ?? "");
                 }
             } else {
                 // numeric tensor
