@@ -17,7 +17,7 @@ namespace OpenUtau.Classic {
                 File.ReadAllText(path, encoding: Encoding.UTF8)
                 );
             manifest.expressions = manifest.expressions
-                                .GroupBy(kvp => kvp.Key.ToLower())
+                                .GroupBy(kvp => kvp.Key.ToLowerInvariant())
                                 .ToDictionary(
                                     group => group.Key,
                                     group => group.First().Value

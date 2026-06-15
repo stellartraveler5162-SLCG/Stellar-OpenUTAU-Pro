@@ -25,7 +25,7 @@ namespace OpenUtau.App.Views {
             var types = FilePicker.ZIP;
             if(File.Exists(singer.Location)){
                 var suffix = Path.GetExtension(singer.Location);
-                types = new FilePickerFileType(suffix.ToUpper()) {
+                types = new FilePickerFileType(suffix.ToUpperInvariant()) {
                     Patterns = new[] { "*" + suffix },
                 };
             }

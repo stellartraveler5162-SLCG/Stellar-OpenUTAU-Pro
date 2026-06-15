@@ -66,7 +66,7 @@ namespace OpenUtau.Classic {
                 _isLegalPlugin = true;
             }
             //Check if should use wine
-            string ext = Path.GetExtension(filePath).ToLower();
+            string ext = Path.GetExtension(filePath).ToLowerInvariant();
             winePath = Preferences.Default.WinePath;
             useWine = !OS.IsWindows() && !string.IsNullOrEmpty(winePath) && (ext == ".exe" || ext == ".bat");
             //Load Resampler Manifest

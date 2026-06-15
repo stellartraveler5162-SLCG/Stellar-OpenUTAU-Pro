@@ -47,7 +47,7 @@ namespace OpenUtau.Core.Ustx {
         /// </summary>
         public UExpressionDescriptor(string name, string abbr, float min, float max, float defaultValue, string flag = "", float? customDefaultValue = null, bool skipOutputIfDefault = false) {
             this.name = name;
-            this.abbr = abbr.ToLower();
+            this.abbr = abbr.ToLowerInvariant();
             this.min = min;
             this.max = max;
             this.defaultValue = Math.Clamp(defaultValue, min, max);
@@ -62,7 +62,7 @@ namespace OpenUtau.Core.Ustx {
         /// </summary>
         public UExpressionDescriptor(string name, string abbr, bool isFlag, string[] options) {
             this.name = name;
-            this.abbr = abbr.ToLower();
+            this.abbr = abbr.ToLowerInvariant();
             type = UExpressionType.Options;
             min = 0;
             max = options.Length - 1;
@@ -92,7 +92,7 @@ namespace OpenUtau.Core.Ustx {
             };
         }
 
-        public override string ToString() => $"{abbr.ToUpper()}: {name}";
+        public override string ToString() => $"{abbr.ToUpperInvariant()}: {name}";
 
         public bool Equals(UExpressionDescriptor other) {
             return this.name == other.name &&
@@ -148,6 +148,6 @@ namespace OpenUtau.Core.Ustx {
             };
         }
 
-        public override string ToString() => $"{abbr.ToUpper()}: {value}";
+        public override string ToString() => $"{abbr.ToUpperInvariant()}: {value}";
     }
 }

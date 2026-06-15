@@ -27,7 +27,7 @@ namespace OpenUtau.App.ViewModels {
     public class SingerDownloadViewModel : ViewModelBase {
         private string _name = string.Empty;
         public string Id { get; set; } = string.Empty;
-        public string Name { get => _name; set { _name = value; Initial = string.IsNullOrEmpty(value) ? "?" : value[0].ToString().ToUpper(); } }
+        public string Name { get => _name; set { _name = value; Initial = string.IsNullOrEmpty(value) ? "?" : value[0].ToString().ToUpperInvariant(); } }
         public string Initial { get; private set; } = "?";
         public string Engine { get; set; } = string.Empty;
         public string Language { get; set; } = string.Empty;

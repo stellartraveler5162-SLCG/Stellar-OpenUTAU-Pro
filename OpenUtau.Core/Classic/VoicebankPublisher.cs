@@ -62,7 +62,7 @@ namespace OpenUtau.Classic {
             progress.Invoke(0, $"Publishing {singer.Name}");
             //Write singer type into character.yaml
             try {
-                ModifyConfig(singer, config => config.SingerType = singer.SingerType.ToString().ToLower());
+                ModifyConfig(singer, config => config.SingerType = singer.SingerType.ToString().ToLowerInvariant());
             } catch (Exception e) {  }
             var packList = GetFilesToPack(location);
             int index = 0;

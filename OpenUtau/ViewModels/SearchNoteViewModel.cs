@@ -51,8 +51,8 @@ namespace OpenUtau.App.ViewModels {
         }
 
         bool IsMatch(string lyric) {
-            string noteStr = CaseSensitive ? lyric : lyric.ToLower();
-            string matchStr = CaseSensitive ? SearchWord : SearchWord.ToLower();
+            string noteStr = CaseSensitive ? lyric : lyric.ToLowerInvariant();
+            string matchStr = CaseSensitive ? SearchWord : SearchWord.ToLowerInvariant();
             if (WholeWord) {
                 return noteStr == matchStr;
             } else {

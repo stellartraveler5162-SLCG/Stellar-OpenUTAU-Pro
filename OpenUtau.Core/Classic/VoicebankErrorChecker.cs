@@ -300,16 +300,16 @@ namespace OpenUtau.Classic {
             bool valid = true;
             Dictionary<string, string> fileNamesLowerToActual = Directory.GetFiles(folder)
                 .Select(Path.GetFileName)
-                .ToDictionary(x => x.ToLower(), x => x);
+                .ToDictionary(x => x.ToLowerInvariant(), x => x);
             foreach (string fileName in correctFileNames) {
-                if (string.IsNullOrWhiteSpace(fileName) || !fileNamesLowerToActual.ContainsKey(fileName.ToLower())) {
+                if (string.IsNullOrWhiteSpace(fileName) || !fileNamesLowerToActual.ContainsKey(fileName.ToLowerInvariant())) {
                     continue;
                 }
-                if (fileNamesLowerToActual[fileName.ToLower()] != fileName) {
+                if (fileNamesLowerToActual[fileName.ToLowerInvariant()] != fileName) {
                     valid = false;
                     Errors.Add(new VoicebankError() {
                         messageKey = "singererror.wrongcase",
-                        strings = new string[] { Path.Join(folder, fileName), Path.Join(folder, fileNamesLowerToActual[fileName.ToLower()]) },
+                        strings = new string[] { Path.Join(folder, fileName), Path.Join(folder, fileNamesLowerToActual[fileName.ToLowerInvariant()]) },
                     });
                 }
             }
@@ -323,7 +323,7 @@ namespace OpenUtau.Classic {
         /// <returns></returns>
         bool CheckDuplicatedNameIgnoringCase(OtoSet otoSet) {
             var wavNames = otoSet.Otos.Select(x => x.Wav).Where(x => !string.IsNullOrWhiteSpace(x)).Distinct().ToList();
-            var duplicatedGroups = wavNames.GroupBy(x => x.ToLower())
+            var duplicatedGroups = wavNames.GroupBy(x => x.ToLowerInvariant())
                 .Where(group => group.Count() > 1)
                 .ToList();
             foreach (var group in duplicatedGroups) {

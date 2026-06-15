@@ -26,7 +26,7 @@ namespace OpenUtau.Classic {
             this.filePath = filePath;
             name = Path.GetRelativePath(basePath, filePath);
             osEncoding = OS.IsWindows() ? Encoding.GetEncoding(0) : Encoding.UTF8;
-            string ext = Path.GetExtension(filePath).ToLower();
+            string ext = Path.GetExtension(filePath).ToLowerInvariant();
             winePath = Preferences.Default.WinePath;
             useWine = !OS.IsWindows() && !string.IsNullOrEmpty(winePath) && (ext == ".exe" || ext == ".bat");
         }

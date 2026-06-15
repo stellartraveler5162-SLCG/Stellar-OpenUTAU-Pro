@@ -309,7 +309,7 @@ namespace OpenUtau.Core.DiffSinger {
         }
 
         public static Dictionary<string, int> LoadPhonemes(string filePath){
-            switch(Path.GetExtension(filePath).ToLower()){
+            switch(Path.GetExtension(filePath).ToLowerInvariant()){
                 case ".json":
                     return LoadPhonemesFromJson(filePath);
                 default:

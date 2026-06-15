@@ -138,7 +138,7 @@ namespace OpenUtau.App.Views {
                 }
 
                 string filename = string.Join("", s.Where(c => Char.IsLetterOrDigit(c) || c == ' '))
-                                        .Replace(" ", "-").ToLower() + ".yaml";
+                                        .Replace(" ", "-").ToLowerInvariant() + ".yaml";
 
                 var themeYaml = new CustomTheme.ThemeYaml { Name = s };
 

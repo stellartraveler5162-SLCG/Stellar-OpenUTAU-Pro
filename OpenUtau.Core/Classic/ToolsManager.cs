@@ -37,7 +37,7 @@ namespace OpenUtau.Classic {
             if (!File.Exists(filePath)) {
                 return null;
             }
-            string ext = Path.GetExtension(filePath).ToLower();
+            string ext = Path.GetExtension(filePath).ToLowerInvariant();
             if ((OS.IsWindows() || !string.IsNullOrEmpty(Preferences.Default.WinePath)) && (ext == ".exe" || ext == ".bat")) {
                 return new ExeResampler(filePath, basePath);
             } 
@@ -51,7 +51,7 @@ namespace OpenUtau.Classic {
             if (!File.Exists(filePath)) {
                 return null;
             }
-            string ext = Path.GetExtension(filePath).ToLower();
+            string ext = Path.GetExtension(filePath).ToLowerInvariant();
             if ((OS.IsWindows() || !string.IsNullOrEmpty(Preferences.Default.WinePath)) && (ext == ".exe" || ext == ".bat")) {
                 return new ExeWavtool(filePath, basePath);
             } 

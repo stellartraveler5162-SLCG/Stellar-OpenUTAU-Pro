@@ -265,7 +265,7 @@ namespace OpenUtau.Core.Enunu {
 
                         var matchingFlag = phone.flags.FirstOrDefault(f => {
                             var nameParts = f.Item1.Split('/');
-                            return nameParts.Length > 1 && nameParts[0] == key && f.Item3 == styleName.ToLower();
+                            return nameParts.Length > 1 && nameParts[0] == key && f.Item3 == styleName.ToLowerInvariant();
                         });
 
                         if (matchingFlag != default) {

@@ -6,11 +6,12 @@ using OpenUtau.Core.Ustx;
 using OpenUtau.Core.Util;
 using System.Text;
 using System.IO;
-using UtfUnknown;
 using System.Linq;
+using System;
+using UtfUnknown;
 
 namespace OpenUtau.Core.Format {
-    public class EncodingDetector {
+    public class EncodingDetector : IDisposable {
 
         MemoryStream stream = new MemoryStream();
 
@@ -35,6 +36,10 @@ namespace OpenUtau.Core.Format {
                 return null;
             }
         }
+
+        public void Dispose() {
+            stream.Dispose();
+        }
     }
 
     public static class MidiWriter {
@@ -46,11 +51,12 @@ namespace OpenUtau.Core.Format {
             project.FilePath = file;
             // Detects lyric encoding
             Encoding lyricEncoding = Encoding.UTF8;
-            var encodingDetector = new EncodingDetector();
-            encodingDetector.ReadFile(file);
-            var encodingResult = encodingDetector.Detect();
-            if (encodingResult != null) {
-                lyricEncoding = encodingResult;
+            using (var encodingDetector = new EncodingDetector()) {
+                encodingDetector.ReadFile(file);
+                var encodingResult = encodingDetector.Detect();
+                if (encodingResult != null) {
+                    lyricEncoding = encodingResult;
+                }
             }
             //Get midifile resolution
             var ReadingSettings = BaseReadingSettings();
@@ -105,11 +111,12 @@ namespace OpenUtau.Core.Format {
         static public List<UVoicePart> Load(string file, UProject project) {
             // Detects lyric encoding
             Encoding lyricEncoding = Encoding.UTF8;
-            var encodingDetector = new EncodingDetector();
-            encodingDetector.ReadFile(file);
-            var encodingResult = encodingDetector.Detect();
-            if(encodingResult != null) {
-                lyricEncoding = encodingResult;
+            using (var encodingDetector = new EncodingDetector()) {
+                encodingDetector.ReadFile(file);
+                var encodingResult = encodingDetector.Detect();
+                if (encodingResult != null) {
+                    lyricEncoding = encodingResult;
+                }
             }
             //Get midifile resolution
             var ReadingSettings = BaseReadingSettings();
