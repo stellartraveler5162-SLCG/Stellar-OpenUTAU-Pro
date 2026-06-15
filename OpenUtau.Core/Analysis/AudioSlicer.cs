@@ -1,17 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenUtau.Core.Analysis;
 
 public static class AudioSlicer {
-    static int sample_rate = 44100;
-    static float threshold = 0.02f;
-    static int hop_size = 441;
-    static int win_size = 1764;
-    static int min_length = 100;
-    static int min_interval = 20;
-    static int max_sil_kept = 10;
+    const int sample_rate = 44100;
+    const float threshold = 0.02f;
+    const int hop_size = 441;
+    const int win_size = 1764;
+    const int min_length = 100;
+    const int min_interval = 20;
+    const int max_sil_kept = 10;
 
     public static int SampleRate => sample_rate;
 

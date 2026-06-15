@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,7 +21,7 @@ namespace OpenUtau.Classic {
 
     public static class Ini {
         public static List<IniBlock> ReadBlocks(StreamReader reader, string file, string headerPattern, bool trim = true) {
-            var headerRegex = new Regex(headerPattern);
+            var headerRegex = new Regex(headerPattern, RegexOptions.Compiled);
             var blocks = new List<IniBlock>();
             var lineNumber = -1;
             while (!reader.EndOfStream) {
