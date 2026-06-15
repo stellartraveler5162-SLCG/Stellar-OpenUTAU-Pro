@@ -257,10 +257,11 @@ namespace OpenUtau.Core {
 
             if (allRomajiRomaji.Contains(romaji)) {
                 string hangeul = allRomajiHangeul[allRomajiRomaji.IndexOf(romaji)];
+                string[] parts = hangeul.Split("\t");
                 Hashtable separated = new Hashtable() {
-                    [0] = hangeul.Split("\t")[0].ToString(),
-                    [1] = hangeul.Split("\t")[1].ToString(),
-                    [2] = hangeul.Split("\t")[2].ToString()
+                    [0] = parts[0],
+                    [1] = parts[1],
+                    [2] = parts[2]
                 };
                 string result = Merge(separated);
                 Log.Debug("Korean Romaji Parsed: " + romaji + " -> " + result);

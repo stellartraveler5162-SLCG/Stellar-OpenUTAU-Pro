@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -344,7 +344,7 @@ namespace OpenUtau.Core.Render {
                         if (phoneme.oto.Frq == null) {
                             phoneme.oto.Frq = new OtoFrq(phoneme.oto, cSinger.Frqs);
                         }
-                        if (phoneme.oto.Frq.loaded == false) {
+                        if (!phoneme.oto.Frq.loaded) {
                             continue;
                         }
                         var frq = phoneme.oto.Frq;
