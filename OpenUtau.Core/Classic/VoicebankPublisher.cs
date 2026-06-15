@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-
 using OpenUtau.Core.Ustx;
+using Serilog;
 
 namespace OpenUtau.Classic {
     public class VoicebankPublisher {
@@ -63,7 +63,9 @@ namespace OpenUtau.Classic {
             //Write singer type into character.yaml
             try {
                 ModifyConfig(singer, config => config.SingerType = singer.SingerType.ToString().ToLowerInvariant());
-            } catch (Exception e) {  }
+            } catch (Exception e) {
+                Log.Error(e, "Failed to modify config for publishing");
+            }
             var packList = GetFilesToPack(location);
             int index = 0;
             int fileCount = packList.Count();

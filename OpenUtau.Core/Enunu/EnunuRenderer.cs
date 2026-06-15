@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -86,7 +86,10 @@ namespace OpenUtau.Core.Enunu {
                     var ustPath = tmpPath + ".tmp";
                     var enutmpPath = tmpPath + "_enutemp";
                     var wavPath = Path.Join(PathManager.Inst.CachePath, $"enu-{(phrase.hash + hash):x16}.wav");
-                    var voicebankNameHash = $"{(phrase.singer as EnunuSinger).voicebankNameHash:x16}";
+                    var voicebankNameHash = 
+                        phrase.singer is EnunuSinger enuSinger 
+                            ? $"{enuSinger.voicebankNameHash:x16}" 
+                            : throw new InvalidOperationException("Expected EnunuSinger");
                     phrase.AddCacheFile(tmpPath);
                     phrase.AddCacheFile(wavPath);
                     var config = EnunuConfig.Load(phrase.singer);
@@ -128,7 +131,7 @@ namespace OpenUtau.Core.Enunu {
                             var spPath = Path.Join(enutmpPath, "spectrogram.npy");
                             var apPath = Path.Join(enutmpPath, "aperiodicity.npy");
                             if (!File.Exists(f0Path) || !File.Exists(spPath) || !File.Exists(apPath)) {
-                                Log.Information((phrase.singer as EnunuSinger).Name + ":" + voicebankNameHash);
+                                Log.Information((phrase.singer is EnunuSinger ens ? ens.Name : phrase.singer.Name) + ":" + voicebankNameHash);
                                 Log.Information($"Starting enunu acoustic \"{ustPath}\"");
                                 var enunuNotes = PhraseToEnunuNotes(phrase, config);
                                 // TODO: using first note tempo as ust tempo.

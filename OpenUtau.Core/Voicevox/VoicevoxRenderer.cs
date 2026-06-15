@@ -75,7 +75,7 @@ namespace OpenUtau.Core.Voicevox {
                                 VoicevoxUtils.Loaddic(singer);
                             }
                             try {
-                                VoicevoxSynthParams vsParams = PhraseToVoicevoxSynthParams(phrase, phrase.singer as VoicevoxSinger);
+                                VoicevoxSynthParams vsParams = PhraseToVoicevoxSynthParams(phrase, singer);
 
                                 int vvTotalFrames = 0;
                                 double frameMs = (1000d / VoicevoxUtils.fps);
@@ -409,7 +409,7 @@ namespace OpenUtau.Core.Voicevox {
                 if (singer != null) {
 
                     string baseSingerID = VoicevoxUtils.getBaseSingerID(singer);
-                    VoicevoxSynthParams vsParams = PhraseToVoicevoxSynthParams(phrase, phrase.singer as VoicevoxSinger/*, true*/);
+                    VoicevoxSynthParams vsParams = PhraseToVoicevoxSynthParams(phrase, singer/*, true*/);
                     double frameMs = (1000d / VoicevoxUtils.fps);
                     int vvTotalFrames = 0;
                     vsParams.phonemes.ForEach(x => vvTotalFrames += x.frame_length);

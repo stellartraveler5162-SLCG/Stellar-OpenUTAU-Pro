@@ -94,7 +94,8 @@ namespace OpenUtau.Core.Vogen {
             int headFrames = (int)(headMs / frameMs);
             int tailFrames = (int)(tailMs / frameMs);
             var result = Layout(phrase);
-            var singer = phrase.singer as VogenSinger;
+            if (phrase.singer is not VogenSinger vogenSinger)
+                throw new InvalidOperationException("Expected VogenSinger");
             var notePitches = phrase.notes
                 .Select(n => (float)n.tone)
                 .Prepend(0)
@@ -171,7 +172,7 @@ namespace OpenUtau.Core.Vogen {
                 new DenseTensor<float>(breAmp, new int[] { 1, f0.Length })));
             double[,] sp;
             double[,] ap;
-            using (var session = Onnx.getInferenceSession(singer.model, OnnxRunnerChoice.CPU)) {
+            using (var session = Onnx.getInferenceSession(vogenSinger.model, OnnxRunnerChoice.CPU)) {
                 using var outputs = session.Run(inputs);
                 var mgc = (outputs.FirstOrDefault()
                     ?? throw new Exception("Vogen synthesis model produced no output"))
