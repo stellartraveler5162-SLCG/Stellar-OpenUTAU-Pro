@@ -56,6 +56,7 @@ namespace OpenUtau.App.ViewModels {
 
     public class SingerBrowserViewModel : ViewModelBase {
         private const string STELLAR_API = "http://156.239.236.41:5000";
+        static readonly HttpClient httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(30) };
         public ObservableCollection<SingerDownloadViewModel> Singers { get; } = new();
         public ObservableCollection<string> Categories { get; } = new();
         public ReactiveCommand<SingerDownloadViewModel, Unit> DownloadCommand { get; }
@@ -76,9 +77,7 @@ namespace OpenUtau.App.ViewModels {
             IsLoading = true;
             ErrorMessage = string.Empty;
             try {
-                using var client = new HttpClient();
-                client.Timeout = TimeSpan.FromSeconds(30);
-                var response = await client.GetStringAsync($"{STELLAR_API}/api/voicebanks");
+                var response = await httpClient.GetStringAsync($"{STELLAR_API}/api/voicebanks");
                 var banks = JsonConvert.DeserializeObject<List<StellarVoicebank>>(response);
                 Categories.Clear();
                 Categories.Add("All");

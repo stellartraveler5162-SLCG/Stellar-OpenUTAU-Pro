@@ -53,12 +53,20 @@ namespace OpenUtau.Core {
         public const string OudepExt = ".oudep";
         const string registryUrl = "https://openutau.github.io/svs-index/registry/v1/softwares/all.json";
 
+        static readonly HttpClient registryClient = new HttpClient {
+            Timeout = TimeSpan.FromSeconds(30),
+            DefaultRequestHeaders = {
+                { "Accept", "application/json" },
+                { "User-Agent", "Stellar OpenUTAU Pro" }
+            }
+        };
+
+        static readonly HttpClient downloadClient = new HttpClient {
+            Timeout = TimeSpan.FromMinutes(5)
+        };
+
         public async Task<List<RegistrySoftware>> FetchRegistryAsync() {
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-            client.DefaultRequestHeaders.Add("User-Agent", "Stellar OpenUTAU Pro");
-            client.Timeout = TimeSpan.FromSeconds(30);
-            using var response = await client.GetAsync(registryUrl).ConfigureAwait(false);
+            using var response = await registryClient.GetAsync(registryUrl).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
             string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -143,9 +151,7 @@ namespace OpenUtau.Core {
             string cacheDir = PathManager.Inst.CachePath;
             Directory.CreateDirectory(cacheDir);
             byte[] data;
-            using (var client = new HttpClient()) {
-                client.Timeout = TimeSpan.FromMinutes(5);
-                using var response = await client.GetAsync(mirror.url, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+            using (var response = await downloadClient.GetAsync(mirror.url, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false)) {
                 response.EnsureSuccessStatusCode();
                 var contentLength = response.Content.Headers.ContentLength;
                 using var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);

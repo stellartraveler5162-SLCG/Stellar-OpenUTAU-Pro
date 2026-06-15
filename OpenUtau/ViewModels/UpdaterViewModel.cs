@@ -30,6 +30,13 @@ namespace OpenUtau.App.ViewModels {
     public class UpdaterViewModel : ViewModelBase {
         private const string STELLAR_API = "http://156.239.236.41:5000";
         private const string STELLAR_API_UPDATE = STELLAR_API + "/api/update";
+        static readonly HttpClient httpClient = new HttpClient {
+            Timeout = TimeSpan.FromSeconds(30),
+            DefaultRequestHeaders = {
+                { "Accept", "application/json" },
+                { "User-Agent", "Stellar OpenUTAU Pro" }
+            }
+        };
 
         public string AppVersion => $"v{System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version}";
         public bool IsDarkMode => ThemeManager.IsDarkMode;
@@ -73,13 +80,9 @@ namespace OpenUtau.App.ViewModels {
         }
 
         static async Task<StellarRelease?> SelectRelease() {
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-            client.DefaultRequestHeaders.Add("User-Agent", "Stellar OpenUTAU Pro");
-            client.Timeout = TimeSpan.FromSeconds(30);
             string platform = OS.IsMacOS() ? "macos" : OS.IsWindows() ? "windows" : "linux";
             string version = $"v{System.Reflection.Assembly.GetEntryAssembly()?.GetName().Version}";
-            using var response = await client.GetAsync($"{STELLAR_API_UPDATE}/check?version={version}&platform={platform}");
+            using var response = await httpClient.GetAsync($"{STELLAR_API_UPDATE}/check?version={version}&platform={platform}");
             response.EnsureSuccessStatusCode();
             string respBody = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<StellarRelease>(respBody);
