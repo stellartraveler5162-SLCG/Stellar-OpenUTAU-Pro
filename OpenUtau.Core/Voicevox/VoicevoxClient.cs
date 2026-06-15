@@ -9,7 +9,7 @@ using Serilog;
 namespace OpenUtau.Core.Voicevox {
     class VoicevoxClient : Util.SingletonBase<VoicevoxClient> {
         internal Tuple<string, byte[]> SendRequest(VoicevoxURL voicevoxURL) {
-            return SendRequestAsync(voicevoxURL).GetAwaiter().GetResult();
+            return Task.Run(() => SendRequestAsync(voicevoxURL)).GetAwaiter().GetResult();
         }
 
         internal async Task<Tuple<string, byte[]>> SendRequestAsync(VoicevoxURL voicevoxURL) {

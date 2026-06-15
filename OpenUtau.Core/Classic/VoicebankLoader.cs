@@ -132,7 +132,8 @@ namespace OpenUtau.Classic {
                     if (s.Length < 2) {
                         s = line.Split('：', 2);
                     }
-                    Array.ForEach(s, temp => temp.Trim());
+                    for (int i = 0; i < s.Length; i++)
+                        s[i] = s[i].Trim();
                     if (s.Length == 2) {
                         s[0] = s[0].ToLowerInvariant();
                         if (s[0] == "name") {
