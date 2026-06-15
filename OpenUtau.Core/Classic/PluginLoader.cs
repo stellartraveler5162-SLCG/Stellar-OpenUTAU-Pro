@@ -9,9 +9,10 @@ using Serilog;
 namespace OpenUtau.Classic {
     class PluginLoader {
         static readonly Regex pluginNamePattern = new Regex("(.+)\\(&([A-Za-z0-9])\\)", RegexOptions.Compiled);
+        static readonly Encoding shiftJis = Encoding.GetEncoding("shift_jis");
         public static Plugin[] LoadAll(string basePath) {
             Directory.CreateDirectory(basePath);
-            var encoding = Encoding.GetEncoding("shift_jis");
+            var encoding = shiftJis;
             return Directory.EnumerateFiles(basePath, "plugin.txt", SearchOption.AllDirectories)
                 .Select(filePath => ParsePluginTxt(filePath, encoding))
                 .ToArray();

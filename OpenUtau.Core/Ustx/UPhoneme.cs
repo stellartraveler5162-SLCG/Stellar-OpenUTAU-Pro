@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -188,7 +188,7 @@ namespace OpenUtau.Core.Ustx {
                 if (phonemizerExp != null) {
                     return Tuple.Create(phonemizerExp.value, false);
                 } else {
-                    return Tuple.Create(descriptor.CustomDefaultValue, false);
+                    return Tuple.Create(descriptor?.CustomDefaultValue ?? 0f, false);
                 }
             }
         }
