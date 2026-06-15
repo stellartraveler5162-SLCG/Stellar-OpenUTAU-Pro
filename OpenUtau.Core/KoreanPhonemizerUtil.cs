@@ -1410,6 +1410,24 @@ namespace OpenUtau.Core {
                 }
             }
             return sb.ToString();
+        }
+
+        private void ApplySection(string sectionName) {
+            if (!iniSetting.ContainsKey(sectionName)) {
+                iniSetting.Add(sectionName, new Hashtable());
+            }
+        }
+
+        private void WriteDefaultValue(string sectionName, string keyName, object value) {
+            using (var writer = new StreamWriter(filePath)) {
+                var hashtable = (Hashtable)iniSetting[sectionName];
+                hashtable[keyName] = value;
+                try {
+                    writer.Write(ConvertSettingsToString());
+                } catch (IOException e) {
+                    Log.Error(e, $"[{iniFileName}] Failed to Write new {iniFileName}.");
+                }
+            }
         } 
        /// <summary>
        /// <param name="sectionName"> section's name in .ini config file. </param>
@@ -1421,46 +1439,23 @@ namespace OpenUtau.Core {
         protected void SetOrReadThisValue(string sectionName, string keyName, bool defaultValue, out bool resultValue) {
             var block = blocks.Find(block => block.header == $"[{sectionName}]");
             var iniLines = block?.lines;
-            if (! iniSetting.ContainsKey(sectionName)){
-                    iniSetting.Add(sectionName, new Hashtable());
-                }
+            ApplySection(sectionName);
+            var hashtable = (Hashtable)iniSetting[sectionName];
             if (iniLines != null) {
                 var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
                 var parts = foundLine?.line?.Trim().Split("=");
-                 var result = (parts != null && parts.Length > 1) ? parts[1] : null;
-                 if (result != null) {
-                    try{
-                        ((Hashtable)iniSetting[sectionName]).Add(keyName, result);
-                    }
-                    catch (ArgumentException){
-                        ((Hashtable)iniSetting[sectionName])[keyName] = result;
-                    }
-                    
-                    resultValue = result.ToLower() == "true" ? true : false;
-                }
-                else {
-                    try{
-                        ((Hashtable)iniSetting[sectionName]).Add(keyName, defaultValue.ToString());
-                    }
-                    catch (ArgumentException){
-                        ((Hashtable)iniSetting[sectionName])[keyName] = defaultValue.ToString();
-                    }
+                var result = (parts != null && parts.Length > 1) ? parts[1] : null;
+                if (result != null) {
+                    hashtable[keyName] = result;
+                    resultValue = result.ToLowerInvariant() == "true";
+                } else {
+                    hashtable[keyName] = defaultValue.ToString();
                     resultValue = defaultValue;
                 }
-            }
-            else{
-                using (StreamWriter writer = new StreamWriter(filePath)) {
-                    ((Hashtable)iniSetting[sectionName]).Add(keyName, defaultValue.ToString().ToLower());
+            } else {
+                WriteDefaultValue(sectionName, keyName, defaultValue.ToString().ToLowerInvariant());
                 resultValue = defaultValue;
-                try{
-                    writer.Write(ConvertSettingsToString());
-                }
-                catch (IOException e){
-                    Log.Error(e, $"[{iniFileName}] Failed to Write new {iniFileName}.");
-                }
-            
                 Log.Information($"[{iniFileName}] failed to parse setting '{keyName}', modified {defaultValue} as default value.");
-                };
             }
         } 
 
@@ -1474,44 +1469,23 @@ namespace OpenUtau.Core {
         protected string SetOrReadThisValue(string sectionName, string keyName, string defaultValue) {
             string resultValue;
             var foundBlock = blocks.Find(block => block.header == $"[{sectionName}]");
-             var iniLines = foundBlock?.lines;
-            if (! iniSetting.ContainsKey(sectionName)){
-                    iniSetting.Add(sectionName, new Hashtable());
-                }
+            var iniLines = foundBlock?.lines;
+            ApplySection(sectionName);
+            var hashtable = (Hashtable)iniSetting[sectionName];
             if (iniLines != null) {
-                 var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
+                var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
                 var parts = foundLine?.line?.Trim().Split("=");
                 var result = (parts != null && parts.Length > 1) ? parts[1] : null;
                 if (result != null) {
-                    try{
-                        ((Hashtable)iniSetting[sectionName]).Add(keyName, result);
-                    }
-                    catch (ArgumentException){
-                        ((Hashtable)iniSetting[sectionName])[keyName] = result;
-                    }
+                    hashtable[keyName] = result;
                     resultValue = result;
-                }
-                else {
-                    try{
-                        ((Hashtable)iniSetting[sectionName]).Add(keyName, defaultValue);
-                    }
-                    catch (ArgumentException){
-                        ((Hashtable)iniSetting[sectionName])[keyName] = defaultValue;
-                    }
+                } else {
+                    hashtable[keyName] = defaultValue;
                     resultValue = defaultValue;
                 }
-            }
-            else{
-                using (var writer = new StreamWriter(filePath)) {
-                    ((Hashtable)iniSetting[sectionName]).Add(keyName, defaultValue);
-                    resultValue = defaultValue;
-                    try{
-                        writer.Write(ConvertSettingsToString());
-                    }
-                    catch (IOException e){
-                        Log.Error(e, $"[{iniFileName}] Failed to Write new {iniFileName}.");
-                    }
-                }
+            } else {
+                WriteDefaultValue(sectionName, keyName, defaultValue);
+                resultValue = defaultValue;
                 Log.Information($"[{iniFileName}] failed to parse setting '{keyName}', modified {defaultValue} as default value.");
             }
             return resultValue;
@@ -1528,43 +1502,22 @@ namespace OpenUtau.Core {
        protected void SetOrReadThisValue(string sectionName, string keyName, int defaultValue, out int resultValue) {
            var block = blocks.Find(block => block.header == $"[{sectionName}]");
             var iniLines = block?.lines;
-            if (! iniSetting.ContainsKey(sectionName)){
-                    iniSetting.Add(sectionName, new Hashtable());
-                }
+            ApplySection(sectionName);
+            var hashtable = (Hashtable)iniSetting[sectionName];
             if (iniLines != null) {
                 var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
                 var parts = foundLine?.line?.Trim().Split("=");
                 var result = (parts != null && parts.Length > 1) ? parts[1] : null;
                 if (result != null && int.TryParse(result, out var resultInt)) {
-                    try{
-                        ((Hashtable)iniSetting[sectionName]).Add(keyName, result);
-                    }
-                    catch (ArgumentException){
-                        ((Hashtable)iniSetting[sectionName])[keyName] = result;
-                    }
+                    hashtable[keyName] = result;
                     resultValue = resultInt;
-                }
-                else {
-                    try{
-                        ((Hashtable)iniSetting[sectionName]).Add(keyName, defaultValue.ToString());
-                    }
-                    catch (ArgumentException){
-                        ((Hashtable)iniSetting[sectionName])[keyName] = defaultValue.ToString();
-                    }
+                } else {
+                    hashtable[keyName] = defaultValue.ToString();
                     resultValue = defaultValue;
                 }
-            }
-            else{
-                using (var writer = new StreamWriter(filePath)) {
-                ((Hashtable)iniSetting[sectionName]).Add(keyName, defaultValue);
+            } else {
+                WriteDefaultValue(sectionName, keyName, defaultValue);
                 resultValue = defaultValue;
-                try{
-                    writer.Write(ConvertSettingsToString());
-                }
-                catch (IOException e){
-                    Log.Error(e, $"[{iniFileName}] Failed to Write new {iniFileName}.");
-                }
-                }
                 Log.Information($"[{iniFileName}] failed to parse setting '{keyName}', modified {defaultValue} as default value.");
             }
        }
