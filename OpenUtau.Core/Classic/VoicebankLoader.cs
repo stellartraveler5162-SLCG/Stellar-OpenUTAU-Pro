@@ -27,6 +27,7 @@ namespace OpenUtau.Classic {
     }
 
     public class VoicebankLoader {
+        static readonly Encoding ShiftJIS = Encoding.GetEncoding("shift_jis");
         public const string kCharTxt = "character.txt";
         public const string kCharYaml = "character.yaml";
         public const string kEnuconfigYaml = "enuconfig.yaml";
@@ -104,7 +105,7 @@ namespace OpenUtau.Classic {
                     voicebank.SingerType = USingerType.Classic;
                 }
             }
-            Encoding encoding = Encoding.GetEncoding("shift_jis");
+            Encoding encoding = ShiftJIS;
             if (!string.IsNullOrEmpty(bankConfig?.TextFileEncoding)) {
                 encoding = Encoding.GetEncoding(bankConfig.TextFileEncoding);
             }
@@ -340,7 +341,7 @@ namespace OpenUtau.Classic {
 
         // Oto.ini can declare its own encoding at the beginning of the file with #Charset:
         static Encoding? GetOtoDeclaredEncoding(string filePath) {
-            using (var reader = new StreamReader(filePath, Encoding.GetEncoding("shift_jis"))) {
+            using (var reader = new StreamReader(filePath, ShiftJIS)) {
                 for (var i = 0; i < 10; i++) {
                     var line = reader.ReadLine();
                     if (line == null) {

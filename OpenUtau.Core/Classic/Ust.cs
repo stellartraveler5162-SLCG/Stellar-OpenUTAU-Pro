@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -498,7 +498,7 @@ namespace OpenUtau.Classic {
         }
         
         public static void WriteForSetParam(UProject project, string filePath, List<UOto> otos) {
-            using (var writer = new StreamWriter(filePath, false, Encoding.GetEncoding("shift_jis"))) {
+            using (var writer = new StreamWriter(filePath, false, ShiftJIS)) {
                 writer.WriteLine("[#SETTING]");
                 writer.WriteLine($"Tempo=120");
                 writer.WriteLine("Tracks=1");
