@@ -98,7 +98,7 @@ class StellarInstaller
         using var stream = asm.GetManifestResourceStream("StellarInstaller.payload.zip");
         if (stream == null) throw new Exception("未找到程序数据。安装包可能已损坏。");
 
-        var tmpZip = Path.GetTempFileName() + ".zip";
+        var tmpZip = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".zip");
         using (var fs = new FileStream(tmpZip, FileMode.Create))
             stream.CopyTo(fs);
 

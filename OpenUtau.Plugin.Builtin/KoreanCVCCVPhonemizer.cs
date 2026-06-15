@@ -337,13 +337,21 @@ namespace OpenUtau.Plugin.Builtin {
 
 
                 initialConsonantLookup.TryGetValue(currentKoreanLyrics[0].ToString(), out var currentConsonants);
+                currentConsonants ??= "";
                 ccvContinuousinitialConsonantsLookup.TryGetValue(currentKoreanLyrics[0].ToString(), out var currentCCVConsonants);
+                currentCCVConsonants ??= "";
                 vrcInitialConsonantLookup.TryGetValue(currentKoreanLyrics[0].ToString(), out var vrcInitialConsonants);
+                vrcInitialConsonants ??= "";
                 vowelLookup.TryGetValue(currentKoreanLyrics[1].ToString(), out var currentVowel);
+                currentVowel ??= "";
                 lastConsonantsLookup.TryGetValue(prevKoreanLyrics[2].ToString(), out var prevLastConsonants);
+                prevLastConsonants ??= "";
                 subsequentVowelLookup.TryGetValue(currentKoreanLyrics[1].ToString(), out var currentSubsequentVowel);
+                currentSubsequentVowel ??= "";
                 subsequentVowelLookup.TryGetValue(prevKoreanLyrics[1].ToString(), out var prevSubsequentVowel);
+                prevSubsequentVowel ??= "";
                 initialConsonantLookup.TryGetValue(prevKoreanLyrics[2].ToString(), out var prevInitialConsonants);
+                prevInitialConsonants ??= "";
 
                 switch (type) {
                     case TYPE_FLAG.VCC_CV:
@@ -467,7 +475,9 @@ namespace OpenUtau.Plugin.Builtin {
                 // 앞글자 없음
 
                 initialConsonantLookup.TryGetValue(currentKoreanLyrics[0].ToString(), out var currentConsonants);
+                currentConsonants ??= "";
                 vowelLookup.TryGetValue(currentKoreanLyrics[1].ToString(), out var currentVowel);
+                currentVowel ??= "";
 
                 phonemesArr.Add(
                     new Phoneme {
@@ -483,11 +493,17 @@ namespace OpenUtau.Plugin.Builtin {
                 TYPE_FLAG type = typeTable[lastConsonantsTable.IndexOf(currentKoreanLyrics[2]), initialConsonantsTable.IndexOf(nextKoreanLyrics[0])];
 
                 initialConsonantLookup.TryGetValue(nextKoreanLyrics[0].ToString(), out var nextConsonants);
+                nextConsonants ??= "";
                 vcLastConsonantsLookup.TryGetValue(nextKoreanLyrics[0].ToString(), out var nextVCCConsonants);
+                nextVCCConsonants ??= "";
                 vrcLastConsonantsLookup.TryGetValue(nextKoreanLyrics[0].ToString(), out var nextVRCConsonants);
+                nextVRCConsonants ??= "";
                 subsequentVowelLookup.TryGetValue(currentKoreanLyrics[1].ToString(), out var currentSubsequentVowel);
+                currentSubsequentVowel ??= "";
                 lastConsonantsLookup.TryGetValue(currentKoreanLyrics[2].ToString(), out var currentLastConsonants);
+                currentLastConsonants ??= "";
                 vcLastConsonantsLookup.TryGetValue(currentKoreanLyrics[2].ToString(), out var currentVCLastConsonants);
+                currentVCLastConsonants ??= "";
 
 
                 switch (type) {
@@ -636,7 +652,9 @@ namespace OpenUtau.Plugin.Builtin {
             } else {
                 // 뒷글자 없음
                 subsequentVowelLookup.TryGetValue(currentKoreanLyrics[1].ToString(), out var currentSubsequentVowel);
+                currentSubsequentVowel ??= "";
                 lastConsonantsLookup.TryGetValue(currentKoreanLyrics[2].ToString(), out var currentLastConsonants);
+                currentLastConsonants ??= "";
 
                 phonemesArr.Add(
                     new Phoneme {
