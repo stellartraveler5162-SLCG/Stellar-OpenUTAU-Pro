@@ -1402,14 +1402,14 @@ namespace OpenUtau.Core {
         /// </summary>
         /// <returns></returns>
         protected string ConvertSettingsToString(){
-            string result = "";
+            var sb = new StringBuilder();
             foreach (DictionaryEntry section in iniSetting) {
-                result += $"[{section.Key}]\n";
+                sb.Append($"[{section.Key}]\n");
                 foreach (DictionaryEntry key in (Hashtable)iniSetting[section.Key]){
-                    result += $"{key.Key}={key.Value}\n";
+                    sb.Append($"{key.Key}={key.Value}\n");
                 }
             }
-            return result;
+            return sb.ToString();
         } 
        /// <summary>
        /// <param name="sectionName"> section's name in .ini config file. </param>

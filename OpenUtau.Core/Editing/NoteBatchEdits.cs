@@ -501,7 +501,8 @@ namespace OpenUtau.Core.Editing {
                     }
                     int x = phrase.position - part.position + (int)result.ticks[i];
                     if (result.ticks[i] < 0) {
-                        if (i + 1 < result.ticks.Length && result.ticks[i + 1] > 0) { } else
+                        if (i + 1 < result.ticks.Length && result.ticks[i + 1] > 0) {
+                        } else
                             continue;
                     }
                     if (x >= phrase.position + phrase.duration) {
