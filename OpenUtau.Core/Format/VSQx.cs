@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Collections.Generic;
 using Serilog;
+using System.Globalization;
 
 using OpenUtau.Core.Ustx;
 
@@ -81,7 +82,7 @@ namespace OpenUtau.Core.Format {
             uproject.tempos.Sort((lhs, rhs) => lhs.position.CompareTo(rhs.position));
             uproject.tempos[0].position = 0;
 
-            int resolution = int.Parse(root.SelectSingleNode(resolutionPath, nsmanager).InnerText);
+            int resolution = int.Parse(root.SelectSingleNode(resolutionPath, nsmanager).InnerText, CultureInfo.InvariantCulture);
             if (resolution != uproject.resolution) {
                 Log.Error($"Unexpected resolution {resolution}");
             }
@@ -89,7 +90,7 @@ namespace OpenUtau.Core.Format {
             uproject.name = root.SelectSingleNode(projectnamePath, nsmanager).InnerText;
             uproject.comment = root.SelectSingleNode(projectcommentPath, nsmanager).InnerText;
 
-            int preMeasure = int.Parse(root.SelectSingleNode(premeasurePath, nsmanager).InnerText);
+            int preMeasure = int.Parse(root.SelectSingleNode(premeasurePath, nsmanager).InnerText, CultureInfo.InvariantCulture);
             int partPosTickShift = -preMeasure * uproject.resolution * uproject.timeSignatures[0].beatPerBar * 4 / uproject.timeSignatures[0].beatUnit;
 
             USinger usinger = USinger.CreateMissing("");
@@ -101,7 +102,7 @@ namespace OpenUtau.Core.Format {
 
                 //utrack.Name = track.SelectSingleNode(tracknamePath, nsmanager).InnerText;
                 //utrack.Comment = track.SelectSingleNode(trackcommentPath, nsmanager).InnerText;
-                utrack.TrackNo = int.Parse(track.SelectSingleNode(tracknoPath, nsmanager).InnerText);
+                utrack.TrackNo = int.Parse(track.SelectSingleNode(tracknoPath, nsmanager).InnerText, CultureInfo.InvariantCulture);
 
                 foreach (XmlNode part in track.SelectNodes(partPath, nsmanager)) // musical part
                 {
@@ -110,8 +111,8 @@ namespace OpenUtau.Core.Format {
 
                     upart.name = part.SelectSingleNode(partnamePath, nsmanager).InnerText;
                     upart.comment = part.SelectSingleNode(partcommentPath, nsmanager).InnerText;
-                    upart.position = int.Parse(part.SelectSingleNode(postickPath, nsmanager).InnerText) + partPosTickShift;
-                    upart.Duration = int.Parse(part.SelectSingleNode(playtimePath, nsmanager).InnerText);
+                    upart.position = int.Parse(part.SelectSingleNode(postickPath, nsmanager).InnerText, CultureInfo.InvariantCulture) + partPosTickShift;
+                    upart.Duration = int.Parse(part.SelectSingleNode(playtimePath, nsmanager).InnerText, CultureInfo.InvariantCulture);
                     upart.trackNo = utrack.TrackNo;
 
                     var pitList = new List<Tuple<int, int>>();
@@ -119,7 +120,7 @@ namespace OpenUtau.Core.Format {
                     int? lastT = null;
                     int? lastV = null;
                     foreach (XmlNode ctrlPt in part.SelectNodes($"{nsPrefix}{(nsPrefix == "v3:" ? "mCtrl" : "cc")}", nsmanager)) {
-                        var t = int.Parse(ctrlPt.SelectSingleNode($"{nsPrefix}{(nsPrefix == "v3:" ? "posTick" : "t")}", nsmanager).InnerText);
+                        var t = int.Parse(ctrlPt.SelectSingleNode($"{nsPrefix}{(nsPrefix == "v3:" ? "posTick" : "t")}", nsmanager).InnerText, CultureInfo.InvariantCulture);
                         var valNode = ctrlPt.SelectSingleNode($"{nsPrefix}{(nsPrefix == "v3:" ? "attr" : "v")}", nsmanager);
                         // type of controller
                         // D: DYN, [0,128), default: 64
@@ -127,7 +128,7 @@ namespace OpenUtau.Core.Format {
                         // P: PIT, [-8192,8192), default: 0
                         // Pitch curve is calculated by multiplying PIT with PBS, max/min PIT shifts pitch by {PBS} semitones.
                         var type = valNode.Attributes["id"].Value;
-                        var v = int.Parse(valNode.InnerText);
+                        var v = int.Parse(valNode.InnerText, CultureInfo.InvariantCulture);
                         if (type == "DYN" || type == "D") {
                             v -= 64;
                             v = (int)(v < 0 ? v / 64.0 * 240 : v / 63.0 * 120);
@@ -178,9 +179,9 @@ namespace OpenUtau.Core.Format {
                     foreach (XmlNode note in part.SelectNodes(notePath, nsmanager)) {
                         UNote unote = uproject.CreateNote();
 
-                        unote.position = int.Parse(note.SelectSingleNode(postickPath, nsmanager).InnerText);
-                        unote.duration = int.Parse(note.SelectSingleNode(durtickPath, nsmanager).InnerText);
-                        unote.tone = int.Parse(note.SelectSingleNode(notenumPath, nsmanager).InnerText);
+                        unote.position = int.Parse(note.SelectSingleNode(postickPath, nsmanager).InnerText, CultureInfo.InvariantCulture);
+                        unote.duration = int.Parse(note.SelectSingleNode(durtickPath, nsmanager).InnerText, CultureInfo.InvariantCulture);
+                        unote.tone = int.Parse(note.SelectSingleNode(notenumPath, nsmanager).InnerText, CultureInfo.InvariantCulture);
                         unote.lyric = note.SelectSingleNode(lyricPath, nsmanager).InnerText;
                         if (unote.lyric == "-") {
                             unote.lyric = "+~";
@@ -188,19 +189,19 @@ namespace OpenUtau.Core.Format {
 
                         unote.phonemeExpressions.Add(new UExpression(Ustx.VEL) {
                             index = 0,
-                            value = int.Parse(note.SelectSingleNode(velocityPath, nsmanager).InnerText) * 100 / 64,
+                            value = int.Parse(note.SelectSingleNode(velocityPath, nsmanager).InnerText, CultureInfo.InvariantCulture) * 100 / 64,
                         });
                         foreach (XmlNode notestyle in note.SelectNodes(notestyleattrPath, nsmanager)) {
                             if (notestyle.Attributes["id"].Value == "accent") {
                                 unote.phonemeExpressions.Add(new UExpression(Ustx.ATK) {
                                     index = 0,
-                                    value = int.Parse(notestyle.InnerText) * 2,
+                                    value = int.Parse(notestyle.InnerText, CultureInfo.InvariantCulture) * 2,
                                 });
                             } else if (notestyle.Attributes["id"].Value == "decay") {
                                 unote.phonemeExpressions.Add(new UExpression(Ustx.DEC) {
                                     index = 0,
                                     // V4 default is 50. Translate it to no effect in OU. V4 dec 100 roughly maps to OU 50.
-                                    value = Math.Max(0, int.Parse(notestyle.InnerText) - 50),
+                                    value = Math.Max(0, int.Parse(notestyle.InnerText, CultureInfo.InvariantCulture) - 50),
                                 });
                             }
                         }

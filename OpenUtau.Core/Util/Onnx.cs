@@ -38,7 +38,7 @@ namespace OpenUtau.Core {
                     var env = OrtEnv.Instance();
                     var ortDevices = env.GetEpDevices();
                     int i = 0;
-                    foreach (var device in ortDevices.Where(d => d.EpName.ToLower().Contains("dml"))) {
+                    foreach (var device in ortDevices.Where(d => d.EpName.ToLowerInvariant().Contains("dml"))) {
                         devices[i++] = device;
                     }
                     if (devices.Count == 0) {
@@ -61,7 +61,7 @@ namespace OpenUtau.Core {
         private static string getGpuDescription(OrtEpDevice device) {
             try {
                 foreach (var item in device.HardwareDevice.Metadata.Entries) {
-                    if (item.Key.ToLower() == "description")
+                    if (item.Key.ToLowerInvariant() == "description")
                         return item.Value;
                 }
             } catch (Exception e) {
@@ -104,7 +104,7 @@ namespace OpenUtau.Core {
                 var ortDevices = env.GetEpDevices();
 
                 int i = 0;
-                foreach (var device in ortDevices.Where(d => d.EpName.ToLower().Contains("dml"))) {
+                foreach (var device in ortDevices.Where(d => d.EpName.ToLowerInvariant().Contains("dml"))) {
                     var description = getGpuDescription(device);
                     devices[i] = device;
                     gpuList.Add(new GpuInfo {

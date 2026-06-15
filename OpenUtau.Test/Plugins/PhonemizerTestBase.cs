@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -58,6 +58,9 @@ namespace OpenUtau.Plugins {
             Ustx.AddDefaultExpressions(project);
             var track = project.tracks[0];
             project.expressions.TryGetValue(Ustx.CLR, out var descriptor);
+            if (descriptor == null) {
+                throw new InvalidOperationException("Missing CLR expression descriptor");
+            }
             track.VoiceColorExp = descriptor.Clone();
             var colors = singer.Subbanks.Select(subbank => subbank.Color).ToHashSet();
             track.VoiceColorExp.options = colors.OrderBy(c => c).ToArray();

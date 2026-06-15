@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using K4os.Hash.xxHash;
 using NetMQ;
@@ -146,7 +147,7 @@ namespace OpenUtau.Integrations {
                     Log.Information("Starting vLabeler.");
                 }
                 for (int i = 0; i < 50; i++) {
-                    Task.Delay(100);
+                    Thread.Sleep(100);
                     if (Heartbeat()) {
                         Log.Information("vLabeler started.");
                         return true;

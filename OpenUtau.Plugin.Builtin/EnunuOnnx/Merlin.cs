@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Globalization;
 using System.Linq;
 using OpenUtau.Plugin.Builtin.EnunuOnnx.nnmnkwii.io.hts;
 //reference: https://github.com/r9y9/nnmnkwii/blob/master/nnmnkwii/frontend/merlin.py
@@ -84,9 +85,9 @@ namespace OpenUtau.Plugin.Builtin.EnunuOnnx.nnmnkwii.frontend {
                     if (HTS.NameToTone(note)>0) {
                         continuous_value = HTS.NameToTone(note);
                     } else if (note.StartsWith("p")) {
-                        continuous_value = int.Parse(note[1..]);
+                        continuous_value = int.Parse(note[1..], CultureInfo.InvariantCulture);
                     } else if (note.StartsWith("m")) {
-                        continuous_value = -int.Parse(note[1..]);
+                        continuous_value = -int.Parse(note[1..], CultureInfo.InvariantCulture);
                     } else if (float.TryParse(note, out float num)) {
                         continuous_value = num;
                     }

@@ -324,8 +324,7 @@ namespace OpenUtau.Core.Voicevox {
         }
 
         public static bool TryGetPau(string s, out string str) {
-            phoneme_List.paus.TryGetValue(s, out str);
-            return phoneme_List.paus.ContainsKey(s);
+            return phoneme_List.paus.TryGetValue(s, out str);
         }
 
         public static string getBaseSingerID(VoicevoxSinger singer) {

@@ -15,7 +15,7 @@ namespace OpenUtau.Core.Voicevox {
         internal async Task<Tuple<string, byte[]>> SendRequestAsync(VoicevoxURL voicevoxURL) {
             try {
                 using (var client = new HttpClient()) {
-                    using (var request = new HttpRequestMessage(new HttpMethod(voicevoxURL.method.ToUpper()), this.RequestURL(voicevoxURL))) {
+                    using (var request = new HttpRequestMessage(new HttpMethod(voicevoxURL.method.ToUpperInvariant()), this.RequestURL(voicevoxURL))) {
                         request.Headers.TryAddWithoutValidation("accept", voicevoxURL.accept);
 
                         request.Content = new StringContent(voicevoxURL.body);

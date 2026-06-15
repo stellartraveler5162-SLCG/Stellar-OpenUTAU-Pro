@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Globalization;
 using OpenUtau.Plugin.Builtin.EnunuOnnx.nnmnkwii.python;
 //reference: https://github.com/r9y9/nnmnkwii/blob/master/nnmnkwii/io/hts.py
 
@@ -264,10 +265,10 @@ namespace OpenUtau.Plugin.Builtin.EnunuOnnx.nnmnkwii.io.hts {
             if (!is_state_alignment_label()) {
                 return 1;
             }
-            int initial_state_num = int.Parse(contexts[0][^2].ToString());
+            int initial_state_num = int.Parse(contexts[0][^2].ToString(), CultureInfo.InvariantCulture);
             int largest_state_num = initial_state_num;
             foreach (var label in contexts.Skip(1)) {
-                int n = int.Parse(label[^2].ToString());
+                int n = int.Parse(label[^2].ToString(), CultureInfo.InvariantCulture);
                 if (n > largest_state_num) {
                     largest_state_num = n;
                 } else {
@@ -381,8 +382,8 @@ namespace OpenUtau.Plugin.Builtin.EnunuOnnx.nnmnkwii.io.hts {
                 int end_time;
                 string context;
                 if (cols.Length == 3) {
-                    start_time = int.Parse(cols[0]);
-                    end_time = int.Parse(cols[1]);
+                    start_time = int.Parse(cols[0], CultureInfo.InvariantCulture);
+                    end_time = int.Parse(cols[1], CultureInfo.InvariantCulture);
                     context = cols[2];
                 } else if (cols.Length == 1) {
                     start_time = -1;

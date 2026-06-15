@@ -954,7 +954,7 @@ namespace OpenUtau.App.Views {
             if (files.Length == 0) {
                 return;
             }
-            var supportedFiles = files.Where(file => SupportedExts.Contains(Path.GetExtension(file).ToLower())).ToArray();
+            var supportedFiles = files.Where(file => SupportedExts.Contains(Path.GetExtension(file).ToLowerInvariant())).ToArray();
             if (supportedFiles.Length == 0) {
                 _ = await MessageBox.Show(
                     this,
@@ -963,10 +963,10 @@ namespace OpenUtau.App.Views {
                     MessageBox.MessageBoxButtons.Ok);
                 return;
             }
-            string FirstExt = Path.GetExtension(supportedFiles[0]).ToLower();
+            string FirstExt = Path.GetExtension(supportedFiles[0]).ToLowerInvariant();
             //If multiple project/audio files are dropped, open/import them all.
             if (ProjectExts.Contains(FirstExt) || AudioExts.Contains(FirstExt)) {
-                var projectFiles = supportedFiles.Where(file => ProjectExts.Contains(Path.GetExtension(file).ToLower())).ToArray();
+                var projectFiles = supportedFiles.Where(file => ProjectExts.Contains(Path.GetExtension(file).ToLowerInvariant())).ToArray();
                 viewModel.Page = 1;
                 if (projectFiles.Length > 0) {
                     try {
@@ -992,7 +992,7 @@ namespace OpenUtau.App.Views {
                         _ = await MessageBox.ShowError(this, new MessageCustomizableException("Failed to import files", "<translate:errors.failed.importfiles>", e));
                     }
                 }
-                var audioFiles = supportedFiles.Where(file => AudioExts.Contains(Path.GetExtension(file).ToLower())).ToArray();
+                var audioFiles = supportedFiles.Where(file => AudioExts.Contains(Path.GetExtension(file).ToLowerInvariant())).ToArray();
                 foreach (var audioFile in audioFiles) {
                     try {
                         viewModel.ImportAudio(audioFile);
@@ -1005,7 +1005,7 @@ namespace OpenUtau.App.Views {
             }
             // Otherwise, only one installer file is handled at a time.
             string file = supportedFiles[0];
-            var ext = Path.GetExtension(file).ToLower();
+            var ext = Path.GetExtension(file).ToLowerInvariant();
             if (ext == ".zip" || ext == ".rar" || ext == ".uar") {
                 try {
                     var setup = new SingerSetupDialog() {

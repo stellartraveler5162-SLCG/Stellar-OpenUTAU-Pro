@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -70,7 +70,7 @@ namespace OpenUtau.Core.Voicevox {
                         var config = new VoicebankConfig() {
                             Name = voicevoxConfig.name,
                             TextFileEncoding = Encoding.UTF8.WebName,
-                            SingerType = typename,
+                            SingerType = typename ?? string.Empty,
                             PortraitHeight = 600,
                             Portrait = $"{voicevoxConfig.name}_portrait.png"
                         };
