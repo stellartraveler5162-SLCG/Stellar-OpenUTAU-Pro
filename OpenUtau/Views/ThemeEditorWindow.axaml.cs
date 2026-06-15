@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -23,7 +23,9 @@ namespace OpenUtau.App.Views {
         }
 
         void OnSave(object? sender, RoutedEventArgs e) {
-            (DataContext as ThemeEditorViewModel)!.Save();
+            if (DataContext is ThemeEditorViewModel vm) {
+                vm.Save();
+            }
             Close();
         }
 

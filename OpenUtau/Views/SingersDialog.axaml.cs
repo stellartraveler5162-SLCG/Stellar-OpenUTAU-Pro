@@ -44,7 +44,7 @@ namespace OpenUtau.App.Views {
         }
 
         void OnVisitWebsite(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer == null) {
                 return;
             }
@@ -56,7 +56,7 @@ namespace OpenUtau.App.Views {
         }
 
         async void OnSetImage(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer == null) {
                 return;
             }
@@ -82,7 +82,7 @@ namespace OpenUtau.App.Views {
         }
 
         async void OnSetPortrait(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer == null) {
                 return;
             }
@@ -108,7 +108,7 @@ namespace OpenUtau.App.Views {
         }
 
         async void OnPublish(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer == null) {
                 return;
             }
@@ -134,12 +134,12 @@ namespace OpenUtau.App.Views {
         }
 
         void OnSetUseFilenameAsAlias(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             viewModel.SetUseFilenameAsAlias();
         }
 
         async void OnEditSubbanksButton(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer == null) {
                 return;
             }
@@ -164,7 +164,7 @@ namespace OpenUtau.App.Views {
         }
 
         void OnSelectedOtoChanged(object sender, SelectionChangedEventArgs e) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer == null || e.AddedItems.Count < 1) {
                 return;
             }
@@ -180,9 +180,9 @@ namespace OpenUtau.App.Views {
         }
 
         void OnCellEditEnded(object sender, DataGridCellEditEndedEventArgs e) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (e.EditAction == DataGridEditAction.Commit) {
-                viewModel?.NotifyOtoChanged();
+                viewModel.NotifyOtoChanged();
             }
             editingCell = false;
         }
@@ -200,7 +200,7 @@ namespace OpenUtau.App.Views {
         }
 
         void GotoVLabelerOto(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer == null) {
                 return;
             }
@@ -214,7 +214,7 @@ namespace OpenUtau.App.Views {
         }
 
         void OnEditInVLabeler(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer != null) {
                 OpenInVLabeler(viewModel.Singer, null);
             }
@@ -242,7 +242,7 @@ namespace OpenUtau.App.Views {
         }
 
         void GotoSetParamOto(object sender, RoutedEventArgs args) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer == null) {
                 return;
             }
@@ -294,11 +294,11 @@ namespace OpenUtau.App.Views {
         }
 
         void OnOpenReadme(object sender, RoutedEventArgs e) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer != null) {
                 var readme = Path.Join(viewModel.Singer.Location, "readme.txt");
                 if (File.Exists(readme)) {
-                    var p = new Process();
+                    using var p = new Process();
                     p.StartInfo = new ProcessStartInfo(readme) {
                         UseShellExecute = true
                     };
@@ -342,7 +342,7 @@ namespace OpenUtau.App.Views {
         }
 
         public void OnPlayCharacterSample(object sender, RoutedEventArgs e) {
-            var viewModel = (DataContext as SingersViewModel)!;
+            if (DataContext is not SingersViewModel viewModel) return;
             if (viewModel.Singer != null) {
                 var sample = FindSample(viewModel.Singer);
                 if(sample == null){

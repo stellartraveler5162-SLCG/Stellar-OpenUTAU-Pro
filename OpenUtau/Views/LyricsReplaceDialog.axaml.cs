@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using OpenUtau.App.ViewModels;
@@ -14,7 +14,7 @@ namespace OpenUtau.App.Views {
         }
 
         void OnFinish(object? sender, RoutedEventArgs e) {
-            if((DataContext as LyricsReplaceViewModel)!.Finish()) {
+            if (DataContext is LyricsReplaceViewModel vm && vm.Finish()) {
                 Close();
             }
         }

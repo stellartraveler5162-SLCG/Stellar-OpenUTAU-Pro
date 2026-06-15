@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -18,7 +18,9 @@ namespace OpenUtau.App.Views {
         }
 
         void OnFinish(object? sender, RoutedEventArgs e) {
-            (DataContext as TrackColorViewModel)!.Finish();
+            if (DataContext is TrackColorViewModel vm) {
+                vm.Finish();
+            }
             Close();
         }
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -16,12 +16,16 @@ namespace OpenUtau.App.Views {
         }
 
         void OnCancel(object? sender, RoutedEventArgs e) {
-            (DataContext as LyricsViewModel)!.Cancel();
+            if (DataContext is LyricsViewModel vm) {
+                vm.Cancel();
+            }
             Close();
         }
 
         void OnFinish(object? sender, RoutedEventArgs e) {
-            (DataContext as LyricsViewModel)!.Finish();
+            if (DataContext is LyricsViewModel vm) {
+                vm.Finish();
+            }
             Close();
         }
 

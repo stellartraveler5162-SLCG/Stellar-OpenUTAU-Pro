@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -58,9 +58,9 @@ namespace OpenUtau.Core {
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             client.DefaultRequestHeaders.Add("User-Agent", "Stellar OpenUTAU Pro");
             client.Timeout = TimeSpan.FromSeconds(30);
-            using var response = await client.GetAsync(registryUrl);
+            using var response = await client.GetAsync(registryUrl).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
-            string body = await response.Content.ReadAsStringAsync();
+            string body = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             List<RegistrySoftware> list = new List<RegistrySoftware>();
             try {
@@ -103,7 +103,7 @@ namespace OpenUtau.Core {
                     }
                 }).Where(r => r != null).Select(r => r!).ToList();
                 return results;
-            });
+            }).ConfigureAwait(false);
         }
 
         static string GetSha256Hex(byte[] data) {
@@ -145,16 +145,16 @@ namespace OpenUtau.Core {
             byte[] data;
             using (var client = new HttpClient()) {
                 client.Timeout = TimeSpan.FromMinutes(5);
-                using var response = await client.GetAsync(mirror.url, HttpCompletionOption.ResponseHeadersRead);
+                using var response = await client.GetAsync(mirror.url, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
                 response.EnsureSuccessStatusCode();
                 var contentLength = response.Content.Headers.ContentLength;
-                using var responseStream = await response.Content.ReadAsStreamAsync();
+                using var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false);
                 using var ms = new MemoryStream();
                 var buffer = new byte[81920];
                 long totalRead = 0;
                 int read;
                 if (contentLength.HasValue && progress != null) progress.Report(0);
-                while ((read = await responseStream.ReadAsync(buffer, 0, buffer.Length)) > 0) {
+                while ((read = await responseStream.ReadAsync(buffer, 0, buffer.Length).ConfigureAwait(false)) > 0) {
                     ms.Write(buffer, 0, read);
                     totalRead += read;
                     if (contentLength.HasValue && progress != null) {
@@ -165,7 +165,7 @@ namespace OpenUtau.Core {
                 if (progress != null) progress.Report(100);
                 data = ms.ToArray();
             }
-            var hash = mirror.hash; // "sha256:..."
+            var hash = mirror.hash;
             if (!string.IsNullOrEmpty(hash) && hash.StartsWith("sha256:", StringComparison.OrdinalIgnoreCase)) {
                 var expected = hash.Substring("sha256:".Length).ToLowerInvariant();
                 var actual = GetSha256Hex(data);
@@ -174,7 +174,7 @@ namespace OpenUtau.Core {
                 }
             }
             using (var ms = new MemoryStream(data)) {
-                await InstallFromStreamAsync(ms, software.id, version.version);
+                await InstallFromStreamAsync(ms, software.id, version.version).ConfigureAwait(false);
             }
         }
 
@@ -183,7 +183,7 @@ namespace OpenUtau.Core {
             var basePath = Path.Combine(PathManager.Inst.DependencyPath, id);
             if (!Directory.Exists(basePath)) return;
             try {
-                await Task.Run(() => Directory.Delete(basePath, true));
+                await Task.Run(() => Directory.Delete(basePath, true)).ConfigureAwait(false);
             } catch (Exception e) {
                 Log.Warning(e, "Failed to uninstall dependency {id}", id);
                 throw;
@@ -192,7 +192,7 @@ namespace OpenUtau.Core {
 
         public async Task InstallFromFileAsync(string archivePath) {
             using var stream = new FileStream(archivePath, FileMode.Open, FileAccess.Read);
-            await InstallFromStreamAsync(stream, string.Empty, string.Empty);
+            await InstallFromStreamAsync(stream, string.Empty, string.Empty).ConfigureAwait(false);
         }
 
         public async Task InstallFromStreamAsync(Stream stream, string expectedId, string expectedVersion) {
@@ -226,7 +226,6 @@ namespace OpenUtau.Core {
                 }
                 foreach (var entry in archive.Entries) {
                     if (string.IsNullOrEmpty(entry.Key) || entry.Key.Contains("..")) {
-                        // Prevent zipSlip attack
                         continue;
                     }
                     var filePath = Path.Combine(basePath, entry.Key);
@@ -236,7 +235,7 @@ namespace OpenUtau.Core {
                         entry.WriteToFile(Path.Combine(basePath, entry.Key));
                     }
                 }
-            });
+            }).ConfigureAwait(false);
             DocManager.Inst.ExecuteCmd(new ProgressBarNotification(0, $"Installed dependency \"{id}\""));
         }
 

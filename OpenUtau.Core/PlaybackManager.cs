@@ -395,11 +395,11 @@ namespace OpenUtau.Core {
                 int tick = _seek.playPosTick;
                 DocManager.Inst.ExecuteCmd(new SetPlayPosTickNotification(tick, false, _seek.pause));
             } else if (cmd is VolumeChangeNotification _vol) {
-                if (faders != null && faders.Count > _vol.TrackNo) {
+                if (faders != null && _vol.TrackNo >= 0 && faders.Count > _vol.TrackNo) {
                     faders[_vol.TrackNo].Scale = DecibelToVolume(_vol.Volume);
                 }
             } else if (cmd is PanChangeNotification _pan) {
-                if (faders != null && faders.Count > _pan.TrackNo) {
+                if (faders != null && _pan.TrackNo >= 0 && faders.Count > _pan.TrackNo) {
                     faders[_pan.TrackNo].Pan = (float)_pan.Pan;
                 }
             } else if (cmd is LoadProjectNotification) {
