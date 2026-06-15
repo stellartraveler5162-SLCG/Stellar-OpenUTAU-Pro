@@ -189,7 +189,7 @@ namespace OpenUtau.Core {
                     unicodeIndex = Convert.ToUInt16(character[0]);
                     isHangeul = !(unicodeIndex < HANGEUL_UNICODE_START || unicodeIndex > HANGEUL_UNICODE_END);
                 } 
-                catch {
+                catch (Exception) {
                     isHangeul = false;
                 }
 
@@ -341,30 +341,27 @@ namespace OpenUtau.Core {
                 string[] separatedCharacter = new string[0];
                 foreach (var vowel in ROMAJI_KOREAN_MIDDLE_VOWELS_DICT.Keys) {
                     if (character.Contains(vowel)) {
-                        // 예시를 기준으로 변수 part는 {"n", "ng"}
                         var part = character.Split(vowel);
-                        if (!(part[1] == "")) { // 글자에 초성, 중성, 종성이 전부 있는 경우
+                        if (!(part[1] == "")) {
                             separatedCharacter = new string[] { part[0], vowel, part[1] };
-                        } else if (part == new string[] {"", ""}) { // 글자에 중성만 존재하는 경우
+                        } else if (part == new string[] {"", ""}) {
                             separatedCharacter = new string[] { "", vowel, "" };
-                        } else if (part.Length == 2) { // 글자에 초성, 중성만 존재 하는 경우
+                        } else if (part.Length == 2) {
                             separatedCharacter = new string[] { part[0], vowel, "" };
                         }
+                    }
                     break;
                 }
 
-                if (separatedCharacter.Length == 0) { // 무엇도 해당하지 않을경우 빈 문자열 3개만 담음
+                if (separatedCharacter.Length == 0) {
                     separatedCharacter = new string[] { "", "", ""};
                 }
 
                 return separatedCharacter;
-                }
             } catch (Exception e) {
                 Log.Error(e, "SeparateRomaji Method Error!");
                 return new string[] {"", "", ""};
             }
-            
-            return new string[] {"", "", ""};
         }
 
         /// <summary>

@@ -32,7 +32,7 @@ namespace OpenUtau.Core.DiffSinger {
         public Dictionary<string, string[]> phoneDict;
         public List<string> phonemes = new List<string>();
         //Default rhythmizer package name
-        public static string DefaultRhythmizer = "rhythmizer_zh_opencpop_strict";
+        public const string DefaultRhythmizer = "rhythmizer_zh_opencpop_strict";
 
         public static Dictionary<string, string[]> LoadPhoneDict(string path, Encoding TextFileEncoding) {
             var phoneDict = new Dictionary<string, string[]>();
