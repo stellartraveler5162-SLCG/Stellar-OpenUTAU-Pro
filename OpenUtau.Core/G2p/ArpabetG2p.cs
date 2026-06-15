@@ -19,7 +19,7 @@ namespace OpenUtau.Core.G2p {
             "th", "uh", "uw", "v", "w", "y", "z", "zh",
         };
 
-        private static object lockObj = new object();
+        private static readonly object lockObj = new object();
         private static Dictionary<string, int> graphemeIndexes;
         private static IG2p dict;
         private static InferenceSession session;

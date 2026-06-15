@@ -8,7 +8,7 @@ using Serilog;
 
 namespace OpenUtau.Classic {
     public class ToolsManager : SingletonBase<ToolsManager> {
-        static object _locker = new object();
+        static readonly object _locker = new object();
 
         private readonly List<IResampler> resamplers = new List<IResampler>();
         private readonly List<IWavtool> wavtools = new List<IWavtool>();

@@ -36,7 +36,7 @@ namespace OpenUtau.Core.G2p {
             "ty", "u", "v", "w", "y", "z"
         };
 
-        private static object lockObj = new object();
+        private static readonly object lockObj = new object();
         private static Dictionary<string, int> graphemeIndexes;
         private static IG2p hiragana;
         private static IG2p katakana;

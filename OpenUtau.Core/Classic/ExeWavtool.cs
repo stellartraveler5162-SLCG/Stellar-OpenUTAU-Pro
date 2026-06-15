@@ -13,7 +13,7 @@ using System;
 
 namespace OpenUtau.Classic {
     class ExeWavtool : IWavtool {
-        static object tempBatLock = new object();
+        static readonly object tempBatLock = new object();
 
         readonly StringBuilder sb = new StringBuilder();
         readonly string filePath;
