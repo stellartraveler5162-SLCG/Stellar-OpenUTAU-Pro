@@ -99,7 +99,7 @@ namespace OpenUtau.Api {
                 inputs.Add(NamedOnnxValue.CreateFromTensor("t", t));
                 var outputs = Session.Run(inputs);
                 var pred = (outputs.FirstOrDefault()
-                    ?? throw new Exception("G2p model produced no output"))
+                    ?? throw new InvalidOperationException("G2p model produced no output"))
                     .AsTensor<int>()[0];
                 if (pred != 2) {
                     var newTgt = new DenseTensor<int>(new int[] { 1, tgt.Dimensions[1] + 1 });

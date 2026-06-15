@@ -401,12 +401,12 @@ namespace OpenUtau.Core.DiffSinger
                 .Where(o => o.Name == "encoder_out")
                 .FirstOrDefault()
                 ?.AsTensor<float>()
-                ?? throw new Exception("ONNX output 'encoder_out' not found in linguistic model");
+                ?? throw new InvalidOperationException("ONNX output 'encoder_out' not found in linguistic model");
             Tensor<bool> x_masks = linguisticOutputs
                 .Where(o => o.Name == "x_masks")
                 .FirstOrDefault()
                 ?.AsTensor<bool>()
-                ?? throw new Exception("ONNX output 'x_masks' not found in linguistic model");
+                ?? throw new InvalidOperationException("ONNX output 'x_masks' not found in linguistic model");
             //Duration Predictor
             var ph_midi = phrasePhonemes
                 .SelectMany(n=>Enumerable.Repeat((Int64)n.Tone, n.Phonemes.Count))
@@ -438,7 +438,7 @@ namespace OpenUtau.Core.DiffSinger
                 durationCache?.Save(durationOutputs);
             }
             List<double> durationFrames = (durationOutputs.FirstOrDefault()
-                ?? throw new Exception("Duration model produced no output"))
+                ?? throw new InvalidOperationException("Duration model produced no output"))
                 .AsTensor<float>().Select(x=>(double)x).ToList();
             
             //Alignment

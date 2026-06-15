@@ -179,7 +179,7 @@ namespace OpenUtau.Core.DiffSinger {
                 .Reshape(new int[] { 1, is_slur.Count })));
             var outputs = rhythmizer.session.Run(inputs);
             ph_dur = (outputs.FirstOrDefault()
-                ?? throw new Exception("Rhythmizer model produced no output"))
+                ?? throw new InvalidOperationException("Rhythmizer model produced no output"))
                 .AsTensor<float>().Select(x => (double)x).ToList();
             //Align the starting time of vowels to the position of each note, unit: s
             var positions = new List<double>();

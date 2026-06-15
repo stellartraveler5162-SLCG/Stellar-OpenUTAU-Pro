@@ -456,7 +456,7 @@ namespace OpenUtau.Core.DiffSinger {
                 phrase.AddCacheFile(acousticCache?.Filename);
             }
             Tensor<float> mel = (acousticOutputs.FirstOrDefault()
-                ?? throw new Exception("Acoustic model produced no output"))
+                ?? throw new InvalidOperationException("Acoustic model produced no output"))
                 .AsTensor<float>().Clone();
             //mel transforms for different mel base
             if (vocoder.mel_base != singer.dsConfig.mel_base) {
@@ -506,7 +506,7 @@ namespace OpenUtau.Core.DiffSinger {
                 phrase.AddCacheFile(vocoderCache?.Filename);
             }
             Tensor<float> samplesTensor = (vocoderOutputs.FirstOrDefault()
-                ?? throw new Exception("Vocoder model produced no output"))
+                ?? throw new InvalidOperationException("Vocoder model produced no output"))
                 .AsTensor<float>();
             //Check the size of samplesTensor
             int[] expectedShape = new int[] { 1, -1 };

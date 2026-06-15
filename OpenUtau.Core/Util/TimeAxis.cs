@@ -52,7 +52,7 @@ namespace OpenUtau.Core {
                         + timeSigSegments.Last().ticksPerBar * (timesig.barPosition - lastBarPos);
                 } else {
                     if(timesig.barPosition != 0) {
-                        throw new Exception("First time signature must be at bar 0.");
+                        throw new InvalidOperationException("First time signature must be at bar 0.");
                     }
                 }
                 timeSigSegments.Add(new TimeSigSegment {
@@ -79,7 +79,7 @@ namespace OpenUtau.Core {
                 var tempo = project.tempos[i];
                 if (i == 0) {
                     if(tempo.position != 0) {
-                        throw new Exception("First tempo must be at tick 0.");
+                        throw new InvalidOperationException("First tempo must be at tick 0.");
                     }
                 }
                 var index = tempoSegments.FindIndex(seg => seg.tickPos >= tempo.position);

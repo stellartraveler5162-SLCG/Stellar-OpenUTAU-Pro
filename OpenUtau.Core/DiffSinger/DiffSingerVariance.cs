@@ -186,7 +186,7 @@ namespace OpenUtau.Core.DiffSinger{
                 .Where(o => o.Name == "encoder_out")
                 .FirstOrDefault()
                 ?.AsTensor<float>()
-                ?? throw new Exception("ONNX output 'encoder_out' not found in linguistic model");
+                ?? throw new InvalidOperationException("ONNX output 'encoder_out' not found in linguistic model");
 
             //Variance Predictor
             var pitch = DiffSingerUtils.SampleCurve(phrase, phrase.pitches, 0, frameMs, totalFrames, headFrames, tailFrames, 

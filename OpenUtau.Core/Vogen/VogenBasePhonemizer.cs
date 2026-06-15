@@ -73,7 +73,7 @@ namespace OpenUtau.Core.Vogen {
             inputs.Add(NamedOnnxValue.CreateFromTensor("letters", x));
             var outputs = G2p.Run(inputs);
             var phsTensor = (outputs.FirstOrDefault()
-                ?? throw new Exception("Vogen G2P model produced no output"))
+                ?? throw new InvalidOperationException("Vogen G2P model produced no output"))
                 .AsTensor<string>();
             outputs.Dispose();
 
@@ -107,7 +107,7 @@ namespace OpenUtau.Core.Vogen {
                 new DenseTensor<float>(noteDursSec.ToArray(), new int[] { noteDursSec.Count })));
             outputs = Prosody.Run(inputs);
             var positions = (outputs.FirstOrDefault()
-                ?? throw new Exception("Vogen Prosody model produced no output"))
+                ?? throw new InvalidOperationException("Vogen Prosody model produced no output"))
                 .AsTensor<float>()
                 .Select(t => t - padding)
                 .ToArray();

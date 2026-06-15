@@ -174,12 +174,12 @@ namespace OpenUtau.Core.DiffSinger
                 .Where(o => o.Name == "encoder_out")
                 .FirstOrDefault()
                 ?.AsTensor<float>()
-                ?? throw new Exception("ONNX output 'encoder_out' not found in linguistic model");
+                ?? throw new InvalidOperationException("ONNX output 'encoder_out' not found in linguistic model");
             Tensor<bool> x_masks = linguisticOutputs
                 .Where(o => o.Name == "x_masks")
                 .FirstOrDefault()
                 ?.AsTensor<bool>()
-                ?? throw new Exception("ONNX output 'x_masks' not found in linguistic model");
+                ?? throw new InvalidOperationException("ONNX output 'x_masks' not found in linguistic model");
             
             //Build note durations, inserting rest notes for gaps between notes
             //that are bridged by ahead-of-time consonants in the same phrase
@@ -317,7 +317,7 @@ namespace OpenUtau.Core.DiffSinger
             Onnx.VerifyInputNames(pitchModel, pitchInputs);
             var pitchOutputs = pitchModel.Run(pitchInputs);
             var pitch_out = (pitchOutputs.FirstOrDefault()
-                ?? throw new Exception("Pitch model produced no output"))
+                ?? throw new InvalidOperationException("Pitch model produced no output"))
                 .AsTensor<float>().ToArray();
             var pitchEnd = phrase.timeAxis.MsPosToTickPos(startMs + (totalFrames - 1) * frameMs) - phrase.position;
             if(pitchEnd<=phrase.duration){

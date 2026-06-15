@@ -34,7 +34,7 @@ namespace OpenUtau.Core.Analysis.Crepe {
             inputs.Add(NamedOnnxValue.CreateFromTensor("input", input));
             var outputs = session.Run(inputs);
             var activations = (outputs.FirstOrDefault()
-                ?? throw new Exception("Crepe model produced no output"))
+                ?? throw new InvalidOperationException("Crepe model produced no output"))
                 .AsTensor<float>().ToArray();
             int[] path = new int[length];
             GetPath(activations, path);

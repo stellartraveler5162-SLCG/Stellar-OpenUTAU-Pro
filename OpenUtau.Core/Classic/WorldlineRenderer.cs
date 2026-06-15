@@ -162,7 +162,7 @@ namespace OpenUtau.Classic {
                         };
                         using var vocoderResults = vocoderSession.Run(vocoderInputs);
                         var audioOutput = (vocoderResults.FirstOrDefault()
-                            ?? throw new Exception("Worldline vocoder model produced no output"))
+                            ?? throw new InvalidOperationException("Worldline vocoder model produced no output"))
                             .AsTensor<float>();
                         result.samples = audioOutput.ToArray();
                         result.samples = result.samples.Skip(leftPadding * 512).Take(totalFrames * 512).ToArray();
