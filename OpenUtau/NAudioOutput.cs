@@ -37,7 +37,7 @@ namespace OpenUtau.App {
             if (Guid.TryParse(Preferences.Default.PlaybackDevice, out var guid)) {
                 SelectDevice(guid, Preferences.Default.PlaybackDeviceNumber);
             } else {
-                SelectDevice(new Guid(), 0);
+                SelectDevice(Guid.Empty, 0);
             }
         }
 

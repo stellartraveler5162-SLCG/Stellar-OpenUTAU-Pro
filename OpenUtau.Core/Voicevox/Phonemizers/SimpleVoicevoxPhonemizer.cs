@@ -21,7 +21,7 @@ namespace Voicevox {
             List<Phoneme> phonemes = new List<Phoneme>();
             for (int i = 0; i < notes.Length; i++) {
                 var currentLyric = notes[i].lyric.Normalize();
-                var lyricList = currentLyric.Split(" ");
+                var lyricList = currentLyric.Split(' ');
                 if (lyricList.Length > 1) {
                     currentLyric = lyricList[1];
                 }

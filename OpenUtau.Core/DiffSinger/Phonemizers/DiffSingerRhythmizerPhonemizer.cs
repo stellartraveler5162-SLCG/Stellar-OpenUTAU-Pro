@@ -39,7 +39,7 @@ namespace OpenUtau.Core.DiffSinger {
             if (File.Exists(path)) {
                 foreach (string line in File.ReadLines(path, TextFileEncoding)) {
                     string[] elements = line.Split("\t");
-                    phoneDict.Add(elements[0].Trim(), elements[1].Trim().Split(" "));
+                    phoneDict.Add(elements[0].Trim(), elements[1].Trim().Split(' '));
                 }
             }
             return phoneDict;
@@ -132,7 +132,7 @@ namespace OpenUtau.Core.DiffSinger {
                         unrecognizedLyrics[group[0].position] = lyric;
                     }
                 } else {
-                    notePhonemes = group[0].phoneticHint.Split(" ");
+                    notePhonemes = group[0].phoneticHint.Split(' ');
                 }
                 is_slur.AddRange(Enumerable.Repeat(false, notePhonemes.Length));
                 phAlignPoints.Add(new Tuple<int,double>(

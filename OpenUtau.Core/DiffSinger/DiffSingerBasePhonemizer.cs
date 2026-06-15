@@ -38,7 +38,8 @@ namespace OpenUtau.Core.DiffSinger
             if (_singerLoaded && singer == this.singer) return;
             try {
                 _singerLoaded = _executeSetSinger(singer);
-            } catch {
+            } catch (Exception e) {
+                Log.Error(e, "Failed to set DiffSinger singer");
                 _singerLoaded = false;
                 throw;
             }

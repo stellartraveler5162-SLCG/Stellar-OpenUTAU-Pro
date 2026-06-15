@@ -170,7 +170,8 @@ namespace OpenUtau.App.ViewModels {
                         DocManager.Inst.ExecuteCmd(new ProgressBarNotification(0, ThemeManager.GetString("singersetup.succeeded")));
                         DocManager.Inst.ExecuteCmd(new SingersChangedNotification());
                     }).Start(DocManager.Inst.MainScheduler);
-                } catch {
+                } catch (Exception e) {
+                    Log.Error(e, "Failed to install singer");
                     new Task(() => {
                         DocManager.Inst.ExecuteCmd(new ProgressBarNotification(0, ThemeManager.GetString("singersetup.failed")));
                         DocManager.Inst.ExecuteCmd(new SingersChangedNotification());

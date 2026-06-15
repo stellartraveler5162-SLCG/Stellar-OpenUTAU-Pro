@@ -257,7 +257,7 @@ namespace OpenUtau.Core {
 
             if (allRomajiRomaji.Contains(romaji)) {
                 string hangeul = allRomajiHangeul[allRomajiRomaji.IndexOf(romaji)];
-                string[] parts = hangeul.Split("\t");
+                string[] parts = hangeul.Split('\t');
                 Hashtable separated = new Hashtable() {
                     [0] = parts[0],
                     [1] = parts[1],
@@ -1440,8 +1440,8 @@ namespace OpenUtau.Core {
             ApplySection(sectionName);
             var hashtable = (Hashtable)iniSetting[sectionName];
             if (iniLines != null) {
-                var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
-                var parts = foundLine?.line?.Trim().Split("=");
+                var foundLine = iniLines.Find(l => l.line.Trim().Split('=')[0] == keyName);
+                var parts = foundLine?.line?.Trim().Split('=');
                 var result = (parts != null && parts.Length > 1) ? parts[1] : null;
                 if (result != null) {
                     hashtable[keyName] = result;
@@ -1471,8 +1471,8 @@ namespace OpenUtau.Core {
             ApplySection(sectionName);
             var hashtable = (Hashtable)iniSetting[sectionName];
             if (iniLines != null) {
-                var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
-                var parts = foundLine?.line?.Trim().Split("=");
+                var foundLine = iniLines.Find(l => l.line.Trim().Split('=')[0] == keyName);
+                var parts = foundLine?.line?.Trim().Split('=');
                 var result = (parts != null && parts.Length > 1) ? parts[1] : null;
                 if (result != null) {
                     hashtable[keyName] = result;
@@ -1503,8 +1503,8 @@ namespace OpenUtau.Core {
             ApplySection(sectionName);
             var hashtable = (Hashtable)iniSetting[sectionName];
             if (iniLines != null) {
-                var foundLine = iniLines.Find(l => l.line.Trim().Split("=")[0] == keyName);
-                var parts = foundLine?.line?.Trim().Split("=");
+                var foundLine = iniLines.Find(l => l.line.Trim().Split('=')[0] == keyName);
+                var parts = foundLine?.line?.Trim().Split('=');
                 var result = (parts != null && parts.Length > 1) ? parts[1] : null;
                 if (result != null && int.TryParse(result, out var resultInt)) {
                     hashtable[keyName] = result;

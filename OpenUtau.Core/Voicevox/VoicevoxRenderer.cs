@@ -186,7 +186,7 @@ namespace OpenUtau.Core.Voicevox {
                 for (int i = 0; i < phrase.notes.Length; i++) {
                     var durationMs = phrase.notes[i].durationMs;
                     var currentLyric = phrase.notes[i].lyric.Normalize();
-                    var lyricList = currentLyric.Split(" ");
+                    var lyricList = currentLyric.Split(' ');
                     var shiftTone = phrase.phones[0].toneShift;
                     if (lyricList.Length > 1) {
                         currentLyric = lyricList[1];

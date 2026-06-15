@@ -351,7 +351,7 @@ namespace Classic {
                 };
             });
             if (phoneme.Contains("_")) {
-                var split = phoneme.Split("_");
+                var split = phoneme.Split('_');
                 suffix = new Regex(Regex.Escape(split[0])).Replace(phoneme, "", 1) + suffix;
                 phoneme = split[0];
             }

@@ -338,7 +338,7 @@ namespace OpenUtau.Core.DiffSinger {
 
         public static string PhonemeLanguage(string phoneme){
             if(phoneme.Contains("/")){
-                return phoneme.Split("/")[0];
+                return phoneme.Split('/')[0];
             }
             return "";
         }

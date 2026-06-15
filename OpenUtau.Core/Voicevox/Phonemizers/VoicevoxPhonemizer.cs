@@ -21,7 +21,7 @@ namespace OpenUtau.Core.Voicevox {
             VoicevoxNote[] vNotes = new VoicevoxNote[notes.Length];
             for (int i = 0; i < notes.Length; i++) {
                 var currentLyric = notes[i][0].lyric.Normalize();
-                var lyricList = currentLyric.Split(" ");
+                var lyricList = currentLyric.Split(' ');
                 if (lyricList.Length > 1) {
                     currentLyric = lyricList[1];
                 }
