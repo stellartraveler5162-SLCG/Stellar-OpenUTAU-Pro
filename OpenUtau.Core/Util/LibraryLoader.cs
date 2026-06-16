@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using Serilog;
@@ -34,7 +34,7 @@ namespace OpenUtau {
                 throw new NotSupportedException("Platform not supported.");
             }
             if (_handle == IntPtr.Zero) {
-                throw new Exception($"Could not load libary {library}.");
+                throw new DllNotFoundException($"Could not load library {library}.");
             }
         }
 
@@ -47,8 +47,8 @@ namespace OpenUtau {
             } else {
                 ptr = dlsymLinux(_handle, name);
             }
-            if (_handle == IntPtr.Zero) {
-                throw new Exception($"Could not load function name: {name}.");
+            if (ptr == IntPtr.Zero) {
+                throw new EntryPointNotFoundException($"Could not load function name: {name}.");
             }
             return Marshal.GetDelegateForFunctionPointer<TDelegate>(ptr);
         }

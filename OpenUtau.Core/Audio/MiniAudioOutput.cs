@@ -55,7 +55,7 @@ namespace OpenUtau.Audio {
                     }
                 }
                 if (!foundDevice) {
-                    throw new Exception("Failed to init any audio device");
+                    throw new InvalidOperationException("Failed to init any audio device");
                 }
             }
         }
@@ -67,7 +67,7 @@ namespace OpenUtau.Audio {
                 ou_audio_device_info_t* device_infos = stackalloc ou_audio_device_info_t[kMaxCount];
                 int count = ou_get_audio_device_infos(device_infos, kMaxCount);
                 if (count == 0) {
-                    throw new Exception("Failed to get any audio device info");
+                    throw new InvalidOperationException("Failed to get any audio device info");
                 }
                 if (count > kMaxCount) {
                     Log.Warning($"More than {kMaxCount} audio devices found, only the first {kMaxCount} will be listed.");
@@ -192,7 +192,7 @@ namespace OpenUtau.Audio {
             unsafe {
                 nativeContext = ou_init_audio_device(api_id, id, callbackPtr);
                 if (nativeContext == IntPtr.Zero) {
-                    throw new Exception("Failed to init audio device");
+                    throw new InvalidOperationException("Failed to init audio device");
                 }
             }
             selectedDevice = guid;
@@ -238,7 +238,7 @@ namespace OpenUtau.Audio {
                 return;
             }
             IntPtr ptr = ou_audio_get_error_message(errorCode);
-            throw new Exception(Marshal.PtrToStringUTF8(ptr));
+            throw new InvalidOperationException(Marshal.PtrToStringUTF8(ptr));
         }
 
         #endregion

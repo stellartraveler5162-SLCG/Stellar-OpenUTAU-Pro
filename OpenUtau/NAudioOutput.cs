@@ -113,7 +113,7 @@ namespace OpenUtau.App {
                         waveOutEvent.Init(sampleProvider);
                     } catch (Exception e2) {
                         Log.Error(e2, "WaveOut init also failed after WasapiOut failure.");
-                        throw new Exception("WasapiOut 和 WaveOut 都无法初始化音频设备，请检查音频驱动程序。", wasapiEx);
+                        throw new InvalidOperationException("WasapiOut 和 WaveOut 都无法初始化音频设备，请检查音频驱动程序。", wasapiEx);
                     }
                 } else {
                     if (waveOutEvent != null) {
