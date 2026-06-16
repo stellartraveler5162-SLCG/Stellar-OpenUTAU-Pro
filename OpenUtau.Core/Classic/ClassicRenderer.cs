@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -141,7 +141,7 @@ namespace OpenUtau.Classic {
         public UExpressionDescriptor[] GetSuggestedExpressions(USinger singer, URenderSettings renderSettings) {
             var manifest= renderSettings.Resampler.Manifest;
             if (manifest == null) {
-                return new UExpressionDescriptor[] { };
+                return Array.Empty<UExpressionDescriptor>();
             }
             return manifest.expressions.Values.ToArray();
         }

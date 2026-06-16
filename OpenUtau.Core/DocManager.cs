@@ -339,18 +339,16 @@ namespace OpenUtau.Core {
             if (undoQueue.Count > 0) {
                 key = undoQueue.Last().NameKey;
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
         public bool GetRedoState(out string? key) {
             key = null;
             if (redoQueue.Count > 0) {
                 key = redoQueue.Last().NameKey;
                 return true;
-            } else {
-                return false;
             }
+            return false;
         }
 
         # endregion

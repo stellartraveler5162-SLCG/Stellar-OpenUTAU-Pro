@@ -235,7 +235,7 @@ namespace OpenUtau.Core.Vogen {
         }
 
         public UExpressionDescriptor[] GetSuggestedExpressions(USinger singer, URenderSettings renderSettings) {
-            return new UExpressionDescriptor[] { };
+            return Array.Empty<UExpressionDescriptor>();
         }
 
         public override string ToString() => Renderers.VOGEN;

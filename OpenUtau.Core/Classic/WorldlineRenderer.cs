@@ -238,7 +238,7 @@ namespace OpenUtau.Classic {
         }
 
         public UExpressionDescriptor[] GetSuggestedExpressions(USinger singer, URenderSettings renderSettings) {
-            return new UExpressionDescriptor[] { };
+            return Array.Empty<UExpressionDescriptor>();
         }
 
         public override string ToString() => version == 1 ? Renderers.WORLDLINE_R : Renderers.WORLDLINE_R2;
