@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using NAudio.Wave;
 using OpenUtau.Core;
 using OpenUtau.Core.Render;
@@ -31,7 +31,7 @@ namespace OpenUtau.Classic {
                         $"<translate:errors.failed.synth.cutoffbeforeoffset>\n{item.phone.phoneme}",
                         e);
                 }
-                throw e;
+                throw;
             }
         }
 
