@@ -11,10 +11,8 @@ using Serilog;
 
 namespace OpenUtau.Core.Render {
     public class SynthRequestError : Exception { }
-
-    public class CutOffExceedDurationError : SynthRequestError { }
-
-    public class CutOffBeforeOffsetError : SynthRequestError { }
+    public sealed class CutOffExceedDurationError : SynthRequestError { }
+    public sealed class CutOffBeforeOffsetError : SynthRequestError { }
 
     public static class Worldline {
         [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)]

@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 
 namespace OpenUtau.Core {
-    public class MessageCustomizableException : Exception {
+    public sealed class MessageCustomizableException : Exception {
 
         public override string Message { get; } = string.Empty;
         public string TranslatableMessage { get; set; } = string.Empty;

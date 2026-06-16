@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -21,9 +21,13 @@ namespace OpenUtau.Core.Voicevox {
         public override string Version => voicebank.Version;
         public override string OtherInfo => voicebank.OtherInfo;
         public override IList<string> Errors => errors;
-        public override string Avatar => voicebank.Image == null ? voicevoxConfig == null ? null : voicevoxConfig.style_infos[0].icon == null ? null : voicevoxConfig.style_infos[0].icon : Path.Combine(Location, voicebank.Image);
+        public override string Avatar => voicebank.Image != null
+            ? Path.Combine(Location, voicebank.Image)
+            : voicevoxConfig?.style_infos?[0]?.icon;
         public override byte[] AvatarData => avatarData;
-        public override string Portrait => voicebank.Portrait == null ? voicevoxConfig == null ? null : voicevoxConfig.portraitPath == null ? null : voicevoxConfig.style_infos[0].portrait : Path.Combine(Location, voicebank.Portrait);
+        public override string Portrait => voicebank.Portrait != null
+            ? Path.Combine(Location, voicebank.Portrait)
+            : voicevoxConfig?.portraitPath ?? voicevoxConfig?.style_infos?[0]?.portrait;
         public override float PortraitOpacity => voicebank.PortraitOpacity;
         public override int PortraitHeight => voicebank.PortraitHeight;
         public override string Sample => voicebank.Sample == null ? null : Path.Combine(Location, voicebank.Sample);

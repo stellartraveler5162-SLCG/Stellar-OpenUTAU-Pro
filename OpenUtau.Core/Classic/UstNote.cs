@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -306,12 +306,12 @@ namespace OpenUtau.Classic {
             }
             if (w.Count != 0 || y.Count != 0) {
                 if (points.Count > 1 && points.Count - 1 == w.Count && y.Count == 0) { // replace w only
-                    for (var i = 0; i < w.Count(); i++) {
+                    for (var i = 0; i < w.Count; i++) {
                         x += w[i];
                         points[i + 1].X = x;
                     }
                 } else if (points.Count > 1 && w.Count == 0 && points.Count - 1 == y.Count) { // replace y only
-                    for (var i = 0; i < y.Count(); i++) {
+                    for (var i = 0; i < y.Count; i++) {
                         points[i + 1].Y = y[i];
                     }
                 } else {
@@ -321,7 +321,7 @@ namespace OpenUtau.Classic {
                     for (var i = points.Count - 1; i > 0; i--) {
                         points.Remove(points[i]);
                     }
-                    for (var i = 0; i < w.Count(); i++) {
+                    for (var i = 0; i < w.Count; i++) {
                         x += w[i];
                         points.Add(new PitchPoint(x, y[i]));
                     }
@@ -330,7 +330,7 @@ namespace OpenUtau.Classic {
             // PBM
             if (!string.IsNullOrWhiteSpace(pbm)) {
                 var m = pbm.Split(new[] { ',' });
-                for (var i = 0; i < m.Count() && i < points.Count; i++) {
+                for (var i = 0; i < m.Length && i < points.Count; i++) {
                     switch (m[i]) {
                         case "r":
                             points[i].shape = PitchPointShape.o;

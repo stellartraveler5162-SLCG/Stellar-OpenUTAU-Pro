@@ -68,7 +68,7 @@ namespace OpenUtau.Classic {
             }
             var packList = GetFilesToPack(location);
             int index = 0;
-            int fileCount = packList.Count();
+            int fileCount = packList.Count;
             using(ZipArchive archive = new ZipArchive(File.Create(outputFile), ZipArchiveMode.Create))
             {
                 foreach (var absFilePath in packList)
