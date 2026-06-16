@@ -65,7 +65,7 @@ public static class AudioSlicer {
             frame_length: win_size,
             hop_length: hop_size
         );
-        var sil_tags = new List<Tuple<int, int>>();
+        var sil_tags = new List<(int, int)>();
         int silence_start = -1; //here -1 means none
         int clip_start = 0;
         foreach (int i in Enumerable.Range(0, rms_list.Length)) {
@@ -97,9 +97,9 @@ public static class AudioSlicer {
             if (i - silence_start <= max_sil_kept) {
                 var pos = rms_list[silence_start..(i + 1)].argmin() + silence_start;
                 if (silence_start == 0) {
-                    sil_tags.Add(Tuple.Create(0, pos));
+                    sil_tags.Add((0, pos));
                 } else {
-                    sil_tags.Add(Tuple.Create(pos, pos));
+                    sil_tags.Add((pos, pos));
                 }
 
                 clip_start = pos;
@@ -109,19 +109,19 @@ public static class AudioSlicer {
                 var pos_l = rms_list[silence_start..(silence_start + max_sil_kept + 1)].argmin() + silence_start;
                 var pos_r = rms_list[(i - max_sil_kept)..(i + 1)].argmin() + i - max_sil_kept;
                 if (silence_start == 0) {
-                    sil_tags.Add(Tuple.Create(0, pos_r));
+                    sil_tags.Add((0, pos_r));
                     clip_start = pos_r;
                 } else {
-                    sil_tags.Add(Tuple.Create(Math.Min(pos_l, pos), Math.Max(pos_r, pos)));
+                    sil_tags.Add((Math.Min(pos_l, pos), Math.Max(pos_r, pos)));
                     clip_start = Math.Max(pos_r, pos);
                 }
             } else {
                 var pos_l = rms_list[silence_start..(silence_start + max_sil_kept + 1)].argmin() + silence_start;
                 var pos_r = rms_list[(i - max_sil_kept)..(i + 1)].argmin() + i - max_sil_kept;
                 if (silence_start == 0) {
-                    sil_tags.Add(Tuple.Create(0, pos_r));
+                    sil_tags.Add((0, pos_r));
                 } else {
-                    sil_tags.Add(Tuple.Create(pos_l, pos_r));
+                    sil_tags.Add((pos_l, pos_r));
                 }
 
                 clip_start = pos_r;
@@ -135,7 +135,7 @@ public static class AudioSlicer {
         if (silence_start >= 0 && total_frames - silence_start >= min_interval) {
             var silence_end = Math.Min(total_frames, silence_start + max_sil_kept);
             var pos = rms_list[silence_start..(silence_end + 1)].argmin() + silence_start;
-            sil_tags.Add(Tuple.Create(pos, total_frames + 1));
+            sil_tags.Add((pos, total_frames + 1));
         }
 
         //Apply and return slices.

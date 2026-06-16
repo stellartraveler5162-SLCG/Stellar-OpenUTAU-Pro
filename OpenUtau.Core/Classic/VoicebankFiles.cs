@@ -103,7 +103,7 @@ namespace OpenUtau.Classic {
             Log.Information($"ReleaseSourceTemp {path}");
             Directory.EnumerateFiles(path, "*.*", SearchOption.TopDirectoryOnly)
                 .Where(file =>
-                    !File.GetAttributes(file).HasFlag(FileAttributes.Directory)
+                    (File.GetAttributes(file) & FileAttributes.Directory) == 0
                         && File.GetCreationTime(file) < expire)
                 .ToList()
                 .ForEach(file => File.Delete(file));
