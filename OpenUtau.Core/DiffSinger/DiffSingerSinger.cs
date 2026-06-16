@@ -230,13 +230,13 @@ namespace OpenUtau.Core.DiffSinger {
 
         public int PhonemeTokenize(string phoneme){
             if(phonemeTokens == null || phonemeTokens.Count == 0){
-                throw new Exception(
+                throw new InvalidOperationException(
                     $"Phoneme vocabulary is not loaded for singer \"{Name}\". " +
                     "Please check that dsconfig.yaml and the phonemes file are valid.");
             }
             bool success = phonemeTokens.TryGetValue(phoneme, out int token);
             if(!success){
-                throw new Exception($"Phoneme \"{phoneme}\" isn't supported by acoustic model. Please check {Path.Combine(Location, dsConfig.phonemes)}");
+                throw new InvalidDataException($"Phoneme \"{phoneme}\" isn't supported by acoustic model. Please check {Path.Combine(Location, dsConfig.phonemes)}");
             }
             return token;
         }

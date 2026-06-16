@@ -70,7 +70,7 @@ namespace OpenUtau.Core.DiffSinger
                         Log.Information("Loaded symbols: " + string.Join(", ", phonemeSymbols.Keys));
                     } catch (Exception e) {
                         Log.Error(e, $"Failed to load {dictionaryPath}");
-                        throw new Exception($"Failed to load {dictionaryPath}", e);
+                        throw new FileLoadException($"Failed to load {dictionaryPath}", e);
                     }
                     dictFound = true;
                     break;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenUtau.Api;
@@ -61,16 +61,16 @@ namespace OpenUtau.Core {
         public override Result Process(Note[] notes, Note? prev, Note? next, Note? prevNeighbour, Note? nextNeighbour, Note[] prevs) {
             if (unrecognizedLyrics.TryGetValue(notes[0].position, out var lyric)) {
                 if (string.IsNullOrEmpty(lyric)) {
-                    throw new Exception("Phoneme not found for this note");
+                    throw new InvalidOperationException("Phoneme not found for this note");
                 }
-                throw new Exception($"Unrecognized phoneme \"{lyric}\"");
+                throw new InvalidOperationException($"Unrecognized phoneme \"{lyric}\"");
             }
             if (!partResult.TryGetValue(notes[0].position, out var phonemes)) {
                 var cause = lastProcessPartException ?? SetUpException;
                 if (cause != null) {
-                    throw new Exception("Phonemizer failed to process.", cause);
+                    throw new InvalidOperationException("Phonemizer failed to process.", cause);
                 }
-                throw new Exception("Part result not found");
+                throw new InvalidOperationException("Part result not found");
             }
             return new Result {
                 phonemes = phonemes

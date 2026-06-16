@@ -130,7 +130,7 @@ namespace OpenUtau.Core.Vogen {
 
         public override Result Process(Note[] notes, Note? prev, Note? next, Note? prevNeighbour, Note? nextNeighbour, Note[] prevs) {
             if (!partResult.TryGetValue(notes[0].position, out var phonemes)) {
-                throw new Exception("Part result not found");
+                throw new InvalidOperationException("Part result not found");
             }
             return new Result {
                 phonemes = phonemes

@@ -48,10 +48,10 @@ namespace OpenUtau.Core.DiffSinger
         private bool _executeSetSinger(USinger singer) {
             this.singer = singer;
             if (singer == null) {
-                throw new Exception("Singer is null.");
+                throw new ArgumentNullException("singer");
             }
             if(singer.Location == null){
-                throw new Exception("Singer location is null.");
+                throw new ArgumentNullException("singer.Location");
             }
             rootPath = Path.Combine(singer.Location, "dsdur");
             //Load Config
@@ -61,19 +61,19 @@ namespace OpenUtau.Core.DiffSinger
                 dsConfig = Yaml.DefaultDeserializer.Deserialize<DsConfig>(configTxt);
             } catch(Exception e) {
                 Log.Error(e, $"failed to load dsconfig from {configPath}");
-                throw new Exception($"Failed to load {configPath}", e);
+                throw new FileLoadException($"Failed to load {configPath}", e);
             }
             //Load language id if needed
             if (dsConfig.use_lang_id) {
                 if (dsConfig.languages == null) {
-                    throw new Exception("\"languages\" field is not specified in dsconfig.yaml");
+                    throw new InvalidDataException("\"languages\" field is not specified in dsconfig.yaml");
                 }
                 var langIdPath = Path.Join(rootPath, dsConfig.languages);
                 try {
                     languageIds = DiffSingerUtils.LoadLanguageIds(langIdPath);
                 } catch (Exception e) {
                     Log.Error(e, $"failed to load language id from {langIdPath}");
-                    throw new Exception($"Failed to load {langIdPath}", e);
+                    throw new FileLoadException($"Failed to load {langIdPath}", e);
                 }
             }
             this.frameMs = dsConfig.frameMs();
@@ -90,7 +90,7 @@ namespace OpenUtau.Core.DiffSinger
                 linguisticModel = new InferenceSession(linguisticModelBytes);
             } catch (Exception e) {
                 Log.Error(e, $"failed to load linguistic model from {linguisticModelPath}");
-                throw new Exception($"Failed to load {linguisticModelPath}", e);
+                throw new FileLoadException($"Failed to load {linguisticModelPath}", e);
             }
             var durationModelPath = Path.Join(rootPath, dsConfig.dur);
             try {
@@ -99,7 +99,7 @@ namespace OpenUtau.Core.DiffSinger
                 durationModel = new InferenceSession(durationModelBytes);
             } catch (Exception e) {
                 Log.Error(e, $"failed to load duration model from {durationModelPath}");
-                throw new Exception($"Failed to load {durationModelPath}", e);
+                throw new FileLoadException($"Failed to load {durationModelPath}", e);
             }
             return true;
         }
@@ -210,7 +210,7 @@ namespace OpenUtau.Core.DiffSinger
                         singer.Name);
                     return string.Empty;
                 }
-                throw new Exception(
+                throw new InvalidOperationException(
                     $"No subbanks defined for singer \"{singer.Name}\". " +
                     "Please check the singer's configuration.");
             }
@@ -310,7 +310,7 @@ namespace OpenUtau.Core.DiffSinger
         int PhonemeTokenize(string phoneme){
             bool success = phonemeTokens.TryGetValue(phoneme, out int token);
             if(!success){
-                throw new Exception($"Phoneme \"{phoneme}\" isn't supported by duration model. Please check {Path.Combine(rootPath, dsConfig.phonemes)}");
+                throw new InvalidDataException($"Phoneme \"{phoneme}\" isn't supported by duration model. Please check {Path.Combine(rootPath, dsConfig.phonemes)}");
             }
             return token;
         }
@@ -451,7 +451,7 @@ namespace OpenUtau.Core.DiffSinger
                 .ToList();
             var positions = new List<double>();
             if (phAlignPoints.Count == 0) {
-                throw new Exception("Phoneme alignment produced no alignment points");
+                throw new InvalidOperationException("Phoneme alignment produced no alignment points");
             }
             List<double> alignGroup = durationFrames.GetRange(1, phAlignPoints[0].Item1 - 1);
             

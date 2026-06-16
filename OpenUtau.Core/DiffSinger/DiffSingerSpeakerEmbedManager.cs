@@ -25,7 +25,7 @@ namespace OpenUtau.Core.DiffSinger
         public NDArray loadSpeakerEmbed(string speaker) {
             string path = Path.Join(rootPath, speaker + ".emb");
             if(!File.Exists(path)) {
-                throw new Exception($"Speaker embed file {path} not found");
+                throw new FileNotFoundException($"Speaker embed file {path} not found");
             }
             using var reader = new BinaryReader(File.OpenRead(path));
             var fileSize = reader.BaseStream.Length;

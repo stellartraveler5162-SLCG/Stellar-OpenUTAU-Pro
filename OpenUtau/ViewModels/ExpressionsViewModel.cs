@@ -111,7 +111,7 @@ namespace OpenUtau.App.ViewModels {
                         type = UExpressionType.Curve,
                     };
             }
-            throw new Exception("Unexpected expression type");
+            throw new InvalidOperationException("Unexpected expression type");
         }
 
         public override string ToString() => Name;

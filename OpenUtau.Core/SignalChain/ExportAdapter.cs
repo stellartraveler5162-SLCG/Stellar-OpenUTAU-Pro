@@ -19,7 +19,7 @@ namespace OpenUtau.Core.SignalChain {
                 buffer[i] = 0;
             }
             if (!source.IsReady(position, count)) {
-                throw new Exception("All sources must be ready when exporting.");
+                throw new InvalidOperationException("All sources must be ready when exporting.");
             } else {
                 int pos = source.Mix(position, buffer, offset, count);
                 int n = Math.Max(0, pos - position);

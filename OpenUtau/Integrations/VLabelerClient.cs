@@ -167,7 +167,7 @@ namespace OpenUtau.Integrations {
                         throw task.Exception.Flatten();
                     }
                 } else {
-                    throw new Exception("Failed to start vLabeler");
+                    throw new InvalidOperationException("Failed to start vLabeler");
                 }
             }).ContinueWith(task => {
                 if (task.IsFaulted) {

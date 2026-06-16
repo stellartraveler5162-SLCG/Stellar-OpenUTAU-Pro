@@ -46,33 +46,33 @@ namespace OpenUtau.Core.DiffSinger{
                 dsConfig = Yaml.DefaultDeserializer.Deserialize<DsConfig>(
                     File.ReadAllText(dsconfigPath, Encoding.UTF8));
             } catch (Exception e) {
-                throw new Exception($"Failed to load {dsconfigPath}", e);
+                throw new FileLoadException($"Failed to load {dsconfigPath}", e);
             }
             if(dsConfig.variance == null){
-                throw new Exception("This voicebank doesn't contain a variance model");
+                throw new FileNotFoundException("This voicebank doesn't contain a variance model");
             }
             //Load language id if needed
             if(dsConfig.use_lang_id){
                 if(dsConfig.languages == null){
-                    throw new Exception("\"languages\" field is not specified in dsconfig.yaml");
+                    throw new InvalidDataException("\"languages\" field is not specified in dsconfig.yaml");
                 }
                 var langIdPath = Path.Join(rootPath, dsConfig.languages);
                 try {
                     languageIds = DiffSingerUtils.LoadLanguageIds(langIdPath);
                 } catch (Exception e) {
                     Log.Error(e, $"failed to load language id from {langIdPath}");
-                    throw new Exception($"Failed to load {langIdPath}", e);
+                    throw new FileLoadException($"Failed to load {langIdPath}", e);
                 }
             }
             //Load phonemes list
             if (dsConfig.phonemes == null) {
-                throw new Exception("Configuration key \"phonemes\" is null.");
+                throw new InvalidDataException("Configuration key \"phonemes\" is null.");
             }
             string phonemesPath = Path.Combine(rootPath, dsConfig.phonemes);
             phonemeTokens = DiffSingerUtils.LoadPhonemes(phonemesPath);
             //Load models
             if (dsConfig.linguistic == null) {
-                throw new Exception("Configuration key \"linguistic\" is null.");
+                throw new InvalidDataException("Configuration key \"linguistic\" is null.");
             }
             var linguisticModelPath = Path.Join(rootPath, dsConfig.linguistic);
             var linguisticModelBytes = File.ReadAllBytes(linguisticModelPath);
@@ -91,7 +91,7 @@ namespace OpenUtau.Core.DiffSinger{
             // Load dictionary from singer folder.
             string file = Path.Combine(rootPath, "dsdict.yaml");
             if(!File.Exists(file)){
-                throw new Exception($"File not found: {file}");
+                throw new FileNotFoundException($"File not found: {file}");
             }
             try {
                 var g2pBuilder = G2pDictionary.NewBuilder().Load(File.ReadAllText(file));
@@ -100,7 +100,7 @@ namespace OpenUtau.Core.DiffSinger{
                 g2pBuilder.AddSymbol("AP", true);
                 return g2pBuilder.Build();
             } catch (Exception e) {
-                throw new Exception($"Failed to load {file}", e);
+                throw new FileLoadException($"Failed to load {file}", e);
             }
         }
 
@@ -114,7 +114,7 @@ namespace OpenUtau.Core.DiffSinger{
         int PhonemeTokenize(string phoneme){
             bool success = phonemeTokens.TryGetValue(phoneme, out int token);
             if(!success){
-                throw new Exception($"Phoneme \"{phoneme}\" isn't supported by variance model. Please check {Path.Combine(rootPath, dsConfig.phonemes)}");
+                throw new InvalidDataException($"Phoneme \"{phoneme}\" isn't supported by variance model. Please check {Path.Combine(rootPath, dsConfig.phonemes)}");
             }
             return token;
         }

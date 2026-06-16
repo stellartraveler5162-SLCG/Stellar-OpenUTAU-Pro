@@ -124,7 +124,7 @@ namespace OpenUtau.Core.Enunu {
                             SyntheResponse sy_response = new SyntheResponse();
                             sy_response = EnunuClient.Inst.SendRequest<SyntheResponse>(new string[] { "synthe", ustPath, wavPath, voicebankNameHash, "600" }, port);
                             if (sy_response.error != null) {
-                                throw new Exception(sy_response.error);
+                                throw new InvalidOperationException(sy_response.error);
                             }
                         } else {
                             var f0Path = Path.Join(enutmpPath, "f0.npy");
@@ -138,7 +138,7 @@ namespace OpenUtau.Core.Enunu {
                                 EnunuUtils.WriteUst(enunuNotes, phrase.phones.First().tempo, phrase.singer, ustPath);
                                 var ac_response = EnunuClient.Inst.SendRequest<AcousticResponse>(new string[] { "acoustic", ustPath, "", voicebankNameHash, "600" }, port);
                                 if (ac_response.error != null) {
-                                    throw new Exception(ac_response.error);
+                                    throw new InvalidOperationException(ac_response.error);
                                 }
                             }
                             if (cancellation.IsCancellationRequested) {

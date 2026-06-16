@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,7 +53,7 @@ namespace OpenUtau.Core.Enunu {
                 EnunuUtils.WriteUst(enunuNotes, bpm, singer, ustPath);
                 var response = EnunuClient.Inst.SendRequest<TimingResponse>(new string[] { "timing", ustPath,"", voicebankNameHash, "600" }, port);
                 if (response.error != null) {
-                    throw new Exception(response.error);
+                    throw new InvalidOperationException(response.error);
                 }
             }
             var noteIndexes = LabelToNoteIndex(scorePath, enunuNotes);
@@ -165,9 +165,9 @@ namespace OpenUtau.Core.Enunu {
                 };
             }
             if (SetUpException != null) {
-                throw new Exception("Phonemizer failed to process.", SetUpException);
+                throw new InvalidOperationException("Phonemizer failed to process.", SetUpException);
             }
-            throw new Exception("Part result not found");
+            throw new InvalidOperationException("Part result not found");
         }
 
         public override void CleanUp() {

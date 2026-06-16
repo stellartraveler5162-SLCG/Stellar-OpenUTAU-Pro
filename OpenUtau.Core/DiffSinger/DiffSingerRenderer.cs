@@ -142,58 +142,58 @@ namespace OpenUtau.Core.DiffSinger {
                 String.IsNullOrEmpty(singer.dsConfig.acoustic) ||
                 String.IsNullOrEmpty(singer.dsConfig.phonemes)){
                 if(singer.Errors.Count > 0) {
-                    throw new Exception(singer.Errors[0]);
+                    throw new InvalidDataException(singer.Errors[0]);
                 }
-                throw new Exception("Invalid dsconfig.yaml. Please ensure that dsconfig.yaml contains keys \"vocoder\", \"acoustic\" and \"phonemes\".");
+                throw new InvalidDataException("Invalid dsconfig.yaml. Please ensure that dsconfig.yaml contains keys \"vocoder\", \"acoustic\" and \"phonemes\".");
             }
 
             var vocoder = singer.getVocoder();
             //mel specification validity checks
             //mel base must be 10 or e
             if (vocoder.mel_base != "10" && vocoder.mel_base != "e") {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Mel base must be \"10\" or \"e\", but got \"{vocoder.mel_base}\" from vocoder");
             }
             if (singer.dsConfig.mel_base != "10" && singer.dsConfig.mel_base != "e") {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Mel base must be \"10\" or \"e\", but got \"{singer.dsConfig.mel_base}\" from acoustic model");
             }
             //mel scale must be slaney or htk
             if (vocoder.mel_scale != "slaney" && vocoder.mel_scale != "htk") {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Mel scale must be \"slaney\" or \"htk\", but got \"{vocoder.mel_scale}\" from vocoder");
             }
             if (singer.dsConfig.mel_scale != "slaney" && singer.dsConfig.mel_scale != "htk") {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Mel scale must be \"slaney\" or \"htk\", but got \"{singer.dsConfig.mel_scale}\" from acoustic model");
             }
             //mel specification matching checks
             if(vocoder.sample_rate != singer.dsConfig.sample_rate) {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Vocoder and acoustic model has mismatching sample rate ({vocoder.sample_rate} != {singer.dsConfig.sample_rate})");
             }
             if(vocoder.hop_size != singer.dsConfig.hop_size){
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Vocoder and acoustic model has mismatching hop size ({vocoder.hop_size} != {singer.dsConfig.hop_size})");
             }
             if(vocoder.win_size != singer.dsConfig.win_size){
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Vocoder and acoustic model has mismatching win size ({vocoder.win_size} != {singer.dsConfig.win_size})");
             }
             if(vocoder.fft_size != singer.dsConfig.fft_size){
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Vocoder and acoustic model has mismatching FFT size ({vocoder.fft_size} != {singer.dsConfig.fft_size})");
             }
             if (vocoder.num_mel_bins != singer.dsConfig.num_mel_bins) {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Vocoder and acoustic model has mismatching mel bins ({vocoder.num_mel_bins} != {singer.dsConfig.num_mel_bins})");
             }
             if (Math.Abs(vocoder.mel_fmin - singer.dsConfig.mel_fmin) > 1e-5) {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Vocoder and acoustic model has mismatching fmin ({vocoder.mel_fmin} != {singer.dsConfig.mel_fmin})");
             }
             if (Math.Abs(vocoder.mel_fmax - singer.dsConfig.mel_fmax) > 1e-5) {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Vocoder and acoustic model has mismatching fmax ({vocoder.mel_fmax} != {singer.dsConfig.mel_fmax})");
             }
             // mismatching mel base can be transformed
@@ -202,7 +202,7 @@ namespace OpenUtau.Core.DiffSinger {
             //         $"Vocoder and acoustic model has mismatching mel base ({vocoder.mel_base} != {singer.dsConfig.mel_base})");
             // }
             if (vocoder.mel_scale != singer.dsConfig.mel_scale) {
-                throw new Exception(
+                throw new InvalidDataException(
                     $"Vocoder and acoustic model has mismatching mel scale ({vocoder.mel_scale} != {singer.dsConfig.mel_scale})");
             }
 
@@ -337,7 +337,7 @@ namespace OpenUtau.Core.DiffSinger {
                 || singer.dsConfig.useVoicingEmbed
                 || singer.dsConfig.useTensionEmbed) {
                 if(!singer.HasVariancePredictor){
-                    throw new Exception(
+                    throw new InvalidOperationException(
                         "This singer has no variance predictor but its acoustic model requires one.");
                 }
                 var variancePredictor = singer.getVariancePredictor();
@@ -468,7 +468,7 @@ namespace OpenUtau.Core.DiffSinger {
                     k = 0.434294f;
                 } else {
                     // this should never happen
-                    throw new Exception("This should never happen");
+                    throw new InvalidOperationException("This should never happen");
                 }
                 for (int b = 0; b < mel.Dimensions[0]; ++b) {
                     for (int t = 0; t < mel.Dimensions[1]; ++t) {
@@ -511,7 +511,7 @@ namespace OpenUtau.Core.DiffSinger {
             //Check the size of samplesTensor
             int[] expectedShape = new int[] { 1, -1 };
             if(!DiffSingerUtils.ValidateShape(samplesTensor, expectedShape)){
-                throw new Exception($"The shape of vocoder output should be (1, length), but the actual shape is {DiffSingerUtils.ShapeString(samplesTensor)}");
+                throw new InvalidDataException($"The shape of vocoder output should be (1, length), but the actual shape is {DiffSingerUtils.ShapeString(samplesTensor)}");
             }
             var samples = samplesTensor.ToArray();
             return samples;
@@ -520,7 +520,7 @@ namespace OpenUtau.Core.DiffSinger {
         public RenderPitchResult LoadRenderedPitch(RenderPhrase phrase) {
             DiffSingerSinger singer = (DiffSingerSinger) phrase.singer;
             if (!singer.HasPitchPredictor) {
-                throw new Exception("This singer has no pitch predictor.");
+                throw new InvalidOperationException("This singer has no pitch predictor.");
             }
             var pitchPredictor = singer.getPitchPredictor()!;
             lock (pitchPredictor) {
@@ -530,7 +530,7 @@ namespace OpenUtau.Core.DiffSinger {
 
         public List<RenderRealCurveResult> LoadRenderedRealCurves(RenderPhrase phrase) {
             if (!Preferences.Default.DiffSingerTensorCache) {
-                throw new Exception("Please enable DiffSinger tensor cache and re-render the phrase to display correct base curves.");
+                throw new InvalidOperationException("Please enable DiffSinger tensor cache and re-render the phrase to display correct base curves.");
             }
             DiffSingerSinger singer = (DiffSingerSinger) phrase.singer;
             if (!singer.HasVariancePredictor) {

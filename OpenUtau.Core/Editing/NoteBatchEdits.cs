@@ -615,7 +615,7 @@ namespace OpenUtau.Core.Editing {
                 results.AddRange(recResults1);
                 results.AddRange(recResults2);
                 if (results.Count < 2) {
-                    throw new Exception("Problem assembling output");
+                    throw new InvalidOperationException("Problem assembling output");
                 }
             } else {
                 //Just return the start point

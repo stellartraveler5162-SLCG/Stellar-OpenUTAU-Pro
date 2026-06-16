@@ -47,7 +47,7 @@ namespace OpenUtau.Core {
             if (index >= 0) {
                 project.tempos.RemoveAt(index);
             } else {
-                throw new Exception("Cannot remove non-exist tempo change.");
+                throw new InvalidOperationException("Cannot remove non-exist tempo change.");
             }
         }
         public override string ToString() => $"Add tempo change {bpm} at {tick}";
@@ -96,7 +96,7 @@ namespace OpenUtau.Core {
             if (index >= 0) {
                 project.timeSignatures.RemoveAt(index);
             } else {
-                throw new Exception("Cannot remove non-exist time signature change");
+                throw new InvalidOperationException("Cannot remove non-exist time signature change");
             }
         }
         public override string ToString() => $"Add time sig change {beatPerBar}/{beatUnit} at bar {bar}";

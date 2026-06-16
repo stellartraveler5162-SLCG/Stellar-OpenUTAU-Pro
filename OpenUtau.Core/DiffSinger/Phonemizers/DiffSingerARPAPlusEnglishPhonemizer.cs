@@ -37,7 +37,7 @@ namespace OpenUtau.Core.DiffSinger {
                 return MakeSimpleResult("AP");
             }
             if (!partResult.TryGetValue(notes[0].position, out var phonemes)) {
-                throw new Exception("Result not found in the part");
+                throw new InvalidOperationException("Result not found in the part");
             }
             var processedPhonemes = new List<Phoneme>();
             var langCode = GetLangCode() + "/";
