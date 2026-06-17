@@ -123,8 +123,8 @@ namespace OpenUtau.Core.DiffSinger {
                 if (group[0].phoneticHint is null) {
                     var lyric = group[0].lyric;
 
-                    if (phoneDict.ContainsKey(lyric)) {
-                        notePhonemes = phoneDict[lyric];
+                    if (phoneDict.TryGetValue(lyric, out var phoneList)) {
+                        notePhonemes = phoneList;
                     } else if (rhythmizer.phonemes.Contains(lyric)) {
                         notePhonemes = new string[] { lyric };
                     } else {
