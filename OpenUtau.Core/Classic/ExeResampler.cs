@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -118,7 +118,9 @@ namespace OpenUtau.Classic {
                 return;
             }
             int mode = (7 << 6) | (5 << 3) | 5;
-            chmod(FilePath, mode);
+            if (chmod(FilePath, mode) != 0) {
+                Log.Error($"chmod failed for {FilePath}: errno {Marshal.GetLastWin32Error()}");
+            }
         }
 
         public bool SupportsFlag(string abbr) {

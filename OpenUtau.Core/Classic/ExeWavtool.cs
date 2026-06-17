@@ -226,7 +226,9 @@ namespace OpenUtau.Classic {
                 return;
             }
             int mode = (7 << 6) | (5 << 3) | 5;
-            chmod(filePath, mode);
+            if (chmod(filePath, mode) != 0) {
+                Log.Warning($"chmod failed for {filePath}: errno {Marshal.GetLastWin32Error()}");
+            }
         }
 
         public override string ToString() => name;

@@ -289,7 +289,16 @@ namespace OpenUtau.Core.Render {
                 }
 
                 var pinnedSample = GCHandle.Alloc(sample, GCHandleType.Pinned);
-                var pinnedPitchBend = GCHandle.Alloc(item.pitches, GCHandleType.Pinned);
+                GCHandle pinnedPitchBend;
+                try {
+                    pinnedPitchBend = GCHandle.Alloc(item.pitches, GCHandleType.Pinned);
+                } catch {
+                    pinnedSample.Free();
+                    if (pinnedFrq != null) {
+                        pinnedFrq.Value.Free();
+                    }
+                    throw;
+                }
                 handles = pinnedFrq == null
                     ? new[] { pinnedSample, pinnedPitchBend }
                     : new[] { pinnedSample, pinnedPitchBend, pinnedFrq.Value };
@@ -379,7 +388,7 @@ namespace OpenUtau.Core.Render {
             }
         }
 
-        [DllImport("worldline")]
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)]
         static extern int Resample(IntPtr request, ref IntPtr y);
 
         public static float[] Resample(ResamplerItem item) {
@@ -404,29 +413,29 @@ namespace OpenUtau.Core.Render {
             }
         }
 
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         delegate void LogCallback(string log);
 
-        [DllImport("worldline")]
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)]
         static extern IntPtr PhraseSynthNew();
 
-        [DllImport("worldline")]
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)]
         static extern void PhraseSynthDelete(IntPtr phrase_synth);
 
-        [DllImport("worldline")]
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)]
         static extern void PhraseSynthAddRequest(
             IntPtr phrase_synth, IntPtr request,
             double posMs, double skipMs, double lengthMs,
             double fadeInMs, double fadeOutMs, LogCallback logCallback);
 
-        [DllImport("worldline")]
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)]
         static extern void PhraseSynthSetCurves(
             IntPtr phraseSynth, double[] f0,
             double[] gender, double[] tension,
             double[] breathiness, double[] voicing,
             int length, LogCallback logCallback);
 
-        [DllImport("worldline")]
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)]
         static extern int PhraseSynthSynth(
             IntPtr phrase_synth,
             ref IntPtr y, LogCallback logCallback);

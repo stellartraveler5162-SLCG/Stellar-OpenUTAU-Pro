@@ -64,11 +64,18 @@ namespace OpenUtau.Core {
                 oldCancellation.Dispose();
             }
             Task.Run(async () => {
-                await Task.Delay(200, newCancellation.Token).ConfigureAwait(false);
-                if (newCancellation.IsCancellationRequested) {
-                    return;
+                try {
+                    await Task.Delay(200, newCancellation.Token).ConfigureAwait(false);
+                    if (newCancellation.IsCancellationRequested) {
+                        return;
+                    }
+                    Refresh();
+                } catch (OperationCanceledException) {
+                } catch (Exception e) {
+                    if (!newCancellation.IsCancellationRequested) {
+                        Log.Error(e, "Failed to schedule singer reload.");
+                    }
                 }
-                Refresh();
             });
         }
 

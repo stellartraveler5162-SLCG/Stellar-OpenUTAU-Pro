@@ -49,7 +49,7 @@ namespace OpenUtau.Core.DiffSinger {
 
         public bool IsVoiceColorCurve(string abbr, out int subBankId) {
             subBankId = 0;
-            if (abbr.StartsWith(VoiceColorHeader) && int.TryParse(abbr.Substring(2), out subBankId)) {;
+            if (abbr.StartsWith(VoiceColorHeader) && int.TryParse(abbr.Substring(2), out subBankId)) {
                 subBankId -= 1;
                 return true;
             } else {

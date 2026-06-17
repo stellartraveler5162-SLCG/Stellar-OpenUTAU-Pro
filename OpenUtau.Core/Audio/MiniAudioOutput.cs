@@ -224,14 +224,14 @@ namespace OpenUtau.Audio {
         [UnmanagedFunctionPointer(callingConvention: CallingConvention.Cdecl)]
         private unsafe delegate void ou_audio_data_callback_t(float* buffer, uint channels, uint frame_count);
 
-        [DllImport("worldline")] private static extern unsafe int ou_get_audio_device_infos(ou_audio_device_info_t* device_infos, int max_count);
-        [DllImport("worldline")] private static extern unsafe void ou_free_audio_device_infos(ou_audio_device_info_t* device_infos, int count);
-        [DllImport("worldline")] private static extern IntPtr ou_init_audio_device(uint api_id, ulong id, IntPtr callback);
-        [DllImport("worldline")] private static extern IntPtr ou_init_audio_device_auto(IntPtr callback);
-        [DllImport("worldline")] private static extern int ou_free_audio_device(IntPtr context);
-        [DllImport("worldline")] private static extern int ou_audio_device_start(IntPtr context);
-        [DllImport("worldline")] private static extern int ou_audio_device_stop(IntPtr context);
-        [DllImport("worldline")] private static extern IntPtr ou_audio_get_error_message(int error_code);
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)] private static extern unsafe int ou_get_audio_device_infos(ou_audio_device_info_t* device_infos, int max_count);
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)] private static extern unsafe void ou_free_audio_device_infos(ou_audio_device_info_t* device_infos, int count);
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)] private static extern IntPtr ou_init_audio_device(uint api_id, ulong id, IntPtr callback);
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)] private static extern IntPtr ou_init_audio_device_auto(IntPtr callback);
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)] private static extern int ou_free_audio_device(IntPtr context);
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)] private static extern int ou_audio_device_start(IntPtr context);
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)] private static extern int ou_audio_device_stop(IntPtr context);
+        [DllImport("worldline", CallingConvention = CallingConvention.Cdecl)] private static extern IntPtr ou_audio_get_error_message(int error_code);
 
         private static void CheckError(int errorCode) {
             if (errorCode == 0) {

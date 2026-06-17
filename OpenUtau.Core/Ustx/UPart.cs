@@ -199,12 +199,9 @@ namespace OpenUtau.Core.Ustx {
                                 };
                                 // Check for duplicate indexes
                                 if (phonemes.Any(p => p.Parent == phoneme.Parent && p.index == phoneme.index)) {
-                                    try {
-                                        throw new ArgumentException("Duplicate phoneme index.");
-                                    } catch (Exception e) {
-                                        DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(e));
-                                        continue;
-                                    }
+                                    DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(
+                                        new ArgumentException("Duplicate phoneme index.")));
+                                    continue;
                                 }
                                 phonemes.Add(phoneme);
                                 indexes.Add(phoneme.index);
