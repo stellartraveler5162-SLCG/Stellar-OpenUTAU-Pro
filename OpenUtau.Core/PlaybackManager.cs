@@ -128,12 +128,11 @@ namespace OpenUtau.Core {
         }
 
         public void EndTone(double freq) {
-            if (activeFrequencies.ContainsKey(freq)) {
-                activeFrequencies[freq].Stop();
+            if (activeFrequencies.TryGetValue(freq, out var generator)) {
+                generator.Stop();
 
                 lock (_lockObj) {
-                    // Move to inactive frequencies list
-                    inactiveFrequencies.Add(activeFrequencies[freq]);
+                    inactiveFrequencies.Add(generator);
                     activeFrequencies.Remove(freq);
                 }
             }

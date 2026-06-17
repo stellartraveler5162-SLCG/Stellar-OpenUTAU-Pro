@@ -45,8 +45,8 @@ namespace OpenUtau.Core {
         public USinger GetSinger(string name) {
             Log.Information($"Attach singer to track: {name}");
             name = name.Replace("%VOICE%", "");
-            if (Singers.ContainsKey(name)) {
-                return Singers[name];
+            if (Singers.TryGetValue(name, out var singer)) {
+                return singer;
             }
             return null;
         }

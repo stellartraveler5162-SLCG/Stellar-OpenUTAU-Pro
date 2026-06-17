@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenUtau.Core.Ustx;
@@ -49,8 +49,8 @@ namespace OpenUtau.Core.Editing {
             var result = new Dictionary<UNote, List<UPhoneme>>();
             foreach(var phoneme in part.phonemes){
                 var note = phoneme.Parent;
-                if(result.ContainsKey(note)){
-                    result[note].Add(phoneme);
+                if (result.TryGetValue(note, out var phonemeList)){
+                    phonemeList.Add(phoneme);
                 }else{
                     result[note] = new List<UPhoneme>(){phoneme};
                 }

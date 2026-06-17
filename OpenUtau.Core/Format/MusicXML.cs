@@ -167,20 +167,18 @@ namespace OpenUtau.Core.Format
                                             upart.notes.Add(unote);
                                             tiedNotes[tone] = unote;
                                         } else if (tieStatus == StartStopContinue.Continue) {
-                                            if (tiedNotes.ContainsKey(tone)) {
-                                                tiedNotes[tone].duration += durTick;
+                                            if (tiedNotes.TryGetValue(tone, out var tiedNote)) {
+                                                tiedNote.duration += durTick;
                                             } else {
-                                                // If there's no previous tied note, create a new one.
                                                 var unote = NewNote();
                                                 upart.notes.Add(unote);
                                                 tiedNotes[tone] = unote;
                                             }
                                         } else if (tieStatus == StartStopContinue.Stop) {
-                                            if (tiedNotes.ContainsKey(tone)) {
-                                                tiedNotes[tone].duration += durTick;
+                                            if (tiedNotes.TryGetValue(tone, out var tiedNote)) {
+                                                tiedNote.duration += durTick;
                                                 tiedNotes.Remove(tone);
                                             } else {
-                                                // If there's no previous tied note, create a new one.
                                                 var unote = NewNote();
                                                 upart.notes.Add(unote);
                                             }

@@ -91,8 +91,8 @@ namespace OpenUtau.Classic {
                 }
             }
             string singerType = bankConfig?.SingerType ?? string.Empty;
-            if (SingerTypeUtils.SingerTypeFromName.ContainsKey(singerType)) {
-                voicebank.SingerType = SingerTypeUtils.SingerTypeFromName[singerType];
+            if (SingerTypeUtils.SingerTypeFromName.TryGetValue(singerType, out var type)) {
+                voicebank.SingerType = type;
             } else {
                 // Legacy detection code. Do not add more here.
                 var enuconfigFile = Path.Combine(dir, kEnuconfigYaml);
