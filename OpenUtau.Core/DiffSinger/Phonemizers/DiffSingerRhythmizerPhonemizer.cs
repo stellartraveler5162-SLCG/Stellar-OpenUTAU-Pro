@@ -38,7 +38,7 @@ namespace OpenUtau.Core.DiffSinger {
             var phoneDict = new Dictionary<string, string[]>();
             if (File.Exists(path)) {
                 foreach (string line in File.ReadLines(path, TextFileEncoding)) {
-                    string[] elements = line.Split("\t");
+                    string[] elements = line.Split('\t');
                     phoneDict.Add(elements[0].Trim(), elements[1].Trim().Split(' '));
                 }
             }

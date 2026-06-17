@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -152,7 +152,7 @@ namespace OpenUtau.App.ViewModels {
             var newName = SubbankRenames.First(r=>r.Name == $"{oldSubbank.Prefix},{oldSubbank.Suffix}").NewName;
             var newColor = VoiceColorRenames.First(r=>r.Name == oldSubbank.Color).NewName;
             if(newName.Contains(",")){
-                var n = newName.Split(",");
+                var n = newName.Split(',');
                 return new Subbank(){
                     Prefix = n[0],
                     Suffix = n[^1],
