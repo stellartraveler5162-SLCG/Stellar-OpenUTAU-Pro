@@ -345,7 +345,7 @@ namespace OpenUtau.Core {
                         var part = character.Split(vowel);
                         if (!(part[1] == "")) {
                             separatedCharacter = new string[] { part[0], vowel, part[1] };
-                        } else if (part == new string[] {"", ""}) {
+                        } else if (part.Length == 2 && part[0] == "" && part[1] == "") {
                             separatedCharacter = new string[] { "", vowel, "" };
                         } else if (part.Length == 2) {
                             separatedCharacter = new string[] { part[0], vowel, "" };

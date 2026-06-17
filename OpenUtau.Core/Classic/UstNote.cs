@@ -378,8 +378,8 @@ namespace OpenUtau.Classic {
                     vibrato.drift = args[6];
                 }
                 this.vibrato = vibrato;
-            } catch {
-                throw new FileFormatException($"Invalid VBR\n{ustLine}");
+            } catch (Exception e) {
+                throw new FileFormatException($"Invalid VBR\n{ustLine}", e);
             }
         }
 
