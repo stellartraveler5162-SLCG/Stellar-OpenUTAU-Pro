@@ -338,7 +338,7 @@ namespace OpenUtau.Core {
                     DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(customEx));
                     DocManager.Inst.ExecuteCmd(new ProgressBarNotification(0, $"Failed to render."));
                 }
-            });
+            }).ConfigureAwait(false);
         }
 
         // Exporting each tracks
@@ -368,7 +368,7 @@ namespace OpenUtau.Core {
                     DocManager.Inst.ExecuteCmd(new ErrorMessageNotification(customEx));
                     DocManager.Inst.ExecuteCmd(new ProgressBarNotification(0, $"Failed to render."));
                 }
-            });
+            }).ConfigureAwait(false);
         }
 
         private void CheckFileWritable(string filePath) {

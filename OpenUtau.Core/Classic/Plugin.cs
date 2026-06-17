@@ -35,7 +35,7 @@ namespace OpenUtau.Classic {
                 startInfo.UseShellExecute = UseShell;
             }
             using (var process = Process.Start(startInfo)) {
-                await process.WaitForExitAsync();
+                await process.WaitForExitAsync().ConfigureAwait(false);
             }
         }
 

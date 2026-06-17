@@ -22,14 +22,14 @@ namespace OpenUtau.Core.Voicevox {
                     request.Content.Headers.ContentType = MediaTypeHeaderValue.Parse("application/json");
 
                     Log.Information($"VoicevoxProcess sending {request}");
-                    var response = await httpClient.SendAsync(request);
+                    var response = await httpClient.SendAsync(request).ConfigureAwait(false);
                     Log.Information($"VoicevoxProcess received");
-                    string str = await response.Content.ReadAsStringAsync();
+                    string str = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                     if (!str.StartsWith("{") || !str.EndsWith("}")) {
                         str = "{ \"json\":" + str + "}";
                     }
                     Log.Information($"VoicevoxResponse StatusCode :{response.StatusCode}");
-                    return new Tuple<string, byte[]>(str, await response.Content.ReadAsByteArrayAsync());
+                    return new Tuple<string, byte[]>(str, await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false));
                 }
             } catch (Exception ex) {
                 Log.Error(ex, "VoicevoxClient request failed");

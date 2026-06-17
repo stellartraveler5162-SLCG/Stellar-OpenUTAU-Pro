@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -53,7 +53,7 @@ namespace OpenUtau.Classic {
                 var tempFile = Path.Combine(PathManager.CachePath, "temp.tmp");
                 var sequence = Ust.WritePlugin(project, part, first, last, tempFile, encoding: plugin.Encoding);
                 byte[]? beforeHash = HashFile(tempFile);
-                await plugin.Run(tempFile);
+                await plugin.Run(tempFile).ConfigureAwait(false);
                 byte[]? afterHash = HashFile(tempFile);
                 if (beforeHash == null || afterHash == null || Enumerable.SequenceEqual(beforeHash, afterHash)) {
                     Log.Information("Legacy plugin temp file has not changed.");
@@ -63,7 +63,7 @@ namespace OpenUtau.Classic {
                 
                 var (toRemove, toAdd) = await Task.Run(() => 
                     Ust.ParsePlugin(project, part, first, last, sequence, tempFile, encoding: plugin.Encoding)
-                );
+                ).ConfigureAwait(false);
                 
                 OnReplaceNote(new ReplaceNoteEventArgs(part, toRemove, toAdd));
             } catch (Exception e) {

@@ -64,7 +64,7 @@ namespace OpenUtau.Core {
                 oldCancellation.Dispose();
             }
             Task.Run(async () => {
-                await Task.Delay(200, newCancellation.Token);
+                await Task.Delay(200, newCancellation.Token).ConfigureAwait(false);
                 if (newCancellation.IsCancellationRequested) {
                     return;
                 }

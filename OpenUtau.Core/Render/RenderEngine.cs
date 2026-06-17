@@ -165,7 +165,7 @@ namespace OpenUtau.Core.Render {
             }
             Task.Run(async () => {
                 try {
-                    await Task.Delay(200, newCancellation.Token);
+                    await Task.Delay(200, newCancellation.Token).ConfigureAwait(false);
                     if (newCancellation.Token.IsCancellationRequested) {
                         return;
                     }
