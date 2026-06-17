@@ -106,8 +106,9 @@ namespace OpenUtau.Core.DiffSinger
                     }
                 }
             }
-            foreach(var from in replacements.Keys){
-                var to = replacements[from];
+            foreach(var kvp in replacements){
+                var from = kvp.Key;
+                var to = kvp.Value;
                 if(baseG2p.IsValidSymbol(to)){
                     if(baseG2p.IsVowel(to)){
                         phonemeSymbols[from]=true;
