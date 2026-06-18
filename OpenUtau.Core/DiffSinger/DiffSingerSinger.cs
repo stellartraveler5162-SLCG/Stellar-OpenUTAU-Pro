@@ -196,7 +196,13 @@ namespace OpenUtau.Core.DiffSinger {
                     if (Directory.Exists(bundledPath) && File.Exists(Path.Combine(bundledPath, "vocoder.yaml"))) {
                         vocoder = new DsVocoder(bundledPath);
                     } else {
-                        vocoder = new DsVocoder(depPath);
+                        throw new MessageCustomizableException(
+                            $"Error loading vocoder \"{dsConfig.vocoder}\"",
+                            $"<translate:errors.diffsinger.downloadvocoder>",
+                            new DirectoryNotFoundException(
+                                $"Could not find a part of the path '{Path.Combine(depPath, "vocoder.yaml")}'."),
+                            false,
+                            new string[] { dsConfig.vocoder, "https://github.com/xunmengshe/OpenUtau/wiki/Vocoders" });
                     }
                 }
             }
