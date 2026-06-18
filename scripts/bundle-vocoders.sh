@@ -13,7 +13,8 @@ mkdir -p "$VOC_DEST"
 gh release download pc-nsf-hifigan-44.1k-hop512-128bin-2025.02 \
     -R openvpi/vocoders \
     -p "*.oudep" \
-    -D /tmp/
+    -D /tmp/ \
+    --clobber
 
 unzip -o "/tmp/pc_nsf_hifigan_44.1k_hop512_128bin_2025.02.oudep" -d "$VOC_DEST"
 rm -f "/tmp/pc_nsf_hifigan_44.1k_hop512_128bin_2025.02.oudep"
