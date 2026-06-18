@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
+using Avalonia.Threading;
 using OpenUtau.Classic;
 using OpenUtau.Core;
+using OpenUtau.Core.Util;
 using Serilog;
 
 namespace OpenUtau.App.Views {
@@ -34,12 +36,19 @@ namespace OpenUtau.App.Views {
         private void Start() {
             var mainThread = Thread.CurrentThread;
             var mainScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            Task.Run(() => {
+            Task.Run(async () => {
                 Log.Information("Initializing Stellar OpenUTAU Pro.");
+
+                var progress = new Progress<string>(msg => {
+                    Dispatcher.UIThread.Post(() => StatusText.Text = msg);
+                });
+
+                await DependencyCheckService.CheckAndDownloadAsync(progress).ConfigureAwait(false);
+
                 ToolsManager.Inst.Initialize();
                 SingerManager.Inst.Initialize();
                 DocManager.Inst.Initialize(mainThread, mainScheduler);
-                DocManager.Inst.PostOnUIThread = action => Avalonia.Threading.Dispatcher.UIThread.Post(action);
+                DocManager.Inst.PostOnUIThread = action => Dispatcher.UIThread.Post(action);
                 Log.Information("Initialized Stellar OpenUTAU Pro.");
                 InitAudio();
             }).ContinueWith(t => {
